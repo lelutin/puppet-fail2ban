@@ -2,7 +2,7 @@
 # Copyright (C) 2007 admin@immerda.ch
 #
 
-modules_dir { "skeleton": }
+# modules_dir { "skeleton": }
 
 class skeleton {
 
