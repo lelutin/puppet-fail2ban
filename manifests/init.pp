@@ -30,4 +30,19 @@ class fail2ban::gentoo inherits fail2ban::base {
     Package[fail2ban]{
         category => 'net-analyzer',
     }
+    #conf.d file if needed
+    Service[fail2ban]{
+       require +> File["/etc/conf.d/fail2ban"],
+    }
+    file { "/etc/conf.d/fail2ban":
+        owner => "root",
+        group => "0",
+        mode  => 644,
+        ensure => present,
+        source => [
+            "puppet://$server/dist/fail2ban/conf.d/${fqdn}/fail2ban",
+            "puppet://$server/dist/fail2ban/conf.d/fail2ban",
+            "puppet://$server/fail2ban/conf.d/fail2ban"
+        ]
+    }
 }
