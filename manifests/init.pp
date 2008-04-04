@@ -40,8 +40,8 @@ class fail2ban::gentoo inherits fail2ban::base {
         mode  => 644,
         ensure => present,
         source => [
-            "puppet://$server/dist/fail2ban/conf.d/${fqdn}/fail2ban",
-            "puppet://$server/dist/fail2ban/conf.d/fail2ban",
+            "puppet://$server/files/fail2ban/conf.d/${fqdn}/fail2ban",
+            "puppet://$server/files/fail2ban/conf.d/fail2ban",
             "puppet://$server/fail2ban/conf.d/fail2ban"
         ]
     }
