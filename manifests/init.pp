@@ -42,7 +42,7 @@ class fail2ban::gentoo inherits fail2ban::base {
         source => [
             "puppet://$server/files/fail2ban/conf.d/${fqdn}/fail2ban",
             "puppet://$server/files/fail2ban/conf.d/fail2ban",
-            "puppet://$server/fail2ban/conf.d/fail2ban"
+            "puppet://$server/modules/fail2ban/conf.d/fail2ban"
         ]
     }
 }
