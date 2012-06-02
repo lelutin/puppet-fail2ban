@@ -3,8 +3,8 @@
 #
 
 class fail2ban {
-    case $operatingsystem {
-        gentoo: {include fail2ban::gentoo}
-        default: {include fail2ban::base}
-    }
+  case $::operatingsystem {
+    gentoo: {include fail2ban::gentoo}
+    default: {include fail2ban::base}
+  }
 }
