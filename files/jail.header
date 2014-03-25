@@ -1,0 +1,15 @@
+#
+# JAILS
+#
+
+# Next jails corresponds to the standard configuration in Fail2ban 0.6 which
+# was shipped in Debian. Enable any defined here jail by including
+#
+# [SECTION_NAME] 
+# enabled = true
+
+#
+# in /etc/fail2ban/jail.local.
+#
+# Optionally you may override any other parameter (e.g. banaction,
+# action, port, logpath, etc) in that section within jail.local

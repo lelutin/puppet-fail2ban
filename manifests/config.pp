@@ -17,6 +17,19 @@ class fail2ban::config {
     content => template('fail2ban/jail.conf.erb'),
   }
 
+  concat { '/etc/fail2ban/jail.local':
+    owner  => 'root',
+    group  => 0,
+    mode   => '0644',
+  }
+  # Define one fragment with a header for the file, otherwise the concat exec
+  # errors out.
+  concat::fragment { 'jail_header':
+    target => '/etc/fail2ban/jail.local',
+    source => 'puppet:///modules/fail2ban/jail.header',
+    order  => 01,
+  }
+
   if $::operatingsystem == 'gentoo' {
     file { '/etc/conf.d/fail2ban':
       ensure => present,
