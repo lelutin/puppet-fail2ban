@@ -3,8 +3,11 @@
 #
 
 class fail2ban {
-  case $::operatingsystem {
-    gentoo: {include fail2ban::gentoo}
-    default: {include fail2ban::base}
-  }
+
+  anchor { 'fail2ban::begin': } ->
+  class { 'fail2ban::install': } ->
+  class { 'fail2ban::config': } ~>
+  class { 'fail2ban::service': } ->
+  anchor { 'fail2ban::end': }
+
 }
