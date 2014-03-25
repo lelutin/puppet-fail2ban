@@ -2,7 +2,17 @@
 # Copyright (C) 2007 admin@immerda.ch
 #
 
-class fail2ban {
+class fail2ban (
+  $ignoreip  = '127.0.0.1',
+  $bantime   = '600',
+  $maxretry  = '3',
+  $backend   = 'polling',
+  $destemail = 'root@localhost',
+  $banaction = 'iptables-multiport',
+  $mta       = 'sendmail',
+  $protocol  = 'tcp',
+  $action    = '%(action_)s'
+) {
 
   anchor { 'fail2ban::begin': } ->
   class { 'fail2ban::install': } ->
