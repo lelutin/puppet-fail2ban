@@ -9,10 +9,10 @@
 #
 # Author: Yaroslav O. Halchenko <debian@onerussian.com>
 #
-# $Revision: 281 $
+# $Revision$
 #
 
-# The DEFAULT allows a global definition of the options. They can be override
+# The DEFAULT allows a global definition of the options. They can be overridden
 # in each jail afterwards.
 
 [DEFAULT]
@@ -39,7 +39,7 @@ destemail = <%= @destemail %>
 
 # Default banning action (e.g. iptables, iptables-new,
 # iptables-multiport, shorewall, etc) It is used to define
-# action_* variables. Can be overriden globally or per
+# action_* variables. Can be overridden globally or per
 # section within jail.local file
 banaction = <%= @banaction %>
 
@@ -50,6 +50,9 @@ mta = <%= @mta %>
 
 # Default protocol
 protocol = <%= @protocol %>
+
+# Specify chain where jumps would need to be added in iptables-* actions
+chain = INPUT
 
 #
 # Action shortcuts. To be used to define action parameter
