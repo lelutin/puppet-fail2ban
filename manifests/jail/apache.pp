@@ -1,4 +1,11 @@
-class fail2ban::jail::apache {
+class fail2ban::jail::apache (
+  $maxretry = 'usedefault'
+) {
+
+  $real_maxretry = $maxretry ? {
+    'usedefault' => '6',
+    default      => $maxretry
+  }
 
   # Use default apache-auth filter from debian
   fail2ban::jail { 'apache':
@@ -6,7 +13,7 @@ class fail2ban::jail::apache {
     port     => 'http,https',
     filter   => 'apache-auth',
     logpath  => '/var/log/apache*/*error.log',
-    maxretry => '6',
+    maxretry => $real_maxretry,
   }
 
 }

@@ -1,4 +1,6 @@
-class fail2ban::jail::dovecot {
+class fail2ban::jail::dovecot (
+  $maxretry = 'usedefault'
+) {
 
   # Use default dovecot filter from debian
   fail2ban::jail { 'dovecot':
@@ -8,4 +10,9 @@ class fail2ban::jail::dovecot {
     logpath  => '/var/log/mail.log',
   }
 
+  if $maxretry != 'usedefault' {
+    Fail2ban::Jail['dovecot'] {
+      maxretry => $maxretry,
+    }
+  }
 }

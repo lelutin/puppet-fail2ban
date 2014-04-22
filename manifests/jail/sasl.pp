@@ -1,4 +1,6 @@
-class fail2ban::jail::sasl {
+class fail2ban::jail::sasl (
+  $maxretry = 'usedefault'
+) {
 
   # Use default sasl filter from debian
   fail2ban::jail { 'sasl':
@@ -10,6 +12,12 @@ class fail2ban::jail::sasl {
     # "warn" level but overall at the smaller filesize.
     #TODO: customizable path?
     logpath  => '/var/log/mail.log',
+  }
+
+  if $maxretry != 'usedefault' {
+    Fail2ban::Jail['sasl'] {
+      maxretry => $maxretry,
+    }
   }
 
 }

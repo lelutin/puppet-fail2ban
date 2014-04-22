@@ -1,4 +1,11 @@
-class fail2ban::jail::xinetd_fail {
+class fail2ban::jail::xinetd_fail (
+  $maxretry = 'usedefault'
+) {
+
+  $real_maxretry = $maxretry ? {
+    'usedefault' => '2',
+    default      => $maxretry
+  }
 
   # Use default xinetd-fail filter from debian
   fail2ban::jail { 'xinetd_fail':
@@ -7,7 +14,7 @@ class fail2ban::jail::xinetd_fail {
     filter    => 'xinetd-fail',
     banaction => 'iptables-multiport-log',
     logpath   => '/var/log/auth.log',
-    maxretry  => '2',
+    maxretry  => $real_maxretry,
   }
 
 }

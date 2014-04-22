@@ -1,4 +1,11 @@
-class fail2ban::jail::ssh {
+class fail2ban::jail::ssh (
+  $maxretry = 'usedefault'
+) {
+
+  $real_maxretry = $maxretry ? {
+    'usedefault' => '6',
+    default      => $maxretry
+  }
 
   # Use default sshd filter from debian
   fail2ban::jail { 'ssh':
@@ -6,7 +13,7 @@ class fail2ban::jail::ssh {
     port     => 'ssh',
     filter   => 'sshd',
     logpath  => '/var/log/auth.log',
-    maxretry => '6',
+    maxretry => $real_maxretry,
   }
 
 }

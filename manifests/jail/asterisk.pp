@@ -1,4 +1,11 @@
-class fail2ban::jail::asterisk {
+class fail2ban::jail::asterisk (
+  $maxretry = 'usedefault'
+) {
+
+  $real_maxretry = $maxretry ? {
+    'usedefault' => '6',
+    default      => $maxretry
+  }
 
   fail2ban::filter { 'asterisk':
     failregexes   => [
@@ -20,7 +27,7 @@ class fail2ban::jail::asterisk {
     port     => 'iax,sip,sip-tls',
     filter   => 'asterisk',
     logpath  => '/var/log/asterisk/messages',
-    maxretry => '6',
+    maxretry => $real_maxretry,
     require  => Fail2ban::Filter['asterisk'],
   }
 

@@ -1,4 +1,11 @@
-class fail2ban::jail::vsftpd {
+class fail2ban::jail::vsftpd (
+  $maxretry = 'usedefault'
+) {
+
+  $real_maxretry = $maxretry ? {
+    'usedefault' => '6',
+    default      => $maxretry
+  }
 
   # Use default vsftpd filter from debian
   fail2ban::jail { 'vsftpd':
@@ -11,7 +18,7 @@ class fail2ban::jail::vsftpd {
     # vsftpd's failregex should match both of those formats
     # TODO: customizeable path?
     logpath  => '/var/log/vsftpd.log',
-    maxretry => '6',
+    maxretry => $real_maxretry,
   }
 
 }
