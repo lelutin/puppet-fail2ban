@@ -9,7 +9,7 @@ another non-routed IP:
 
 ```
 class { 'fail2ban':
-  ignoreip => '127.0.0.1,10.0.0.1',
+  ignoreip => '127.0.0.1 10.0.0.1',
 }
 ```
 
@@ -22,7 +22,7 @@ defined type (see section below).
 == Parameters to fail2ban class ==
 
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
-   '127.0.0.1'
+   '127.0.0.1'. Multiple values should be separated by spaces
  * `bantime` Number of seconds during which reaching maxretry gets an IP
    banned. Default value is '600'
  * `maxretry` Number of times an IP address must trigger failgregexes to get
