@@ -1,6 +1,7 @@
 class fail2ban::jail::proftpd (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -15,12 +16,8 @@ class fail2ban::jail::proftpd (
     filter   => 'proftpd',
     logpath  => '/var/log/proftpd/proftpd.log',
     maxretry => $real_maxretry,
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['proftpd'] {
-      findtime => $findtime,
-    }
+    findtime => $findtime,
+    ignoreip => $ignoreip,
   }
 
 }

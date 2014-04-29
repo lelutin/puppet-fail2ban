@@ -1,6 +1,7 @@
 class fail2ban::jail::apache (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -15,12 +16,8 @@ class fail2ban::jail::apache (
     filter   => 'apache-auth',
     logpath  => '/var/log/apache*/*error.log',
     maxretry => $real_maxretry,
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['apache'] {
-      findtime => $findtime,
-    }
+    findtime => $findtime,
+    ignoreip => $ignoreip,
   }
 
 }

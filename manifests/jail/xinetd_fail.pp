@@ -1,6 +1,7 @@
 class fail2ban::jail::xinetd_fail (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -16,12 +17,8 @@ class fail2ban::jail::xinetd_fail (
     banaction => 'iptables-multiport-log',
     logpath   => '/var/log/auth.log',
     maxretry  => $real_maxretry,
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['xinetd_fail'] {
-      findtime => $findtime,
-    }
+    findtime  => $findtime,
+    ignoreip  => $ignoreip,
   }
 
 }

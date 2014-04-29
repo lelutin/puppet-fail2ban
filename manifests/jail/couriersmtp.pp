@@ -1,6 +1,7 @@
 class fail2ban::jail::couriersmtp (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   # Use default couriersmtp filter from debian
@@ -9,17 +10,13 @@ class fail2ban::jail::couriersmtp (
     port     => 'smtp,ssmtp',
     filter   => 'couriersmtp',
     logpath  => '/var/log/mail.log',
+    findtime => $findtime,
+    ignoreip => $ignoreip,
   }
 
   if $maxretry != 'usedefault' {
     Fail2ban::Jail['couriersmtp'] {
       maxretry => $maxretry,
-    }
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['couriersmtp'] {
-      findtime => $findtime,
     }
   }
 

@@ -1,6 +1,7 @@
 class fail2ban::jail::wuftpd (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -15,12 +16,8 @@ class fail2ban::jail::wuftpd (
     filter   => 'wuftpd',
     logpath  => '/var/log/auth.log',
     maxretry => $real_maxretry,
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['wuftpd'] {
-      findtime => $findtime,
-    }
+    findtime => $findtime,
+    ignoreip => $ignoreip,
   }
 
 }

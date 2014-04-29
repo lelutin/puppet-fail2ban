@@ -1,6 +1,7 @@
 class fail2ban::jail::sasl (
   $maxretry = 'usedefault',
-  $findtime = false
+  $findtime = false,
+  $ignoreip = false
 ) {
 
   # Use default sasl filter from debian
@@ -13,17 +14,13 @@ class fail2ban::jail::sasl (
     # "warn" level but overall at the smaller filesize.
     #TODO: customizable path?
     logpath  => '/var/log/mail.log',
+    findtime => $findtime,
+    ignoreip => $ignoreip,
   }
 
   if $maxretry != 'usedefault' {
     Fail2ban::Jail['sasl'] {
       maxretry => $maxretry,
-    }
-  }
-
-  if $findtime != false {
-    Fail2ban::Jail['sasl'] {
-      findtime => $findtime,
     }
   }
 
