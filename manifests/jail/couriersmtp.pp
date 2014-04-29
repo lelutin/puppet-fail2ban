@@ -1,5 +1,6 @@
 class fail2ban::jail::couriersmtp (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default couriersmtp filter from debian
@@ -15,4 +16,11 @@ class fail2ban::jail::couriersmtp (
       maxretry => $maxretry,
     }
   }
+
+  if $findtime != false {
+    Fail2ban::Jail['couriersmtp'] {
+      findtime => $findtime,
+    }
+  }
+
 }

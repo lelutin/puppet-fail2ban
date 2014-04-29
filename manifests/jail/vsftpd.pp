@@ -1,5 +1,6 @@
 class fail2ban::jail::vsftpd (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -19,6 +20,12 @@ class fail2ban::jail::vsftpd (
     # TODO: customizeable path?
     logpath  => '/var/log/vsftpd.log',
     maxretry => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['vsftpd'] {
+      findtime => $findtime,
+    }
   }
 
 }

@@ -1,5 +1,6 @@
 class fail2ban::jail::pam_generic (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -18,6 +19,12 @@ class fail2ban::jail::pam_generic (
     filter    => 'pam-generic',
     logpath   => '/var/log/auth.log',
     maxretry  => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['pam-generic'] {
+      findtime => $findtime,
+    }
   }
 
 }

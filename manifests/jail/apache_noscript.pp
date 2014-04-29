@@ -1,5 +1,6 @@
 class fail2ban::jail::apache_noscript (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -14,6 +15,12 @@ class fail2ban::jail::apache_noscript (
     filter   => 'apache-noscript',
     logpath  => '/var/log/apache*/*error.log',
     maxretry => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['apache-noscript'] {
+      findtime => $findtime,
+    }
   }
 
 }

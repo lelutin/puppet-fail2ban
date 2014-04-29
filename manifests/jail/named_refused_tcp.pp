@@ -1,5 +1,6 @@
 class fail2ban::jail::named_refused_tcp (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default named-refused filter from debian
@@ -16,4 +17,11 @@ class fail2ban::jail::named_refused_tcp (
       maxretry => $maxretry,
     }
   }
+
+  if $findtime != false {
+    Fail2ban::Jail['named-refused-tcp'] {
+      findtime => $findtime,
+    }
+  }
+
 }

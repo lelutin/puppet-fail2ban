@@ -1,5 +1,6 @@
 class fail2ban::jail::pure_ftpd (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -14,6 +15,12 @@ class fail2ban::jail::pure_ftpd (
     filter   => 'pure-ftpd',
     logpath  => '/var/log/auth.log',
     maxretry => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['pure-ftpd'] {
+      findtime => $findtime,
+    }
   }
 
 }

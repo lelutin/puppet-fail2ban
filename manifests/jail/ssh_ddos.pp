@@ -1,5 +1,6 @@
 class fail2ban::jail::ssh_ddos (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -14,6 +15,12 @@ class fail2ban::jail::ssh_ddos (
     filter   => 'sshd-ddos',
     logpath  => '/var/log/auth.log',
     maxretry => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['ssh-ddos'] {
+      findtime => $findtime,
+    }
   }
 
 }

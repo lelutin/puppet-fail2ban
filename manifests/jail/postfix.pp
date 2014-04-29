@@ -1,5 +1,6 @@
 class fail2ban::jail::postfix (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default postfix filter from debian
@@ -13,6 +14,12 @@ class fail2ban::jail::postfix (
   if $maxretry != 'usedefault' {
     Fail2ban::Jail['postfix'] {
       maxretry => $maxretry,
+    }
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['postfix'] {
+      findtime => $findtime,
     }
   }
 

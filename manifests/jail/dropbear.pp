@@ -1,5 +1,6 @@
 class fail2ban::jail::dropbear (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -14,6 +15,12 @@ class fail2ban::jail::dropbear (
     filter   => 'sshd',
     logpath  => '/var/log/dropbear',
     maxretry => $real_maxretry,
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['dropbear'] {
+      findtime => $findtime,
+    }
   }
 
 }

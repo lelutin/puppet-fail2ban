@@ -1,5 +1,6 @@
 class fail2ban::jail::courierauth (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default courierauth filter from debian
@@ -13,6 +14,12 @@ class fail2ban::jail::courierauth (
   if $maxretry != 'usedefault' {
     Fail2ban::Jail['courierauth'] {
       maxretry => $maxretry,
+    }
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['courierauth'] {
+      findtime => $findtime,
     }
   }
 

@@ -1,5 +1,6 @@
 class fail2ban::jail::dovecot (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default dovecot filter from debian
@@ -15,4 +16,11 @@ class fail2ban::jail::dovecot (
       maxretry => $maxretry,
     }
   }
+
+  if $findtime != false {
+    Fail2ban::Jail['dovecot'] {
+      findtime => $findtime,
+    }
+  }
+
 }

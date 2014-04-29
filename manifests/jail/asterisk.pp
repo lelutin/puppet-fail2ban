@@ -1,5 +1,6 @@
 class fail2ban::jail::asterisk (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   $real_maxretry = $maxretry ? {
@@ -29,6 +30,12 @@ class fail2ban::jail::asterisk (
     logpath  => '/var/log/asterisk/messages',
     maxretry => $real_maxretry,
     require  => Fail2ban::Filter['asterisk'],
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['asterisk'] {
+      findtime => $findtime,
+    }
   }
 
 }

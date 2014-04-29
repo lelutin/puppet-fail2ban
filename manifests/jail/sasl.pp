@@ -1,5 +1,6 @@
 class fail2ban::jail::sasl (
-  $maxretry = 'usedefault'
+  $maxretry = 'usedefault',
+  $findtime = false
 ) {
 
   # Use default sasl filter from debian
@@ -17,6 +18,12 @@ class fail2ban::jail::sasl (
   if $maxretry != 'usedefault' {
     Fail2ban::Jail['sasl'] {
       maxretry => $maxretry,
+    }
+  }
+
+  if $findtime != false {
+    Fail2ban::Jail['sasl'] {
+      findtime => $findtime,
     }
   }
 
