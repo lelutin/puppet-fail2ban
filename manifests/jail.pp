@@ -6,6 +6,7 @@ define fail2ban::jail (
   $enabled   = 'true',
   $protocol  = false,
   $maxretry  = false,
+  $findtime  = false,
   $action    = false,
   $banaction = false,
   $ignoreip  = false,

@@ -5,6 +5,7 @@ filter = <%= @filter %>
 logpath = <%= @logpath %>
 <% if @protocol != false -%>protocol = <%= @protocol %><% end -%>
 <% if @maxretry != false -%>maxretry = <%= @maxretry %><% end -%>
+<% if @findtime != false -%>findtime = <%= @findtime %><% end -%>
 <% if @action != false -%>action = <%= @action %><% end -%>
 <% if @banaction != false -%>banaction = <%= @banaction %><% end -%>
 <% if @ignoreip != false -%>ignoreip = <%= @ignoreip %><% end %>

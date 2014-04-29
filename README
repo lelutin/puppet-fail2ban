@@ -67,6 +67,8 @@ Here's the full list of parameters you can use:
    'true'
  * `protocol` Override default protocol to ban ports for.
  * `maxretry` Override default number of trials that bans someone.
+ * `findtime` Override default interval during which maxretry failures triggers
+   a ban.
  * `action` Override default action used.
  * `banaction` Override default `banaction`. If you don't also override
    `action`, you will use the same default action template but with a different
