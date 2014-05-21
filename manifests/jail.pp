@@ -9,6 +9,7 @@ define fail2ban::jail (
   $findtime  = false,
   $action    = false,
   $banaction = false,
+  $bantime   = false,
   $ignoreip  = false,
   $order     = false,
 ) {
