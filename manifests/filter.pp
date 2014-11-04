@@ -1,3 +1,7 @@
+# Configure a filter for fail2ban
+#
+# The failregexes, ignoreregexes and additional_defs arguments need to be arrays
+#
 define fail2ban::filter (
   $failregexes,
   $ensure    = present,
