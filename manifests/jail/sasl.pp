@@ -7,7 +7,7 @@ class fail2ban::jail::sasl (
 
   # Use default sasl filter from debian
   fail2ban::jail { 'sasl':
-    enabled  => 'true',
+    enabled  => true,
     port     => 'smtp,ssmtp,imap2,imap3,imaps,pop3,pop3s',
     filter   => 'sasl',
     # You might consider monitoring /var/log/mail.warn instead if you are

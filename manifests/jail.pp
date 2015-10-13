@@ -1,9 +1,10 @@
+# Setup a fail2ban jail.
 define fail2ban::jail (
   $port,
   $filter,
   $logpath,
   $ensure    = present,
-  $enabled   = 'true',
+  $enabled   = true,
   $protocol  = false,
   $maxretry  = false,
   $findtime  = false,

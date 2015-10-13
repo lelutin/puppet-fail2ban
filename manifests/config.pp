@@ -1,3 +1,7 @@
+# Configure fail2ban service
+#
+# Setup jail.local as a concatenated file. This file will get all jails added
+# to it.
 class fail2ban::config {
 
   $ignoreip = $fail2ban::ignoreip
@@ -18,9 +22,9 @@ class fail2ban::config {
   }
 
   concat { '/etc/fail2ban/jail.local':
-    owner  => 'root',
-    group  => 0,
-    mode   => '0644',
+    owner => 'root',
+    group => 0,
+    mode  => '0644',
   }
   # Define one fragment with a header for the file, otherwise the concat exec
   # errors out.

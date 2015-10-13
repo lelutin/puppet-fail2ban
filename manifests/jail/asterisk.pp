@@ -25,7 +25,7 @@ class fail2ban::jail::asterisk (
     ],
   }
   fail2ban::jail { 'asterisk':
-    enabled  => 'true',
+    enabled  => true,
     port     => 'iax,sip,sip-tls',
     filter   => 'asterisk',
     logpath  => '/var/log/asterisk/messages',

@@ -11,7 +11,7 @@ class fail2ban::jail::apache (
 
   # Use default apache-auth filter from debian
   fail2ban::jail { 'apache':
-    enabled  => 'true',
+    enabled  => true,
     port     => 'http,https',
     filter   => 'apache-auth',
     logpath  => '/var/log/apache*/*error.log',

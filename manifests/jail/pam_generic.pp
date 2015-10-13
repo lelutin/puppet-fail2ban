@@ -11,7 +11,7 @@ class fail2ban::jail::pam_generic (
 
   # Use default pam-generic filter from debian
   fail2ban::jail { 'pam-generic':
-    enabled   => 'true',
+    enabled   => true,
     # port actually must be irrelevant but lets leave it "all" for some
     # possible uses
     port      => 'all',
