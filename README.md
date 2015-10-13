@@ -1,3 +1,5 @@
+# Puppet module for fail2ban #
+
 Install and manage fail2ban with puppet
 
 To use this module just include the jail2ban class. To change default
@@ -7,11 +9,11 @@ the fail2ban class. See section below for full list of parameters.
 Here's an example that sets default ignored IP address to local host and
 another non-routed IP:
 
-```
+~~~
 class { 'fail2ban':
   ignoreip => '127.0.0.1 10.0.0.1',
 }
-```
+~~~
 
 You can create a jail with the fail2ban::jail defined type (see section below)
 or you can use one of the predefined fail2ban::jail::* classes.
@@ -19,7 +21,7 @@ or you can use one of the predefined fail2ban::jail::* classes.
 You can also create a filter for use with jails with the fail2ban::filter
 defined type (see section below).
 
-== Parameters to fail2ban class ==
+## Parameters to fail2ban class ##
 
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
    '127.0.0.1'. Multiple values should be separated by spaces
@@ -40,18 +42,18 @@ defined type (see section below).
    defined as '%(banaction)s[name=%(__name__)s, port="%(port)s",
    protocol="%(protocol)s]' in jail.conf.
 
-== Defining jails ==
+## Defining jails ##
 
 To define a jail, you can use one of the predefined jails (see list below). Or
 you can define your own with the fail2ban::jail defined type:
 
-```
+~~~
 fail2ban::jail { 'jenkins':
   port    => 'all',
   filter  => 'jenkins',
   logpath => '/var/log/jenkins.log',
 }
-```
+~~~
 
 Here's the full list of parameters you can use:
 
@@ -78,7 +80,7 @@ Here's the full list of parameters you can use:
  * `order` Optional numerical position. This lets you order jails as you see
    fit.
 
-=== Predefined jails ===
+### Predefined jails ###
 
  * apache_noscript
  * apache_overflows
@@ -100,12 +102,12 @@ Here's the full list of parameters you can use:
  * wuftpd
  * xinetd_fail
 
-== Defining filters ==
+## Defining filters ##
 
 You might want to define new filters for your new jails. To do that, you can
 use the fail2ban::filter defined type:
 
-```
+~~~
 fail2ban::filter { 'jenkins':
   failregexes => [
     # Those regexes are really arbitrary examples.
@@ -113,7 +115,7 @@ fail2ban::filter { 'jenkins':
     'Forced entry trial by <HOST>',
   ],
 }
-```
+~~~
 
 Here's the full list of parameters you can use with the defined type:
 
