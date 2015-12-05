@@ -21,6 +21,13 @@ or you can use one of the predefined fail2ban::jail::* classes.
 You can also create a filter for use with jails with the fail2ban::filter
 defined type (see section below).
 
+## Requirements ##
+
+This module depends on the following modules to function:
+
+ * puppetlabs' stdlib module (at least version 3.0.0)
+ * puppetlabs' concat module (at least version 1.0.0)
+
 ## Parameters to fail2ban class ##
 
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
