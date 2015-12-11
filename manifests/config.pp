@@ -16,14 +16,14 @@ class fail2ban::config {
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
     owner   => 'root',
-    group   => 0,
+    group   => '0',
     mode    => '0644',
     content => template('fail2ban/jail.conf.erb'),
   }
 
   concat { '/etc/fail2ban/jail.local':
     owner => 'root',
-    group => 0,
+    group => '0',
     mode  => '0644',
   }
   # Define one fragment with a header for the file, otherwise the concat exec
@@ -43,7 +43,7 @@ class fail2ban::config {
         'puppet:///modules/fail2ban/conf.d/fail2ban'
       ],
       owner => 'root',
-      group => 0,
+      group => '0',
       mode  => '0644';
     }
   }
