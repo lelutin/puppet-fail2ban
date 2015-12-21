@@ -11,7 +11,7 @@ class fail2ban::jail::dovecot (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default dovecot filter from debian
+  # Use default dovecot filter
   fail2ban::jail { 'dovecot':
     enabled  => true,
     port     => 'smtp,ssmtp,imap2,imap3,imaps,pop3,pop3s',
