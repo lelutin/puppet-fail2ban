@@ -18,7 +18,7 @@ class fail2ban::config {
     owner   => 'root',
     group   => 0,
     mode    => '0644',
-    content => template('fail2ban/jail.conf.erb'),
+    content => template('fail2ban/debian_jail.conf.erb'),
   }
 
   concat { '/etc/fail2ban/jail.local':
