@@ -16,7 +16,7 @@ class fail2ban::jail::pam_generic (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default pam-generic filter from debian
+  # Use default pam-generic filter
   fail2ban::jail { 'pam-generic':
     enabled   => true,
     # port actually must be irrelevant but lets leave it "all" for some
