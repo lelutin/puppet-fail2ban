@@ -16,7 +16,7 @@ class fail2ban::jail::apache_noscript (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default apache-noscript filter from debian
+  # Use default apache-noscript filter
   fail2ban::jail { 'apache-noscript':
     enabled  => true,
     port     => 'http,https',
