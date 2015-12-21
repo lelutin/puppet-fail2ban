@@ -16,7 +16,7 @@ class fail2ban::jail::pure_ftpd (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default pure-ftpd filter from debian
+  # Use default pure-ftpd filte
   fail2ban::jail { 'pure-ftpd':
     enabled  => true,
     port     => 'ftp,ftp-data,ftps,ftps-data',
