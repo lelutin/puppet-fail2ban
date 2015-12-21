@@ -13,12 +13,19 @@ class fail2ban::config {
   $mta = $fail2ban::mta
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
+
+  $jail_template_name = $::osfamily ? {
+    'Debian' => "${module_name}/debian_jail.conf.erb",
+    'RedHat' => "${module_name}/rhel_jail.conf.erb",
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
     owner   => 'root',
     group   => 0,
     mode    => '0644',
-    content => template('fail2ban/debian_jail.conf.erb'),
+    content => template($jail_template_name),
   }
 
   concat { '/etc/fail2ban/jail.local':
