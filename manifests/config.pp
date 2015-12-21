@@ -15,23 +15,18 @@ class fail2ban::config {
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
 
-  if $::osfamily == 'RedHat' {
-    file { '/etc/fail2ban/jail.conf':
-      ensure  => present,
-      owner   => 'root',
-      group   => 0,
-      mode    => '0644',
-      content => template('fail2ban/rhel_jail.conf.erb'),
-    }
+  $jail_template_name = $::osfamily ? {
+    'Debian' => "${module_name}/debian_jail.conf.erb",
+    'RedHat' => "${module_name}/rhel_jail.conf.erb",
+    default => "${module_name}/debian_jail.conf.erb",
   }
-  elseif $::osfamily == 'Debian' {
-    file { '/etc/fail2ban/jail.conf':
-      ensure  => present,
-      owner   => 'root',
-      group   => 0,
-      mode    => '0644',
-      content => template('fail2ban/debian_jail.conf.erb'),
-    }
+
+  file { '/etc/fail2ban/jail.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template($jail_template_name),
   }
 
   concat { '/etc/fail2ban/jail.local':
