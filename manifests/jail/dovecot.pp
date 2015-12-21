@@ -4,12 +4,19 @@ class fail2ban::jail::dovecot (
   $ignoreip = false
 ) {
 
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/mail.log',
+    'Gentoo' => '/var/log/mail.log',
+    'RedHat' => '%(dovecot_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   # Use default dovecot filter from debian
   fail2ban::jail { 'dovecot':
     enabled  => true,
     port     => 'smtp,ssmtp,imap2,imap3,imaps,pop3,pop3s',
     filter   => 'dovecot',
-    logpath  => '/var/log/mail.log',
+    logpath  => $logpath,
     findtime => $findtime,
     ignoreip => $ignoreip,
   }
