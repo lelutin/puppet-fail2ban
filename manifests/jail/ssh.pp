@@ -16,7 +16,7 @@ class fail2ban::jail::ssh (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default sshd filter from debian
+  # Use default sshd filter
   fail2ban::jail { 'ssh':
     enabled  => true,
     port     => 'ssh',
