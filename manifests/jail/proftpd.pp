@@ -16,7 +16,7 @@ class fail2ban::jail::proftpd (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default proftpd filter from debian
+  # Use default proftpd filter
   fail2ban::jail { 'proftpd':
     enabled  => true,
     port     => 'ftp,ftp-data,ftps,ftps-data',
