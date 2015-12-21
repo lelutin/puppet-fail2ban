@@ -9,12 +9,18 @@ class fail2ban::jail::apache_overflows (
     default      => $maxretry
   }
 
-  # Use default apache-overflows filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/apache*/*error.log',
+    'RedHat' => '%(apache_error_log)s',
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default apache-overflows filter
   fail2ban::jail { 'apache-overflows':
     enabled  => true,
     port     => 'http,https',
     filter   => 'apache-overflows',
-    logpath  => '/var/log/apache*/*error.log',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,

@@ -9,7 +9,13 @@ class fail2ban::jail::pam_generic (
     default      => $maxretry
   }
 
-  # Use default pam-generic filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/auth.log',
+    'RedHat' => '%(syslog_authpriv)s',
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default pam-generic filter
   fail2ban::jail { 'pam-generic':
     enabled   => true,
     # port actually must be irrelevant but lets leave it "all" for some
@@ -18,7 +24,7 @@ class fail2ban::jail::pam_generic (
     # pam-generic filter can be customized to monitor specific subset of 'tty's
     banaction => 'iptables-allports',
     filter    => 'pam-generic',
-    logpath   => '/var/log/auth.log',
+    logpath   => $logpath,
     maxretry  => $real_maxretry,
     findtime  => $findtime,
     ignoreip  => $ignoreip,

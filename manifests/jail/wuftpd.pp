@@ -9,12 +9,18 @@ class fail2ban::jail::wuftpd (
     default      => $maxretry
   }
 
-  # Use default wuftpd filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/auth.log',
+    'RedHat' => '%(wuftpd_log)s',
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default wuftpd filter
   fail2ban::jail { 'wuftpd':
     enabled  => true,
     port     => 'ftp,ftp-data,ftps,ftps-data',
     filter   => 'wuftpd',
-    logpath  => '/var/log/auth.log',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,

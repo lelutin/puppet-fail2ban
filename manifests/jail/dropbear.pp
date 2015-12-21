@@ -9,12 +9,18 @@ class fail2ban::jail::dropbear (
     default      => $maxretry
   }
 
-  # Use default sshd filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/dropbear',
+    'RedHat' => '%(dropbear_log)s',
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default sshd filter
   fail2ban::jail { 'dropbear':
     enabled  => true,
     port     => 'ssh',
     filter   => 'sshd',
-    logpath  => '/var/log/dropbear',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,

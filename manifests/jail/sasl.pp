@@ -5,6 +5,12 @@ class fail2ban::jail::sasl (
   $logpath  = '/var/log/mail.log'
 ) {
 
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/mail.log',
+    'RedHat' => '%(syslog_mail)s',
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   # Use default sasl filter from debian
   fail2ban::jail { 'sasl':
     enabled  => true,
