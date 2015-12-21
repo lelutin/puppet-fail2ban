@@ -9,12 +9,19 @@ class fail2ban::jail::proftpd (
     default      => $maxretry
   }
 
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/proftpd/proftpd.log',
+    'Gentoo' => '/var/log/proftpd/proftpd.log',
+    'RedHat' => '%(proftpd_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   # Use default proftpd filter from debian
   fail2ban::jail { 'proftpd':
     enabled  => true,
     port     => 'ftp,ftp-data,ftps,ftps-data',
     filter   => 'proftpd',
-    logpath  => '/var/log/proftpd/proftpd.log',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,
