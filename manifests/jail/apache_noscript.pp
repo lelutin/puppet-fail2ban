@@ -12,7 +12,7 @@ class fail2ban::jail::apache_noscript (
   $logpath = $::osfamily ? {
     'Debian' => '/var/log/apache*/*error.log',
     'Gentoo' => '/var/log/apache*/*error.log',
-    'RedHat' => '/var/log/httpd/*error.log',
+    'RedHat' => '%(apache_error_log)s',
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
