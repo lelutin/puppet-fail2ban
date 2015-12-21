@@ -9,12 +9,19 @@ class fail2ban::jail::ssh (
     default      => $maxretry
   }
 
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/auth.log',
+    'Gentoo' => '/var/log/auth.log',
+    'RedHat' => '%(sshd_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   # Use default sshd filter from debian
   fail2ban::jail { 'ssh':
     enabled  => true,
     port     => 'ssh',
     filter   => 'sshd',
-    logpath  => '/var/log/auth.log',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,
