@@ -16,7 +16,7 @@ class fail2ban::jail::apache (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
   
-  # Use default apache-auth filter from debian
+  # Use default apache-auth filter
   fail2ban::jail { 'apache':
     enabled  => true,
     port     => 'http,https',
