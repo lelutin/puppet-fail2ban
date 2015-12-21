@@ -11,7 +11,7 @@ class fail2ban::jail::postfix (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default postfix filter from debian
+  # Use default postfix filter
   fail2ban::jail { 'postfix':
     enabled  => true,
     port     => 'smtp,ssmtp',
