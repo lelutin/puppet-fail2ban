@@ -16,7 +16,7 @@ class fail2ban::jail::apache_overflows (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default apache-overflows filter from debian
+  # Use default apache-overflows filter
   fail2ban::jail { 'apache-overflows':
     enabled  => true,
     port     => 'http,https',
