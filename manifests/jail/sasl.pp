@@ -2,6 +2,7 @@ class fail2ban::jail::sasl (
   $maxretry = 'usedefault',
   $findtime = false,
   $ignoreip = false,
+  $logpath  = '/var/log/mail.log'
 ) {
 
   $logpath = $::osfamily ? {
