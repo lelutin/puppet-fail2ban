@@ -23,7 +23,7 @@ class fail2ban::config {
 
   concat { '/etc/fail2ban/jail.local':
     owner => 'root',
-    group => 0,
+    group => 'root',
     mode  => '0644',
   }
   # Define one fragment with a header for the file, otherwise the concat exec
