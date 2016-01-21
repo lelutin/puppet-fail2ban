@@ -22,6 +22,10 @@ ignoreip = <%= @ignoreip %>
 bantime = <%= @bantime %>
 maxretry = <%= @maxretry %>
 
+# A host is banned if it has generated "maxretry" during the last "findtime"
+# seconds.
+findtime  = <%= @findtime %>
+
 # "backend" specifies the backend used to get files modification. Available
 # options are "gamin", "polling" and "auto".
 # yoh: For some reason Debian shipped python-gamin didn't work as expected
