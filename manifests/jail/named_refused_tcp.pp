@@ -4,7 +4,7 @@ class fail2ban::jail::named_refused_tcp (
   $ignoreip = false
 ) {
 
-  # Use default named-refused filter from debian
+  # Use default named-refused filter
   fail2ban::jail { 'named-refused-tcp':
     enabled  => true,
     port     => 'domain,953',

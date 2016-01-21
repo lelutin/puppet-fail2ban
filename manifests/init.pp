@@ -5,6 +5,7 @@
 class fail2ban (
   $ignoreip  = '127.0.0.1',
   $bantime   = '600',
+  $findtime  = '600',
   $maxretry  = '3',
   $backend   = 'polling',
   $destemail = 'root@localhost',

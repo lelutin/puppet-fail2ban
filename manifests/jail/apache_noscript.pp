@@ -9,12 +9,19 @@ class fail2ban::jail::apache_noscript (
     default      => $maxretry
   }
 
-  # Use default apache-noscript filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/apache*/*error.log',
+    'Gentoo' => '/var/log/apache*/*error.log',
+    'RedHat' => '%(apache_error_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default apache-noscript filter
   fail2ban::jail { 'apache-noscript':
     enabled  => true,
     port     => 'http,https',
     filter   => 'apache-noscript',
-    logpath  => '/var/log/apache*/*error.log',
+    logpath  => '$logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,

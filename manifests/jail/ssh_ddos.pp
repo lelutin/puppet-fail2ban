@@ -8,13 +8,20 @@ class fail2ban::jail::ssh_ddos (
     'usedefault' => '6',
     default      => $maxretry
   }
+  
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/auth.log',
+    'Gentoo' => '/var/log/auth.log',
+    'RedHat' => '%(sshd_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
 
-  # Use default sshd-ddos filter from debian
+  # Use default sshd-ddos filter
   fail2ban::jail { 'ssh-ddos':
     enabled  => true,
     port     => 'ssh',
     filter   => 'sshd-ddos',
-    logpath  => '/var/log/auth.log',
+    logpath  => $logpath,
     maxretry => $real_maxretry,
     findtime => $findtime,
     ignoreip => $ignoreip,

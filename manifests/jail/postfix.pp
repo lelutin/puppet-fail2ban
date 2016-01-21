@@ -4,12 +4,19 @@ class fail2ban::jail::postfix (
   $ignoreip = false
 ) {
 
-  # Use default postfix filter from debian
+  $logpath = $::osfamily ? {
+    'Debian' => '/var/log/mail.log',
+    'Gentoo' => '/var/log/mail.log',
+    'RedHat' => '%(postfix_log)s',
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  # Use default postfix filter
   fail2ban::jail { 'postfix':
     enabled  => true,
     port     => 'smtp,ssmtp',
     filter   => 'postfix',
-    logpath  => '/var/log/mail.log',
+    logpath  => $logpath,
     findtime => $findtime,
     ignoreip => $ignoreip,
   }

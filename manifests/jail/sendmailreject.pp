@@ -1,4 +1,4 @@
-class fail2ban::jail::courierauth (
+class fail2ban::jail::sendmailreject (
   $maxretry = 'usedefault',
   $findtime = false,
   $ignoreip = false
@@ -11,18 +11,18 @@ class fail2ban::jail::courierauth (
     default  => fail ("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  # Use default courierauth filter from debian
-  fail2ban::jail { 'courierauth':
+  # Use default sendmailauth filter from rhel
+  fail2ban::jail { 'sendmailreject':
     enabled  => true,
-    port     => 'smtp,ssmtp,imap2,imap3,imaps,pop3,pop3s',
-    filter   => 'courierlogin',
+    port     => 'smtp,465,submission',
+    filter   => 'sendmail-reject',
     logpath  => $logpath,
     findtime => $findtime,
     ignoreip => $ignoreip,
   }
 
   if $maxretry != 'usedefault' {
-    Fail2ban::Jail['courierauth'] {
+    Fail2ban::Jail['sendmailreject'] {
       maxretry => $maxretry,
     }
   }

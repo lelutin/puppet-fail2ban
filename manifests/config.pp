@@ -6,6 +6,7 @@ class fail2ban::config {
 
   $ignoreip = $fail2ban::ignoreip
   $bantime = $fail2ban::bantime
+  $findtime = $fail2ban::findtime
   $maxretry = $fail2ban::maxretry
   $backend = $fail2ban::backend
   $destemail = $fail2ban::destemail
@@ -13,12 +14,20 @@ class fail2ban::config {
   $mta = $fail2ban::mta
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
+
+  $jail_template_name = $::osfamily ? {
+    'Debian' => "${module_name}/debian_jail.conf.erb",
+    'Gentoo' => "${module_name}/debian_jail.conf.erb",
+    'RedHat' => "${module_name}/rhel_jail.conf.erb",
+    default  => fail ("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
     owner   => 'root',
     group   => 0,
     mode    => '0644',
-    content => template('fail2ban/jail.conf.erb'),
+    content => template($jail_template_name),
   }
 
   concat { '/etc/fail2ban/jail.local':
