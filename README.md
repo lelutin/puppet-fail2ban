@@ -108,6 +108,8 @@ Here's the full list of parameters you can use:
  * proftpd
  * pure_ftpd
  * sasl
+ * sendmailauth
+ * sendmailreject
  * ssh_ddos
  * ssh
  * vsftpd
