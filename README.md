@@ -30,6 +30,9 @@ This module depends on the following modules to function:
 
 ## Parameters to fail2ban class ##
 
+All of the values configured through the `fail2ban` class are used to configure
+global default values. These values can be overridden by individual jails.
+
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
    '127.0.0.1'. Multiple values should be separated by spaces
  * `bantime` Number of seconds during which reaching maxretry gets an IP
