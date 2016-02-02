@@ -28,6 +28,14 @@ This module depends on the following modules to function:
  * puppetlabs' stdlib module (at least version 3.0.0)
  * puppetlabs' concat module (at least version 1.0.0)
 
+## Compatibility ##
+
+This module supports
+
+ * Debian 7 and 8
+ * RHEL 6 and 7
+ * CentOs 6 and 7
+
 ## Parameters to fail2ban class ##
 
 All of the values configured through the `fail2ban` class are used to configure
