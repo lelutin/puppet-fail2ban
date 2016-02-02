@@ -37,6 +37,8 @@ global default values. These values can be overridden by individual jails.
    '127.0.0.1'. Multiple values should be separated by spaces
  * `bantime` Number of seconds during which reaching maxretry gets an IP
    banned. Default value is '600'
+ * `findtime` Time interval (in seconds) before the current time where failures
+   will count towards a ban. Default is '600'.
  * `maxretry` Number of times an IP address must trigger failgregexes to get
    banned. Default value is '3'
  * `backend` How should fail2ban look for modifications on log files. Default
