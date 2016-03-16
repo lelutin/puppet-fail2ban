@@ -43,6 +43,16 @@ patches only, there is no plan to backport the fix.
 
 For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
 
+## Upgrade notices ##
+
+ * `ensure` parameter deprecated in fail2ban::jail since 1.2.0. Will be removed
+     for 2.x.  Since the jail define uses puppetlabs-concat to define a
+     fragment for each jail to be concatenated in `/etc/fail2ban/jail.local`,
+     we're purposfully avoiding to use the ensure parameter. This is because
+     the 2.x branch of puppetlabs-concat has deprecated this parameter and
+     issues warnings to users that are using it. Users of the fail2ban module
+     should instead remove the resources for the jails that must be removed.
+
 ## Parameters to fail2ban class ##
 
 All of the values configured through the `fail2ban` class are used to configure
@@ -88,7 +98,6 @@ Here's the full list of parameters you can use:
    banned IP. Can be "all" to block all ports. This parameter is mandatory.
  * `filter` Name of the filter to use. This parameter is mandatory.
  * `logpath` Path of the log to monitor. This parameter is mandatory.
- * `ensure` Should this jail be present or not. Default value is present.
  * `enabled` Should this jail be enabled or not. The subtility between `ensure`
    and this parameter is that ensure will make the contents of the jail appear
    or disappear, while this parameter will let the jail contents be present in
@@ -106,6 +115,10 @@ Here's the full list of parameters you can use:
  * `ignoreip` Override default IP(s) to ignore (e.g. don't ban this IP).
  * `order` Optional numerical position. This lets you order jails as you see
    fit.
+
+To remove a jail, simply remove the resource for it from your manifests:
+puppetlabs-concat will automatically remove all fragments that are not managed
+with a concat::fragment resource (which the fail2ban::jail define uses).
 
 ### Predefined jails ###
 

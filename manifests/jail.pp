@@ -16,8 +16,11 @@ define fail2ban::jail (
 ) {
   include fail2ban::config
 
+  if $ensure != present {
+    warning('The $ensure parameter is now deprecated! to ensure that a fail2ban jail is absent, simply remove the resource.')
+  }
+
   concat::fragment { "jail_${name}":
-    ensure  => $ensure,
     target  => '/etc/fail2ban/jail.local',
     content => template('fail2ban/jail.erb'),
   }
