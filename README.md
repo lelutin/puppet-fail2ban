@@ -36,6 +36,13 @@ This module supports
  * RHEL 6 and 7
  * CentOs 6 and 7
 
+Please note that a bug in puppet 3.x with regards to package dependencies will
+make it print warnings about missing dependencies. This issue was fixed in
+puppet 4.0.0. Unfortunately, since puppet 3.x is currently getting security
+patches only, there is no plan to backport the fix.
+
+For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
+
 ## Parameters to fail2ban class ##
 
 All of the values configured through the `fail2ban` class are used to configure
