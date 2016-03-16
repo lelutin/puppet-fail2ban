@@ -48,7 +48,7 @@ For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
  * `ensure` parameter deprecated in fail2ban::jail since 1.2.0. Will be removed
      for 2.x.  Since the jail define uses puppetlabs-concat to define a
      fragment for each jail to be concatenated in `/etc/fail2ban/jail.local`,
-     we're purposfully avoiding to use the ensure parameter. This is because
+     we're purposefully avoiding to use the ensure parameter. This is because
      the 2.x branch of puppetlabs-concat has deprecated this parameter and
      issues warnings to users that are using it. Users of the fail2ban module
      should instead remove the resources for the jails that must be removed.
