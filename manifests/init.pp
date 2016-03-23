@@ -1,5 +1,6 @@
 # modules/fail2ban/manifests/init.pp - manage fail2ban stuff
 # Copyright (C) 2007 admin@immerda.ch
+# Copyright (C) 2014-2016 gabster@lelutin.ca
 #
 
 class fail2ban (
