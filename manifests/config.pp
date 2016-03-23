@@ -21,6 +21,18 @@ class fail2ban::config {
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
+  if $fail2ban::purge_jail_dot_d {
+    if $::osfamily == 'Debian' and $::operatingsystemmajrelease == 7 {
+      debug('Not purging jail.d on wheezy since the package doesn\'t include capability to use it.')
+    }
+    else {
+      file { '/etc/fail2ban/jail.d':
+        ensure => directory,
+        purge  => true,
+      }
+    }
+  }
+
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
     owner   => 'root',

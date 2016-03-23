@@ -53,6 +53,11 @@ For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
      issues warnings to users that are using it. Users of the fail2ban module
      should instead remove the resources for the jails that must be removed.
 
+ * The directory `/etc/fail2ban/jail.d` is now getting purged by default. Users
+     who would like to preserve files in this directory that are not managed by
+     puppet should now set the `purge_jail_dot_d` parameter to the `fail2ban`
+     class to false.
+
 ## Parameters to fail2ban class ##
 
 All of the values configured through the `fail2ban` class are used to configure
@@ -78,6 +83,9 @@ global default values. These values can be overridden by individual jails.
  * `action` Default action for jails. Default value is '%(action_)s', which is
    defined as '%(banaction)s[name=%(__name__)s, port="%(port)s",
    protocol="%(protocol)s]' in jail.conf.
+ * `purge_jail_dot_d` Boolean value that decides whether
+   `/etc/fail2ban/jail.d/` is purged of files that are not managed by puppet.
+   Default value is true.
 
 ## Defining jails ##
 
