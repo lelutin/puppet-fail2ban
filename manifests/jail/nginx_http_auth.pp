@@ -1,3 +1,9 @@
+# Configure a fail2ban jail for nginx auth failures
+#
+# This jail requires nginx to be installed on the system, otherwise fail2ban
+# will not start. Managing nginx is out of the scope of this module, so users
+# should make sure to install nginx before the fail2ban service gets restarted.
+#
 class fail2ban::jail::nginx_http_auth (
   $maxretry = 'usedefault',
   $findtime = false,
