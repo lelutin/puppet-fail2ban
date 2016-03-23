@@ -24,6 +24,9 @@ class fail2ban::jail::nginx_http_auth (
         fail ('Debian wheezy is not supported for the nginx_http_auth jail: it doesn\'t have the appropriate filter')
       }
     }
+    'RedHat': {
+      $logpath = '%(nginx_error_log)s'
+    }
     default: {
       fail("Unsupported Operating System family: ${::osfamily}")
     }
