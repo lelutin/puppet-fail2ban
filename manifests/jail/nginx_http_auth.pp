@@ -9,9 +9,18 @@ class fail2ban::jail::nginx_http_auth (
     default      => $maxretry
   }
 
-  $logpath = $::osfamily ? {
-    'Debian' => '/var/log/nginx*/*error.log',
-    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  case $::osfamily {
+    'Debian': {
+      if $::lsbmajdistrelease != '7' {
+        $logpath = '/var/log/nginx*/*error.log'
+      }
+      else {
+        fail ('Debian wheezy is not supported for the nginx_http_auth jail: it doesn\'t have the appropriate filter')
+      }
+    }
+    default: {
+      fail("Unsupported Operating System family: ${::osfamily}")
+    }
   }
 
   # Use default nginx-http-auth filter
