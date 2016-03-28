@@ -27,8 +27,9 @@ class fail2ban::config {
     }
     else {
       file { '/etc/fail2ban/jail.d':
-        ensure => directory,
-        purge  => true,
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
       }
     }
   }
