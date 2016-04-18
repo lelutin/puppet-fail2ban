@@ -1,6 +1,6 @@
 class fail2ban::install {
 
-  package { 'fail2ban': ensure => installed }
+  ensure_packages(['fail2ban'])
 
   if $::operatingsystem == 'gentoo' {
     Package['fail2ban'] {
