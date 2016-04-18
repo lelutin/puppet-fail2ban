@@ -6,9 +6,14 @@ define fail2ban::filter (
   $failregexes,
   $ensure    = present,
   $ignoreregexes = [],
+  $includes = [],
   $additional_defs = []
 ) {
   include fail2ban::config
+
+  if !is_array($includes) {
+    fail('includes must be an array')
+  }
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,

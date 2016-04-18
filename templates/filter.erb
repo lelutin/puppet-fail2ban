@@ -1,6 +1,11 @@
 # Fail2Ban configuration file
 #
 
+<% if @includes -%>
+[INCLUDES]
+before = <%= @includes.join("\n         ") %>
+<% end -%>
+
 [Definition]
 
 <% @additional_defs.each do |line| -%>
