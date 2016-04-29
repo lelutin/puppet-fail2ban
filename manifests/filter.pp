@@ -17,7 +17,7 @@ define fail2ban::filter (
   }
 
   if !is_array($includes_after) {
-    fail("includes_after must be an array")
+    fail('includes_after must be an array')
   }
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
