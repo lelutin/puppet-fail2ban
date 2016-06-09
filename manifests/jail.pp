@@ -13,6 +13,7 @@ define fail2ban::jail (
   $bantime   = false,
   $ignoreip  = false,
   $order     = false,
+  $jbackend  = false,
 ) {
   include fail2ban::config
 
