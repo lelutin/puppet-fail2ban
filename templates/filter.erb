@@ -9,8 +9,8 @@ before = <%= @includes.join("\n         ") %>
 <%   if ! @includes_after.empty? -%>
 after = <%= @includes_after.join("\n        ") %>
 <%   end -%>
-<% end -%>
 
+<% end -%>
 [Definition]
 
 <% @additional_defs.each do |line| -%>
