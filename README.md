@@ -72,7 +72,7 @@ global default values. These values can be overridden by individual jails.
  * `maxretry` Number of times an IP address must trigger failgregexes to get
    banned. Default value is '3'
  * `backend` How should fail2ban look for modifications on log files. Default
-   value is 'polling'
+   value is 'auto'
  * `destemail` Default email address that should get notifications with the
    actions that send emails. Default value is 'root@localhost'
  * `banaction` Default action to use for jails. Default value is
