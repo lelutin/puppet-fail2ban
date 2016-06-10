@@ -175,6 +175,14 @@ Here's the full list of parameters you can use with the defined type:
  * `ensure` Should this filter be present or not. Default value is present
  * `ignoreregexes` List of regular expressions (strings) that, if matched, will
    invalidate failregex matching. Default value is an empty list.
+ * `includes` List of file names that should be included before the filter
+   definition. An `[INCLUDES]` section will be added to the top of the filter
+   configuration file, and the file names in this list will be added to a
+   `before =` line.
+ * `includes_after` List of file names that should be included after the filter
+   definition. An `[INCLUDES]` section will be added to the top of the filter
+   configuration file, and the file names in this list will be added to an
+   `after =` line.
  * `additional_defs` List of lines that could define more arbitrary values.
    Lines will be placed in the file as they are in the list. Default value is
    an empty list.
