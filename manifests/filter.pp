@@ -1,6 +1,7 @@
 # Configure a filter for fail2ban
 #
-# The failregexes, ignoreregexes and additional_defs arguments need to be arrays
+# The failregexes, ignoreregexes, includes, includes_after and additional_defs
+# arguments need to be arrays
 #
 define fail2ban::filter (
   $failregexes,
@@ -12,13 +13,10 @@ define fail2ban::filter (
 ) {
   include fail2ban::config
 
-  if !is_array($includes) {
-    fail('includes must be an array')
-  }
-
-  if !is_array($includes_after) {
-    fail('includes_after must be an array')
-  }
+  validate_array($ignoreregexes)
+  validate_array($includes)
+  validate_array($includes_after)
+  validate_array($additional_defs)
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,
