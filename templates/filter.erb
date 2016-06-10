@@ -1,12 +1,12 @@
 # Fail2Ban configuration file
 #
 
-<% if @includes or @includes_after -%>
+<% if ! @includes.empty? or ! @includes_after.empty? -%>
 [INCLUDES]
-<%   if @includes -%>
+<%   if ! @includes.empty? -%>
 before = <%= @includes.join("\n         ") %>
 <%   end -%>
-<%   if @includes_after -%>
+<%   if ! @includes_after.empty? -%>
 after = <%= @includes_after.join("\n        ") %>
 <%   end -%>
 <% end -%>
