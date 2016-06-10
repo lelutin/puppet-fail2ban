@@ -25,6 +25,7 @@ define fail2ban::filter (
     group   => 0,
     mode    => '0644',
     require => Class['fail2ban::config'],
+    notify  => Class['fail2ban::service'],
   }
 
 }
