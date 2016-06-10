@@ -123,6 +123,7 @@ Here's the full list of parameters you can use:
  * `ignoreip` Override default IP(s) to ignore (e.g. don't ban this IP).
  * `order` Optional numerical position. This lets you order jails as you see
    fit.
+ * `backend` How should fail2ban look for modifications on log files.
 
 To remove a jail, simply remove the resource for it from your manifests:
 puppetlabs-concat will automatically remove all fragments that are not managed
