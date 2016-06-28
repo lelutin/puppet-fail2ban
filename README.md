@@ -35,6 +35,8 @@ This module supports
  * Debian 7 and 8
  * RHEL 6 and 7
  * CentOs 6 and 7
+ * DragonFly BSD 4.4
+ * FreeBSD 9 and 10
 
 Please note that a bug in puppet 3.x with regards to package dependencies will
 make it print warnings about missing dependencies. This issue was fixed in
@@ -149,6 +151,7 @@ with a concat::fragment resource (which the fail2ban::jail define uses).
  * sendmailreject
  * ssh_ddos
  * ssh
+ * ssh_pf
  * vsftpd
  * wuftpd
  * xinetd_fail

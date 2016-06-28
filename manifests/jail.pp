@@ -21,12 +21,17 @@ define fail2ban::jail (
     warning('The $ensure parameter is now deprecated! to ensure that a fail2ban jail is absent, simply remove the resource.')
   }
 
+  $config_dir = $::osfamily ? {
+    /^(Debian|RedHat)$/     => '/etc/fail2ban',
+    /^(DragonFly|FreeBSD)$/ => '/usr/local/etc/fail2ban',
+  }
+
   # This has an implicit ordering that ensures proper functioning: the main
   # fragment is defined in the 'fail2ban::config' class and each fragment
   # implicitly requires the main concat target. Consequently, those fragments
   # are sure to be dealt with after package installation.
   concat::fragment { "jail_${name}":
-    target  => '/etc/fail2ban/jail.local',
+    target  => "${config_dir}/jail.local",
     content => template('fail2ban/jail.erb'),
   }
 

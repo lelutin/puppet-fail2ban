@@ -23,8 +23,16 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease":[ "6", "7" ]
+    },
+    {
+      "operatingsystem": "DragonFly",
+      "operatingsystemrelease":[ "4.4-RELEASE" ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease":[ "9", "10" ]
     }
   ],
-  "tags": ["fail2ban", "iptables", "bruteforce", "firewall"]
+  "tags": ["fail2ban", "iptables", "bruteforce", "firewall", "pf"]
 }
 
