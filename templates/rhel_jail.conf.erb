@@ -159,4 +159,4 @@ action_badips = badips.py[category="%(name)s", banaction="%(banaction)s"]
 # Choose default action.  To change, just override value of 'action' with the
 # interpolation to the chosen action shortcut (e.g.  action_mw, action_mwl, etc) in jail.local
 # globally (section [DEFAULT]) or per specific section
-action = %(action_)s
+action = <%= @action %>
