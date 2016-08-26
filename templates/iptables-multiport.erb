@@ -42,7 +42,8 @@ actioncheck = <iptables> -n -L <chain> | grep -q 'f2b-<name>[ \t]'
 # Values:  CMD
 #
 actionban = <iptables> -I f2b-<name> 1 -s <ip> -j <blocktype>
-<% if @persistent_bans != false -%>            echo "fail2ban-<name> <ip>" >> /etc/fail2ban/persistent.bans\n
+<% if @persistent_bans != false -%>            echo "fail2ban-<name> <ip>" >> /etc/fail2ban/persistent.bans
+
 <% end -%>
 
 # Option:  actionunban
