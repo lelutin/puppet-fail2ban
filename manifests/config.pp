@@ -20,7 +20,6 @@ class fail2ban::config {
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
     'RedHat' => "${module_name}/rhel_jail.conf.erb",
-    'CentOS' => 
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
