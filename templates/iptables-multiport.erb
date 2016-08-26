@@ -17,8 +17,9 @@ before = iptables-common.conf
 actionstart = <iptables> -N f2b-<name>
               <iptables> -A f2b-<name> -j <returntype>
               <iptables> -I <chain> -p <protocol> -m multiport --dports <port> -j f2b-<name>
-<% if @persistent_bans != false -%>          cat /etc/fail2ban/persistent.bans | awk '/^fail2ban-<name>/ {print $2}' \
-          | while read IP; do iptables -I fail2ban-<name> 1 -s $IP -j <blocktype>; done<% end -%>
+<% if @persistent_bans != false -%>              cat /etc/fail2ban/persistent.bans | awk '/^fail2ban-<name>/ {print $2}' \
+              | while read IP; do iptables -I fail2ban-<name> 1 -s $IP -j <blocktype>; done\n
+<% end -%>
 
 # Option:  actionstop
 # Notes.:  command executed once at the end of Fail2Ban
@@ -41,7 +42,8 @@ actioncheck = <iptables> -n -L <chain> | grep -q 'f2b-<name>[ \t]'
 # Values:  CMD
 #
 actionban = <iptables> -I f2b-<name> 1 -s <ip> -j <blocktype>
-<% if @persistent_bans != false -%>        echo "fail2ban-<name> <ip>" >> /etc/fail2ban/persistent.bans<% end -%>
+<% if @persistent_bans != false -%>            echo "fail2ban-<name> <ip>" >> /etc/fail2ban/persistent.bans\n
+<% end -%>
 
 # Option:  actionunban
 # Notes.:  command executed when unbanning an IP. Take care that the
