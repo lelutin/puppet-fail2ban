@@ -9,6 +9,7 @@ class fail2ban::config {
   $findtime = $fail2ban::findtime
   $maxretry = $fail2ban::maxretry
   $backend = $fail2ban::backend
+  $usedns = $fail2ban::usedns
   $destemail = $fail2ban::destemail
   $banaction = $fail2ban::banaction
   $mta = $fail2ban::mta
@@ -19,6 +20,7 @@ class fail2ban::config {
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
     'RedHat' => "${module_name}/rhel_jail.conf.erb",
+    'CentOS' => 
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
