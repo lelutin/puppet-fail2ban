@@ -87,8 +87,7 @@ global default values. These values can be overridden by individual jails.
    `/etc/fail2ban/jail.d/` is purged of files that are not managed by puppet.
    Default value is true.
  * `usedns` specifies if jails should trust hostnames in logs. Options are 
-   yes, warn or no. 
-   Default is warn.
+   yes, warn or no. Default is warn.
  * `persistant_ban` Boolean value that ensure bans persist over time.
    `/etc/fail2ban/persistant.ban` file is create and populated by 
    `/etc/fail2ban/action.d/iptables-multiport.conf`.
