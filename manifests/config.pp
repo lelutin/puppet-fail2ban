@@ -19,7 +19,9 @@ class fail2ban::config {
   
   # need to take absolute value in case bantime is a negative number.
   $bantime_validate = abs($bantime)
-  validate_integer($bantime_validate, $findtime, $maxretry)
+  validate_integer($bantime_validate)
+  validate_integer($findtime)
+  validate_integer($maxretry)
   validate_bool($persistent_bans)
   validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
 
