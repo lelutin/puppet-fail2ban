@@ -17,8 +17,6 @@ class fail2ban::config {
   $action          = $fail2ban::action
   $persistent_bans = $fail2ban::persistent_bans
 
-  $ips = split($ignoreip, ' ')
-  validate_ip_address(join($ips, ", "))
   validate_integer($bantime, $findtime, $maxretry)
   validate_bool($persistent_bans)
   validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
