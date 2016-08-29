@@ -88,8 +88,9 @@ global default values. These values can be overridden by individual jails.
    Default value is true.
  * `usedns` Specifies if jails should trust hostnames in logs. Options are 
    yes, warn or no. Default is warn.
- * `persistant_ban` Boolean value that ensure bans persist over time.
-   `/etc/fail2ban/persistant.ban` file is created and populated by 
+ * `persistant_bans` Boolean value that ensure bans persist over time (0.8.x or older).
+   Feature is builtin with 0.9.x.
+   `/etc/fail2ban/persistant.bans` file is created and populated by 
    `/etc/fail2ban/action.d/iptables-multiport.conf`.
    Default value is false.
 
