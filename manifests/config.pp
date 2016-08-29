@@ -4,18 +4,24 @@
 # to it.
 class fail2ban::config {
 
-  $ignoreip = $fail2ban::ignoreip
-  $bantime = $fail2ban::bantime
-  $findtime = $fail2ban::findtime
-  $maxretry = $fail2ban::maxretry
-  $backend = $fail2ban::backend
-  $usedns = $fail2ban::usedns
-  $destemail = $fail2ban::destemail
-  $banaction = $fail2ban::banaction
-  $mta = $fail2ban::mta
-  $protocol = $fail2ban::protocol
-  $action = $fail2ban::action
+  $ignoreip        = $fail2ban::ignoreip
+  $bantime         = $fail2ban::bantime
+  $findtime        = $fail2ban::findtime
+  $maxretry        = $fail2ban::maxretry
+  $backend         = $fail2ban::backend
+  $usedns          = $fail2ban::usedns
+  $destemail       = $fail2ban::destemail
+  $banaction       = $fail2ban::banaction
+  $mta             = $fail2ban::mta
+  $protocol        = $fail2ban::protocol
+  $action          = $fail2ban::action
   $persistent_bans = $fail2ban::persistent_bans
+  
+  $ips = $ignoreip.split(" ")
+  validate_ip_address($ips)
+  validate_integer($bantime, $findtime, $maxretry)
+  validate_bool($persistent_bans)
+  validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
 
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
