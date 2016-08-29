@@ -86,6 +86,11 @@ class fail2ban::config {
   }
 
   if $persistent_bans {
+    $before_include = $::osfamily ? {
+      'Debian' => "iptables-blocktype.conf",
+      'RedHat' => "iptables-common.conf",
+      default  => fail("Unsupported Operating System family: ${::osfamily}"),
+    }
     file { '/etc/fail2ban/persistent.bans':
       ensure  => 'present',
       replace => 'no',
