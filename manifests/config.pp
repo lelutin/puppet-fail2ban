@@ -17,9 +17,7 @@ class fail2ban::config {
   $action          = $fail2ban::action
   $persistent_bans = $fail2ban::persistent_bans
   
-  # need to take absolute value in case bantime is a negative number.
-  $bantime_validate = abs($bantime)
-  validate_integer($bantime_validate)
+  validate_integer($bantime)
   validate_integer($findtime)
   validate_integer($maxretry)
   validate_bool($persistent_bans)
