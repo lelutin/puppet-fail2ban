@@ -4,6 +4,13 @@
 # to it.
 class fail2ban::config {
 
+  $loglevel        = $fail2ban::loglevel
+  $logtarget       = $fail2ban::logtarget
+  $syslogsocket    = $fail2ban::syslogsocket
+  $socket          = $fail2ban::socket
+  $pidfile         = $fail2ban::pidfile
+  $dbfile          = $fail2ban::dbfile
+  $dbpurgeage      = $fail2ban::dbpurgeage
   $ignoreip        = $fail2ban::ignoreip
   $bantime         = $fail2ban::bantime
   $findtime        = $fail2ban::findtime
@@ -16,7 +23,7 @@ class fail2ban::config {
   $protocol        = $fail2ban::protocol
   $action          = $fail2ban::action
   $persistent_bans = $fail2ban::persistent_bans
-  
+
   validate_integer($bantime)
   validate_integer($findtime)
   validate_integer($maxretry)

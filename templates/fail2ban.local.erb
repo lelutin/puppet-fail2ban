@@ -1,0 +1,11 @@
+## This file is gerated by Puppet, please do not modify.    ##
+## fail2ban local file, overrides fail2ban.conf parameters. ##
+
+[Definition]
+<% if unless @loglevel.nil? -%>loglevel = <%= @loglevel %><% end -%>
+<% if unless @logtarget.nil? -%>logtarget = <%= @logtarget %><% end -%>
+<% if unless @syslogsocket.nil? -%>syslogsocket = <%= @syslogsocket %><% end -%>
+<% if unless @socket.nil? -%>socket = <%= @socket %><% end -%>
+<% if unless @pidfile.nil? -%>pidfile = <%= @pidfile %><% end -%>
+<% if unless @dbfile.nil? -%>dbfile = <%= @dbfile %><% end -%>
+<% if unless @dbpurgeage.nil? -%>dbpurgeage = <%= @dbpurgeage %><% end -%>

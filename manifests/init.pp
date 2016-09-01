@@ -4,6 +4,13 @@
 #
 
 class fail2ban (
+  $loglevel         = undef,
+  $logtarget        = undef,
+  $syslogsocket     = undef,
+  $socket           = undef,
+  $pidfile          = undef,
+  $dbfile           = undef,
+  $dbpurgeage       = undef,
   $ignoreip         = '127.0.0.1',
   $bantime          = '600',
   $findtime         = '600',
