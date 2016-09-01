@@ -29,6 +29,12 @@ class fail2ban::config {
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
+  $before_include = $::osfamily ? {
+    'Debian' => "iptables-blocktype.conf",
+    'RedHat' => "iptables-common.conf",
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
   if $fail2ban::purge_jail_dot_d {
     if $::operatingsystem == 'Debian' and $::operatingsystemmajrelease == 7 {
       debug('Not purging jail.d on wheezy since the package doesn\'t include capability to use it.')
@@ -86,11 +92,6 @@ class fail2ban::config {
   }
 
   if $persistent_bans {
-    $before_include = $::osfamily ? {
-      'Debian' => "iptables-blocktype.conf",
-      'RedHat' => "iptables-common.conf",
-      default  => fail("Unsupported Operating System family: ${::osfamily}"),
-    }
     file { '/etc/fail2ban/persistent.bans':
       ensure  => 'present',
       replace => 'no',
