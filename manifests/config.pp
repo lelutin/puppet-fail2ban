@@ -41,6 +41,14 @@ class fail2ban::config {
     'RedHat' => "iptables-common.conf",
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
+  
+  file { '/etc/fail2ban/fail2ban.local':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template('fail2ban/fail2ban.local.erb'),
+  }
 
   if $fail2ban::purge_jail_dot_d {
     if $::operatingsystem == 'Debian' and $::operatingsystemmajrelease == 7 {
