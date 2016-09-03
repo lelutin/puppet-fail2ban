@@ -21,7 +21,7 @@ define fail2ban::filter (
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,
     content => template('fail2ban/filter.erb'),
-    owner   => 'root',
+    owner   => 0,
     group   => 0,
     mode    => '0644',
     require => Class['fail2ban::config'],
