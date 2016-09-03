@@ -4,21 +4,50 @@
 # to it.
 class fail2ban::config {
 
-  $ignoreip = $fail2ban::ignoreip
-  $bantime = $fail2ban::bantime
-  $findtime = $fail2ban::findtime
-  $maxretry = $fail2ban::maxretry
-  $backend = $fail2ban::backend
-  $destemail = $fail2ban::destemail
-  $banaction = $fail2ban::banaction
-  $mta = $fail2ban::mta
-  $protocol = $fail2ban::protocol
-  $action = $fail2ban::action
+  $loglevel        = $fail2ban::loglevel
+  $logtarget       = $fail2ban::logtarget
+  $syslogsocket    = $fail2ban::syslogsocket
+  $socket          = $fail2ban::socket
+  $pidfile         = $fail2ban::pidfile
+  $dbfile          = $fail2ban::dbfile
+  $dbpurgeage      = $fail2ban::dbpurgeage
+  $ignoreip        = $fail2ban::ignoreip
+  $bantime         = $fail2ban::bantime
+  $findtime        = $fail2ban::findtime
+  $maxretry        = $fail2ban::maxretry
+  $backend         = $fail2ban::backend
+  $usedns          = $fail2ban::usedns
+  $destemail       = $fail2ban::destemail
+  $banaction       = $fail2ban::banaction
+  $mta             = $fail2ban::mta
+  $protocol        = $fail2ban::protocol
+  $action          = $fail2ban::action
+  $persistent_bans = $fail2ban::persistent_bans
+
+  validate_integer($bantime)
+  validate_integer($findtime)
+  validate_integer($maxretry)
+  validate_bool($persistent_bans)
+  validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
 
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
     'RedHat' => "${module_name}/rhel_jail.conf.erb",
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+
+  $before_include = $::osfamily ? {
+    'Debian' => "iptables-blocktype.conf",
+    'RedHat' => "iptables-common.conf",
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+  
+  file { '/etc/fail2ban/fail2ban.local':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template('fail2ban/fail2ban.local.erb'),
   }
 
   if $fail2ban::purge_jail_dot_d {
@@ -77,4 +106,18 @@ class fail2ban::config {
     }
   }
 
+  if $persistent_bans {
+    file { '/etc/fail2ban/persistent.bans':
+      ensure  => 'present',
+      replace => 'no',
+      mode    => '0644',
+    }
+    file { '/etc/fail2ban/action.d/iptables-multiport.conf':
+      ensure  => present,
+      owner   => 'root',
+      group   => 0,
+      mode    => '0644',
+      content => template('fail2ban/iptables-multiport.erb'),
+    }
+  }
 }

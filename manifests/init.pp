@@ -4,17 +4,26 @@
 #
 
 class fail2ban (
+  $loglevel         = undef,
+  $logtarget        = undef,
+  $syslogsocket     = undef,
+  $socket           = undef,
+  $pidfile          = undef,
+  $dbfile           = undef,
+  $dbpurgeage       = undef,
   $ignoreip         = '127.0.0.1',
   $bantime          = '600',
   $findtime         = '600',
   $maxretry         = '3',
   $backend          = 'auto',
+  $usedns           = 'warn',
   $destemail        = 'root@localhost',
   $banaction        = 'iptables-multiport',
   $mta              = 'sendmail',
   $protocol         = 'tcp',
   $action           = '%(action_)s',
-  $purge_jail_dot_d = true
+  $purge_jail_dot_d = true,
+  $persistent_bans  = false,
 ) {
 
   anchor { 'fail2ban::begin': } ->
