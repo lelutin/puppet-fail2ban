@@ -14,10 +14,21 @@ class fail2ban::config {
   $mta = $fail2ban::mta
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
+  $usedns = $fail2ban::usedns
+  $persistent_bans = $fail2ban::persistent_bans
 
+  validate_bool($persistent_bans)
+  validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
+  
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
     'RedHat' => "${module_name}/rhel_jail.conf.erb",
+    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+  
+  $before_include = $::osfamily ? {
+    'Debian' => "iptables-blocktype.conf",
+    'RedHat' => "iptables-common.conf",
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
@@ -33,7 +44,20 @@ class fail2ban::config {
       }
     }
   }
-
+  if $persistent_bans {
+    file { '/etc/fail2ban/persistent.bans':
+      ensure  => 'present',
+      replace => 'no',
+      mode    => '0644',
+    }
+    file { '/etc/fail2ban/action.d/iptables-multiport.conf':
+      ensure  => present,
+      owner   => 'root',
+      group   => 0,
+      mode    => '0644',
+      content => template('fail2ban/iptables-multiport.erb'),
+    }
+  }
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
     owner   => 'root',
@@ -76,5 +100,4 @@ class fail2ban::config {
       mode  => '0644';
     }
   }
-
 }
