@@ -86,6 +86,11 @@ global default values. These values can be overridden by individual jails.
  * `purge_jail_dot_d` Boolean value that decides whether
    `/etc/fail2ban/jail.d/` is purged of files that are not managed by puppet.
    Default value is true.
+ * `persistant_bans` Boolean value that ensure bans persist over time (0.8.x or older).
+   This feature is builtin with 0.9.x.
+   `/etc/fail2ban/persistant.bans` file is created and populated by 
+   `/etc/fail2ban/action.d/iptables-multiport.conf`.
+   Default value is false.
 
 ## Defining jails ##
 

@@ -14,7 +14,8 @@ class fail2ban (
   $mta              = 'sendmail',
   $protocol         = 'tcp',
   $action           = '%(action_)s',
-  $purge_jail_dot_d = true
+  $purge_jail_dot_d = true,
+  $persistent_bans  = false,
 ) {
 
   anchor { 'fail2ban::begin': } ->
