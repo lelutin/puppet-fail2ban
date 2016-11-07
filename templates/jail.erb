@@ -15,7 +15,7 @@ logpath = <%= @logpath %>
 <% end -%>
 <% if @bantime != false -%>bantime = <%= @bantime %>
 <% end -%>
-<% if @ignoreip != false -%>ignoreip = <%= @ignoreip %>
+<% if @ignoreip != false -%>ignoreip = <%= @ignoreip.join(' ') %>
 <% end -%>
 <% if @backend != false -%>backend = <%= @backend %>
 <% end -%>

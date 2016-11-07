@@ -18,7 +18,7 @@
 [DEFAULT]
 
 # "ignoreip" can be an IP address, a CIDR mask or a DNS host
-ignoreip = <%= @ignoreip %>
+ignoreip = <%= @ignoreip.join(" ") %>
 bantime = <%= @bantime %>
 maxretry = <%= @maxretry %>
 

@@ -4,7 +4,7 @@
 #
 
 class fail2ban (
-  $ignoreip         = '127.0.0.1',
+  $ignoreip         = ['127.0.0.1'],
   $bantime          = '600',
   $findtime         = '600',
   $maxretry         = '3',
@@ -19,6 +19,7 @@ class fail2ban (
   $persistent_bans  = false,
 ) {
 
+  validate_array($ignoreip)
   validate_re(
     $backend, ['auto', 'pyinotify', 'gamin', 'polling'],
     'backend must be one of auto, pyinotify, gamin or polling.'

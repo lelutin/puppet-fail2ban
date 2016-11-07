@@ -11,7 +11,7 @@ another non-routed IP:
 
 ~~~
 class { 'fail2ban':
-  ignoreip => '127.0.0.1 10.0.0.1',
+  ignoreip => ['127.0.0.1', '10.0.0.1'],
 }
 ~~~
 
@@ -64,7 +64,7 @@ All of the values configured through the `fail2ban` class are used to configure
 global default values. These values can be overridden by individual jails.
 
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
-   '127.0.0.1'. Multiple values should be separated by spaces
+   '127.0.0.1'. Multiple values should be placed in an array.
  * `bantime` Number of seconds during which reaching maxretry gets an IP
    banned. Default value is '600'
  * `findtime` Time interval (in seconds) before the current time where failures
