@@ -4,21 +4,40 @@
 # to it.
 class fail2ban::config {
 
-  $ignoreip = $fail2ban::ignoreip
-  $bantime = $fail2ban::bantime
-  $findtime = $fail2ban::findtime
-  $maxretry = $fail2ban::maxretry
-  $backend = $fail2ban::backend
-  $destemail = $fail2ban::destemail
-  $banaction = $fail2ban::banaction
-  $mta = $fail2ban::mta
-  $protocol = $fail2ban::protocol
-  $action = $fail2ban::action
+  $loglevel        = $fail2ban::loglevel
+  $logtarget       = $fail2ban::logtarget
+  $syslogsocket    = $fail2ban::syslogsocket
+  $socket          = $fail2ban::socket
+  $pidfile         = $fail2ban::pidfile
+  $dbfile          = $fail2ban::dbfile
+  $dbpurgeage      = $fail2ban::dbpurgeage
+  $ignoreip        = $fail2ban::ignoreip
+  $bantime         = $fail2ban::bantime
+  $findtime        = $fail2ban::findtime
+  $maxretry        = $fail2ban::maxretry
+  $backend         = $fail2ban::backend
+  $destemail       = $fail2ban::destemail
+  $banaction       = $fail2ban::banaction
+  $mta             = $fail2ban::mta
+  $protocol        = $fail2ban::protocol
+  $action          = $fail2ban::action
 
+  validate_integer($bantime)
+  validate_integer($findtime)
+  validate_integer($maxretry)
+  
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
     'RedHat' => "${module_name}/rhel_jail.conf.erb",
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  }
+  
+  file { '/etc/fail2ban/fail2ban.local':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template('fail2ban/fail2ban.local.erb'),
   }
 
   if $fail2ban::purge_jail_dot_d {
@@ -76,5 +95,4 @@ class fail2ban::config {
       mode  => '0644';
     }
   }
-
 }
