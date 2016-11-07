@@ -15,6 +15,8 @@ class fail2ban (
   $protocol         = 'tcp',
   $action           = '%(action_)s',
   $purge_jail_dot_d = true
+  $usedns           = 'warn',
+  $persistent_bans  = false,
 ) {
 
   anchor { 'fail2ban::begin': } ->
