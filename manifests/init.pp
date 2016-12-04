@@ -19,10 +19,19 @@ class fail2ban (
   $persistent_bans  = false,
 ) {
 
-  validate_bool($persistent_bans)
   validate_re(
-    $usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.'
+    $backend, ['auto', 'pyinotify', 'gamin', 'polling'],
+    'backend must be one of auto, pyinotify, gamin or polling.'
   )
+  validate_re(
+    $protocol, ['tcp', 'udp', 'icmp', 'all'],
+    'protocol must be one of tcp, udp, icmp or all.'
+  )
+  validate_bool($purge_jail_dot_d)
+  validate_re(
+    $usedns, ['yes', 'no', 'warn'], 'usedns value must be yes, no or warn.'
+  )
+  validate_bool($persistent_bans)
 
   anchor { 'fail2ban::begin': } ->
   class { 'fail2ban::install': } ->
