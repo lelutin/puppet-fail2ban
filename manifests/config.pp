@@ -92,9 +92,9 @@ class fail2ban::config {
         'puppet:///modules/site_fail2ban/conf.d/fail2ban',
         'puppet:///modules/fail2ban/conf.d/fail2ban'
       ],
-      owner => 'root',
-      group => 0,
-      mode  => '0644';
+      owner  => 'root',
+      group  => 0,
+      mode   => '0644';
     }
   }
 }
