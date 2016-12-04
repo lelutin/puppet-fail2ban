@@ -19,6 +19,11 @@ class fail2ban (
   $persistent_bans  = false,
 ) {
 
+  validate_bool($persistent_bans)
+  validate_re(
+    $usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.'
+  )
+
   anchor { 'fail2ban::begin': } ->
   class { 'fail2ban::install': } ->
   class { 'fail2ban::config': } ~>
