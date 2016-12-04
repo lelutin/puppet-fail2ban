@@ -19,7 +19,7 @@ actionstart = <iptables> -N f2b-<name>
               <iptables> -I <chain> -p <protocol> -m multiport --dports <port> -j f2b-<name>
 <% if @persistent_bans != false -%>              cat /etc/fail2ban/persistent.bans | awk '/^f2b-<name>/ {print $2}' \
               | while read IP; do <iptables> -I f2b-<name> 1 -s $IP -j <blocktype>; done
-<% end %>
+<% end -%>
 
 # Option:  actionstop
 # Notes.:  command executed once at the end of Fail2Ban
