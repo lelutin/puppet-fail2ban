@@ -53,5 +53,8 @@ actionban = <iptables> -I f2b-<name> 1 -s <ip> -j <blocktype>
 # Values:  CMD
 #
 actionunban = <iptables> -D f2b-<name> -s <ip> -j <blocktype>
+<% if @persistent_bans != false -%>              sed -i "/^f2b-<name> <ip>$/d" /etc/fail2ban/persistent.bans
+
+<% end -%>
 
 [Init]
