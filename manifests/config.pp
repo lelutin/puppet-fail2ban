@@ -14,9 +14,11 @@ class fail2ban::config {
   $mta = $fail2ban::mta
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
+  $usedns = $fail2ban::usedns
   $persistent_bans = $fail2ban::persistent_bans
 
   validate_bool($persistent_bans)
+  validate_re($usedns, [ 'yes', 'no', 'warn' ], 'usedns value must be yes, no or warn.')
 
   $jail_template_name = $::osfamily ? {
     'Debian' => "${module_name}/debian_jail.conf.erb",
