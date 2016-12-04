@@ -47,13 +47,13 @@ class fail2ban::config {
       replace => 'no',
       mode    => '0644',
     }
-    file { '/etc/fail2ban/action.d/iptables-multiport.conf':
-      ensure  => present,
-      owner   => 'root',
-      group   => 0,
-      mode    => '0644',
-      content => template('fail2ban/iptables-multiport.erb'),
-    }
+  }
+  file { '/etc/fail2ban/action.d/iptables-multiport.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template('fail2ban/iptables-multiport.erb'),
   }
   file { '/etc/fail2ban/jail.conf':
     ensure  => present,
