@@ -37,6 +37,16 @@ backend = <%= @backend %>
 # jail.{conf,local} configuration files.
 destemail = <%= @destemail %>
 
+# "usedns" specifies if jails should trust hostnames in logs,
+#   warn when DNS lookups are performed, or ignore all hostnames in logs
+#
+# yes:   if a hostname is encountered, a DNS lookup will be performed.
+# warn:  if a hostname is encountered, a DNS lookup will be performed,
+#        but it will be logged as a warning.
+# no:    if a hostname is encountered, will not be used for banning,
+#        but it will be logged as info.
+usedns = <%= @usedns %>
+
 #
 # ACTIONS
 #
