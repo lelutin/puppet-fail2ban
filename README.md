@@ -45,6 +45,11 @@ For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
 
 ## Upgrade notices ##
 
+ * 2.0: `ignoreip` both on the main class and in fail2ban::jail (and thus in all
+     fail2ban::jail::* classes too) is no longer expected to be a string. It is
+     now a list of strings that automatically gets joined with spaces. Users of
+     the fail2ban module will need to adjust these parameters.
+
  * `ensure` parameter deprecated in fail2ban::jail since 1.2.0. Will be removed
      for 2.x.  Since the jail define uses puppetlabs-concat to define a
      fragment for each jail to be concatenated in `/etc/fail2ban/jail.local`,
