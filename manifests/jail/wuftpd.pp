@@ -1,7 +1,7 @@
 class fail2ban::jail::wuftpd (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $real_maxretry = $maxretry ? {

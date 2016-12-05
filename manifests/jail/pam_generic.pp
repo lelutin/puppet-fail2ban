@@ -1,7 +1,7 @@
 class fail2ban::jail::pam_generic (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $real_maxretry = $maxretry ? {

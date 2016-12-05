@@ -1,7 +1,7 @@
 class fail2ban::jail::sendmailauth (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $logpath = $::osfamily ? {

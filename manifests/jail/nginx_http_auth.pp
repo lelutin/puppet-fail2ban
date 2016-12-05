@@ -7,7 +7,7 @@
 class fail2ban::jail::nginx_http_auth (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $real_maxretry = $maxretry ? {

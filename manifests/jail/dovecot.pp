@@ -1,7 +1,7 @@
 class fail2ban::jail::dovecot (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $logpath = $::osfamily ? {

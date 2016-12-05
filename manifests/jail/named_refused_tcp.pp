@@ -1,7 +1,7 @@
 class fail2ban::jail::named_refused_tcp (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   # Use default named-refused filter

@@ -12,11 +12,20 @@ define fail2ban::jail (
   $action    = false,
   $banaction = false,
   $bantime   = false,
-  $ignoreip  = false,
+  $ignoreip  = [],
   $order     = false,
   $backend   = false,
 ) {
   include fail2ban::config
+
+  validate_re(
+    $ensure, ['present', 'absent'], 'ensure must be either present or absent.'
+  )
+  validate_bool($enabled)
+  if $maxretry { validate_integer($maxretry, '', 0) }
+  if $findtime { validate_integer($findtime, '', 0) }
+  if $bantime { validate_integer($bantime, '', 0) }
+  validate_array($ignoreip)
 
   if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8') < 1 {
     if $ensure != present {

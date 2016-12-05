@@ -1,7 +1,7 @@
 class fail2ban::jail::dropbear (
   $maxretry = 'usedefault',
   $findtime = false,
-  $ignoreip = false
+  $ignoreip = []
 ) {
 
   $real_maxretry = $maxretry ? {
