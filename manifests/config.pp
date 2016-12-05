@@ -30,7 +30,7 @@ class fail2ban::config {
   }
 
   if $fail2ban::purge_jail_dot_d {
-    if $::operatingsystem == 'Debian' and $::operatingsystemmajrelease == 7 {
+    if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8') < 1 {
       debug('Not purging jail.d on wheezy since the package doesn\'t include capability to use it.')
     }
     else {
@@ -55,15 +55,11 @@ class fail2ban::config {
     mode    => '0644',
     content => template('fail2ban/iptables-multiport.erb'),
   }
-  file { '/etc/fail2ban/jail.conf':
-    ensure  => present,
-    owner   => 'root',
-    group   => 0,
-    mode    => '0644',
-    content => template($jail_template_name),
-  }
 
-  concat { '/etc/fail2ban/jail.local':
+  # TODO: When support for Debian wheezy is dropped, this file should be
+  # transformed back into a file resource since we won't be using concat
+  # anymore.
+  concat { '/etc/fail2ban/jail.conf':
     owner => 'root',
     # The next line is not portable to some BSDs, but since the concat module
     # doesn't let one use integer values for the $group parameter (doing so
@@ -79,9 +75,9 @@ class fail2ban::config {
   # Define one fragment with a header for the file, otherwise the concat exec
   # errors out.
   concat::fragment { 'jail_header':
-    target => '/etc/fail2ban/jail.local',
-    source => 'puppet:///modules/fail2ban/jail.header',
-    order  => 01,
+    target  => '/etc/fail2ban/jail.conf',
+    content => template($jail_template_name),
+    order   => 01,
   }
 
   if $::operatingsystem == 'gentoo' {
