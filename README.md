@@ -45,6 +45,11 @@ For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
 
 ## Upgrade notices ##
 
+ * 2.0: Jail definitions have been moved to `jail.d/*.conf` files (or
+     `jail.conf` for wheezy since its version of fail2ban doesn't support
+     jail.d). The `jail.local` file is now getting removed by the module. To
+     avoid this, set rm_jail_local to true.
+
  * 2.0: `ignoreip` both on the main class and in fail2ban::jail (and thus in all
      fail2ban::jail::* classes too) is no longer expected to be a string. It is
      now a list of strings that automatically gets joined with spaces. Users of
@@ -88,6 +93,8 @@ global default values. These values can be overridden by individual jails.
  * `action` Default action for jails. Default value is '%(action_)s', which is
    defined as '%(banaction)s[name=%(__name__)s, port="%(port)s",
    protocol="%(protocol)s]' in jail.conf.
+ * `rm_jail_local` Boolean value that decides whether
+   `/etc/fail2ban/jail.local` is removed by puppet or not. Defaut value is true.
  * `purge_jail_dot_d` Boolean value that decides whether
    `/etc/fail2ban/jail.d/` is purged of files that are not managed by puppet.
    Default value is true.
