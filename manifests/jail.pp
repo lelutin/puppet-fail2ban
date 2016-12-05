@@ -1,4 +1,5 @@
 # Setup a fail2ban jail.
+#
 define fail2ban::jail (
   $port,
   $filter,

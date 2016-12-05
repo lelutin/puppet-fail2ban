@@ -1,7 +1,7 @@
 # Configure fail2ban service
 #
-# Setup jail.local as a concatenated file. This file will get all jails added
-# to it.
+# This class should not be included directly. Users must use the fail2ban
+# class.
 class fail2ban::config {
 
   $ignoreip = $fail2ban::ignoreip
