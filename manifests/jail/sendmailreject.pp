@@ -6,7 +6,6 @@ class fail2ban::jail::sendmailreject (
 
   $logpath = $::osfamily ? {
     'Debian' => '/var/log/mail.log',
-    'Gentoo' => '/var/log/mail.log',
     'RedHat' => '%(syslog_mail)s',
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
