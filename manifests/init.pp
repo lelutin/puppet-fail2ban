@@ -14,6 +14,7 @@ class fail2ban (
   $mta              = 'sendmail',
   $protocol         = 'tcp',
   $action           = '%(action_)s',
+  $rm_jail_local    = true,
   $purge_jail_dot_d = true,
   $usedns           = 'warn',
   $persistent_bans  = false,
@@ -28,6 +29,7 @@ class fail2ban (
     $protocol, ['tcp', 'udp', 'icmp', 'all'],
     'protocol must be one of tcp, udp, icmp or all.'
   )
+  validate_bool($rm_jail_local)
   validate_bool($purge_jail_dot_d)
   validate_re(
     $usedns, ['yes', 'no', 'warn'], 'usedns value must be yes, no or warn.'

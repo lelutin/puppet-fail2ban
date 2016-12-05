@@ -80,6 +80,12 @@ class fail2ban::config {
     order   => 01,
   }
 
+  if $fail2ban::rm_jail_local {
+    file { '/etc/fail2ban/jail.local':
+      ensure => absent,
+    }
+  }
+
   if $::operatingsystem == 'gentoo' {
     file { '/etc/conf.d/fail2ban':
       ensure => present,
