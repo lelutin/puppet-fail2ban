@@ -118,6 +118,12 @@ Here's the full list of parameters you can use:
    banned IP. Can be "all" to block all ports. This parameter is mandatory.
  * `filter` Name of the filter to use. This parameter is mandatory.
  * `logpath` Path of the log to monitor. This parameter is mandatory.
+ * `ensure` Set this to `absent` to remove a jail. This parameter is useless
+   with the default value of `purge_jail_dot_d` since removing the jail
+   resource will remove the jail file. It can be useful if you set
+   `purge_jail_dot_d` to false since then puppet won't automatically remove
+   jails that are not managed anymore. This parameter cannot be used on Debian
+   wheezy.
  * `enabled` Should this jail be enabled or not. The subtility between `ensure`
    and this parameter is that ensure will make the contents of the jail appear
    or disappear, while this parameter will let the jail contents be present in
@@ -135,7 +141,7 @@ Here's the full list of parameters you can use:
  * `ignoreip` Override default IP(s) to ignore (e.g. don't ban these IPs).
    Multiple values should be placed in an array.
  * `order` Optional numerical position. This lets you order jails as you see
-   fit.
+   fit. This parameter should only used on Debian wheezy.
  * `backend` Override default log file following method.
 
 To remove a jail, simply remove the resource for it from your manifests:
