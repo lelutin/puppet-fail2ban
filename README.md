@@ -69,7 +69,7 @@ All of the values configured through the `fail2ban` class are used to configure
 global default values. These values can be overridden by individual jails.
 
  * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
-   '127.0.0.1'. Multiple values should be placed in an array.
+   ['127.0.0.1']. Multiple values should be placed in an array.
  * `bantime` Number of seconds during which reaching maxretry gets an IP
    banned. Default value is '600'
  * `findtime` Time interval (in seconds) before the current time where failures
@@ -132,7 +132,8 @@ Here's the full list of parameters you can use:
    `action`, you will use the same default action template but with a different
    action name.
  * `bantime` Override default duration of a ban for an IP.
- * `ignoreip` Override default IP(s) to ignore (e.g. don't ban this IP).
+ * `ignoreip` Override default IP(s) to ignore (e.g. don't ban these IPs).
+   Multiple values should be placed in an array.
  * `order` Optional numerical position. This lets you order jails as you see
    fit.
  * `backend` Override default log file following method.
