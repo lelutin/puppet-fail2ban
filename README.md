@@ -124,7 +124,8 @@ Here's the full list of parameters you can use:
  * `port` List of port names, separated by commas, that will get blocked for a
    banned IP. Can be "all" to block all ports. This parameter is mandatory.
  * `filter` Name of the filter to use. This parameter is mandatory.
- * `logpath` Path of the log to monitor. This parameter is mandatory.
+ * `logpath` Path of the log to monitor. This parameter is mandatory unless
+   you are using the systemd backend in which case it should not be set.
  * `ensure` Set this to `absent` to remove a jail. This parameter is useless
    with the default value of `purge_jail_dot_d` since removing the jail
    resource will remove the jail file. It can be useful if you set
