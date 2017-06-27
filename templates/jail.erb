@@ -2,7 +2,8 @@
 enabled = <%= @enabled %>
 port = <%= @port %>
 filter = <%= @filter %>
-logpath = <%= @logpath %>
+<% if @logpath != false -%>logpath = <%= @logpath %>
+<% end -%>
 <% if @protocol != false -%>protocol = <%= @protocol %>
 <% end -%>
 <% if @maxretry != false -%>maxretry = <%= @maxretry %>
