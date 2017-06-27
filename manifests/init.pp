@@ -21,9 +21,18 @@ class fail2ban (
 ) {
 
   validate_array($ignoreip)
+  $valid_backends = [
+      'auto',
+      'pyinotify',
+      'gamin',
+      'polling',
+      'systemd'
+  ]
+  $valid_backend_message = join($valid_backends, ', ')
+
   validate_re(
-    $backend, ['auto', 'pyinotify', 'gamin', 'polling'],
-    'backend must be one of auto, pyinotify, gamin or polling.'
+    $backend, $valid_backends,
+    "backend must be one of: ${valid_backend_message}."
   )
   validate_re(
     $protocol, ['tcp', 'udp', 'icmp', 'all'],
