@@ -25,7 +25,16 @@ define fail2ban::jail (
   if $maxretry { validate_integer($maxretry, '', 0) }
   if $findtime { validate_integer($findtime, '', 0) }
   if $bantime { validate_integer($bantime, '', 0) }
-  if $backend != 'systemd' and $logpath == false { fail 'logpath must be set unless $backend is \'systemd\'' }
+  if $backend == 'systemd' {
+    if $logpath {
+      fail('logpath must not be set when $backend is \'systemd\'')
+    }
+  }
+  else {
+    if $logpath == false {
+      fail('logpath must be set unless $backend is \'systemd\'')
+    }
+  }
   validate_array($ignoreip)
 
   if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8') < 1 {
