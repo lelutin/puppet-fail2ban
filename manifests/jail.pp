@@ -66,6 +66,7 @@ define fail2ban::jail (
       owner   => 'root',
       group   => 0,
       mode    => '0644',
+      notify  => Class['fail2ban::service']
     }
   }
 
