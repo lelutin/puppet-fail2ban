@@ -4,6 +4,7 @@
 #
 
 class fail2ban (
+  # Options for jail.conf
   $ignoreip         = ['127.0.0.1'],
   $bantime          = '600',
   $findtime         = '600',
@@ -11,12 +12,14 @@ class fail2ban (
   $backend          = 'auto',
   $destemail        = 'root@localhost',
   $banaction        = 'iptables-multiport',
+  $chain            = 'INPUT',
   $mta              = 'sendmail',
   $protocol         = 'tcp',
   $action           = '%(action_)s',
+  $usedns           = 'warn',
+  # Options that change how the module behaves
   $rm_jail_local    = true,
   $purge_jail_dot_d = true,
-  $usedns           = 'warn',
   $persistent_bans  = false,
 ) {
 

@@ -102,7 +102,7 @@ mta = <%= @mta %>
 protocol = <%= @protocol %>
 
 # Specify chain where jumps would need to be added in iptables-* actions
-chain = INPUT
+chain = <%= @chain %>
 
 # Ports to be banned
 # Usually should be overridden in a particular jail

@@ -66,7 +66,7 @@ mta = <%= @mta %>
 protocol = <%= @protocol %>
 
 # Specify chain where jumps would need to be added in iptables-* actions
-chain = INPUT
+chain = <%= @chain %>
 
 #
 # Action shortcuts. To be used to define action parameter
