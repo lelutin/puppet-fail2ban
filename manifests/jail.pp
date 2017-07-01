@@ -58,7 +58,7 @@ define fail2ban::jail (
   }
   else {
     if $order {
-      warning('The parameter order can presently only be used with Debian wheezy. Il is planned to be removed when wheezy is no longer supported')
+      warning('The parameter order can presently only be used with Debian wheezy. It is planned to be removed when wheezy is no longer supported')
     }
     file { "/etc/fail2ban/jail.d/${name}.conf":
       ensure  => $ensure,
