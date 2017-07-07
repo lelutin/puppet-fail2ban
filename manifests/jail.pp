@@ -26,7 +26,7 @@ define fail2ban::jail (
   if $findtime { validate_integer($findtime, '', 0) }
   if $bantime { validate_integer($bantime, '', 0) }
   if $backend == 'systemd' {
-    if $logpath {
+    if $logpath {
       fail('logpath must not be set when $backend is \'systemd\'')
     }
   }
