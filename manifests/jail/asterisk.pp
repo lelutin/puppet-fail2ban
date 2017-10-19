@@ -17,6 +17,7 @@ class fail2ban::jail::asterisk (
       'NOTICE.* .*: Registration from \'.*\' failed for \'<HOST>:.*\' - Username/auth name mismatch',
       'NOTICE.* .*: Registration from \'.*\' failed for \'<HOST>:.*\' - Device does not match ACL',
       'NOTICE.* .*: Registration from \'.*\' failed for \'<HOST>:.*\' - Peer is not supposed to register',
+      'NOTICE.* .*: Registration of \'.*\' rejected \'.*\' from: \'<HOST>\'',
       'NOTICE.* <HOST> failed to authenticate as \'.*\'$',
       'NOTICE.* .*: No registration for peer \'.*\' \(from <HOST>\)',
       'NOTICE.* .*: Host <HOST> failed MD5 authentication for \'.*\' (.*)',
