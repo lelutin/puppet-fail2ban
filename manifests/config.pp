@@ -28,6 +28,9 @@ class fail2ban::config {
     # Debian wheezy and jessie use the old fail2ban version 0.8.x which doesn't
     # have iptables-common.conf yet.
     $before_include = 'iptables-blocktype.conf'
+    # Debian wheezy and jessie are also missing some variables in their config
+    # files, so we need to enable this hack
+    $debian_compat = true
     # Debian wheezy also doesn't have the iptbales-blocktype.conf file, but if
     # we create it then things work fine.
     if $::lsbdistcodename == 'wheezy' {
@@ -38,6 +41,7 @@ class fail2ban::config {
   }
   else {
     $before_include = 'iptables-common.conf'
+    $debian_compat = false
   }
 
   if $fail2ban::purge_jail_dot_d {

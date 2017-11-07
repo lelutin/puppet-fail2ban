@@ -58,7 +58,7 @@ actionunban = <iptables> -D f2b-<name> -s <ip> -j <blocktype>
 <% end -%>
 
 [Init]
-<% if scope.lookupvar('::osfamily') == 'Debian' -%>
+<% if @debian_compat -%>
 iptables = iptables
 returntype = RETURN
 <% end -%>
