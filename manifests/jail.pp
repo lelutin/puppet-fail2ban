@@ -60,6 +60,15 @@ define fail2ban::jail (
     if $order {
       warning('The parameter order can presently only be used with Debian wheezy. It is planned to be removed when wheezy is no longer supported')
     }
+
+    if $port == 'all' {
+      $portrange = '1:65535'
+    }
+    else
+    {
+      $portrange = $port
+    }
+
     file { "/etc/fail2ban/jail.d/${name}.conf":
       ensure  => $ensure,
       content => template('fail2ban/jail.erb'),
