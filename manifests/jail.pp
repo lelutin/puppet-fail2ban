@@ -37,6 +37,14 @@ define fail2ban::jail (
   }
   validate_array($ignoreip)
 
+  if $port == 'all' {
+    $portrange = '1:65535'
+  }
+  else
+  {
+    $portrange = $port
+  }
+
   if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8') < 1 {
     if $ensure != present {
       warning('The $ensure parameter cannot be used on Debian wheezy. To ensure that a fail2ban jail is absent, simply remove the resource.')
@@ -59,14 +67,6 @@ define fail2ban::jail (
   else {
     if $order {
       warning('The parameter order can presently only be used with Debian wheezy. It is planned to be removed when wheezy is no longer supported')
-    }
-
-    if $port == 'all' {
-      $portrange = '1:65535'
-    }
-    else
-    {
-      $portrange = $port
     }
 
     file { "/etc/fail2ban/jail.d/${name}.conf":
