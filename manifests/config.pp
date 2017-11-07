@@ -24,10 +24,20 @@ class fail2ban::config {
     default  => fail("Unsupported Operating System family: ${::osfamily}"),
   }
 
-  $before_include = $::osfamily ? {
-    'Debian' => 'iptables-blocktype.conf',
-    'RedHat' => 'iptables-common.conf',
-    default  => fail("Unsupported Operating System family: ${::osfamily}"),
+  if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') < 1 {
+    # Debian wheezy and jessie use the old fail2ban version 0.8.x which doesn't
+    # have iptables-common.conf yet.
+    $before_include = 'iptables-blocktype.conf'
+    # Debian wheezy also doesn't have the iptbales-blocktype.conf file, but if
+    # we create it then things work fine.
+    if $::lsbdistcodename == 'wheezy' {
+      file { '/etc/fail2ban/action.d/iptables-blocktype.conf':
+        content => "#File managed by puppet\n[Init]\nblocktype = REJECT --reject-with icmp-port-unreachable",
+      }
+    }
+  }
+  else {
+    $before_include = 'iptables-common.conf'
   }
 
   if $fail2ban::purge_jail_dot_d {
