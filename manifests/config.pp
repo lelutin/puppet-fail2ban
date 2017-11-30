@@ -8,6 +8,7 @@ class fail2ban::config {
   $bantime = $fail2ban::bantime
   $findtime = $fail2ban::findtime
   $maxretry = $fail2ban::maxretry
+  $ignorecommand = $fail2ban::ignorecommand
   $backend = $fail2ban::backend
   $destemail = $fail2ban::destemail
   $banaction = $fail2ban::banaction
