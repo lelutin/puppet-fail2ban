@@ -9,6 +9,7 @@ class fail2ban (
   $bantime          = '600',
   $findtime         = '600',
   $maxretry         = '3',
+  $ignorecommand    = '',
   $backend          = 'auto',
   $destemail        = 'root@localhost',
   $banaction        = 'iptables-multiport',
