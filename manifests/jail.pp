@@ -9,6 +9,7 @@ define fail2ban::jail (
   $protocol  = false,
   $maxretry  = false,
   $findtime  = false,
+  $ignorecommand = undef,
   $action    = false,
   $banaction = false,
   $bantime   = false,
