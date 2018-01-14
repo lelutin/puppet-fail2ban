@@ -19,13 +19,14 @@ define fail2ban::jail (
 ) {
   include fail2ban::config
 
-  validate_re(
+  validate_legacy('Pattern', 'validate_re',
     $ensure, ['present', 'absent'], 'ensure must be either present or absent.'
   )
-  validate_bool($enabled)
-  if $maxretry { validate_integer($maxretry, '', 0) }
-  if $findtime { validate_integer($findtime, '', 0) }
-  if $bantime { validate_integer($bantime, '', 0) }
+  validate_legacy('Stdlib::Compat::Bool', 'validate_bool', $enabled)
+
+  if $maxretry { validate_legacy('Stdlib::Compat::Integer', 'validate_integer', $maxretry, '', 0) }
+  if $findtime { validate_legacy('Stdlib::Compat::Integer', 'validate_integer', $findtime, '', 0) }
+  if $bantime { validate_legacy('Stdlib::Compat::Integer', 'validate_integer', $bantime, '', 0) }
   if $backend == 'systemd' {
     if $logpath {
       fail('logpath must not be set when $backend is \'systemd\'')
@@ -36,7 +37,7 @@ define fail2ban::jail (
       fail('logpath must be set unless $backend is \'systemd\'')
     }
   }
-  validate_array($ignoreip)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $ignoreip)
 
   if $port == 'all' {
     $portrange = '1:65535'

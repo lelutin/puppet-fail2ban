@@ -24,7 +24,7 @@ class fail2ban (
   $persistent_bans  = false,
 ) {
 
-  validate_array($ignoreip)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $ignoreip)
   $valid_backends = [
       'auto',
       'pyinotify',
@@ -34,20 +34,20 @@ class fail2ban (
   ]
   $valid_backend_message = join($valid_backends, ', ')
 
-  validate_re(
+  validate_legacy('Pattern', 'validate_re',
     $backend, $valid_backends,
     "backend must be one of: ${valid_backend_message}."
   )
-  validate_re(
+  validate_legacy('Pattern', 'validate_re',
     $protocol, ['tcp', 'udp', 'icmp', 'all'],
     'protocol must be one of tcp, udp, icmp or all.'
   )
-  validate_bool($rm_jail_local)
-  validate_bool($purge_jail_dot_d)
-  validate_re(
+  validate_legacy('Stdlib::Compat::Bool', 'validate_bool', $rm_jail_local)
+  validate_legacy('Stdlib::Compat::Bool', 'validate_bool', $purge_jail_dot_d)
+  validate_legacy('Pattern', 'validate_re',
     $usedns, ['yes', 'no', 'warn'], 'usedns value must be yes, no or warn.'
   )
-  validate_bool($persistent_bans)
+  validate_legacy('Stdlib::Compat::Bool', 'validate_bool', $persistent_bans)
 
   anchor { 'fail2ban::begin': }
   -> class { 'fail2ban::install': }
