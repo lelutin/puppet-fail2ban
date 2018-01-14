@@ -13,10 +13,10 @@ define fail2ban::filter (
 ) {
   include fail2ban::config
 
-  validate_array($ignoreregexes)
-  validate_array($includes)
-  validate_array($includes_after)
-  validate_array($additional_defs)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $ignoreregexes)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $includes)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $includes_after)
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $additional_defs)
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,
