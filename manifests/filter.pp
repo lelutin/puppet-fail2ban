@@ -13,6 +13,7 @@ define fail2ban::filter (
 ) {
   include fail2ban::config
 
+  validate_legacy('Stdlib::Compat::Array', 'validate_array', $failregexes)
   validate_legacy('Stdlib::Compat::Array', 'validate_array', $ignoreregexes)
   validate_legacy('Stdlib::Compat::Array', 'validate_array', $includes)
   validate_legacy('Stdlib::Compat::Array', 'validate_array', $includes_after)
