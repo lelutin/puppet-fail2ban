@@ -1,0 +1,15 @@
+---
+language: ruby
+rvm:
+  - 2.3.3
+  - 2.5.0
+script:
+  - 'bundle exec rake syntax lint spec'
+env:
+  - PUPPET_VERSION=4.8.2
+  - PUPPET_VERSION=5.4.0
+branches:
+  only:
+    - master
+notifications:
+  email: false
