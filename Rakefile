@@ -1,25 +1,26 @@
-require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint/tasks/puppet-lint'
-PuppetLint.configuration.send('disable_80chars')
-PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp"]
 
-desc "Validate manifests, templates, and ruby files"
-task :validate do
-  Dir['manifests/**/*.pp'].each do |manifest|
-    sh "puppet parser validate --noop #{manifest}"
+begin
+  if Gem::Specification::find_by_name('puppet-lint')
+    require 'puppet-lint/tasks/puppet-lint'
+    # 2018-03-04
+    # For some reason configuration doesn't reach destination and linting is
+    # still *only* done on modules in fixtures. So as a workaround we clear the
+    # task and redefine it.
+    #
+    # We should be using:
+    #PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "vendor/**/*.pp", "pkg/**/*.pp"]
+    #
+    # The fix in
+    # https://github.com/rodjek/puppet-lint/commit/0f2e2db90d5a14382eafbdfebff74048a487372f
+    # is present in the gem but it still doesn't work as intended.
+    #
+    Rake::Task[:lint].clear
+    PuppetLint::RakeTask.new :lint do |config|
+      config.ignore_paths = ["spec/**/*.pp", "vendor/**/*.pp", "pkg/**/*.pp"]
+    end
+    task :default => [:validate, :lint, :spec]
   end
-  Dir['spec/**/*.rb','lib/**/*.rb'].each do |ruby_file|
-    sh "ruby -c #{ruby_file}" unless ruby_file =~ /spec\/fixtures/
-  end
-  Dir['templates/**/*.erb'].each do |template|
-    sh "erb -P -x -T '-' #{template} | ruby -c"
-  end
+rescue Gem::LoadError
+  task :default => [:validate, :spec]
 end
-
-task :test => [
-  :validate,
-  :lint,
-  :spec,
-]
-task :default => :spec
