@@ -21,6 +21,8 @@ or you can use one of the predefined fail2ban::jail::* classes.
 You can also create a filter for use with jails with the fail2ban::filter
 defined type (see section below).
 
+[![Build Status](https://travis-ci.org/lelutin/puppet-fail2ban.svg?branch=master)](https://travis-ci.org/lelutin/puppet-fail2ban)
+
 ## Requirements ##
 
 This module depends on the following modules to function:
