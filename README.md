@@ -26,42 +26,37 @@ defined type (see section below).
 This module depends on the following modules to function:
 
  * puppetlabs' stdlib module (at least version 3.0.0)
- * puppetlabs' concat module (at least version 1.0.0)
 
 ## Compatibility ##
 
 This module supports
 
- * Debian 7, 8 and 9
+ * Debian 9
  * RHEL 6 and 7
  * CentOs 6 and 7
 
-Please note that a bug in puppet 3.x with regards to package dependencies will
-make it print warnings about missing dependencies. This issue was fixed in
-puppet 4.0.0. Unfortunately, since puppet 3.x is currently getting security
-patches only, there is no plan to backport the fix.
+Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
+:---------------|:----------:|:----------:|:----------:|:----------:
+**2.x**         | **yes**    | **yes**    | no         | no
+**3.x**         | no         | no         | **yes**    | **yes**
 
-For more details, see : https://tickets.puppetlabs.com/browse/PUP-3121
+Version 2.x is in maintenance mode only. If you need to use this module with
+puppet 4.x or 5.x then you should use version 3.x of this module.
 
 ## Upgrade notices ##
 
- * 2.0: Jail definitions have been moved to `jail.d/*.conf` files (or
-     `jail.conf` for wheezy since its version of fail2ban doesn't support
-     jail.d). The `jail.local` file is now getting removed by the module. To
+ * 3.0: fail2ban::jail's `order` parameter was removed. Users should adapt their
+     calls in order to remove this parameter. All jail files are now just
+     individual files dropped in jail.d and order is not relevant there.
+
+ * 2.0: Jail definitions have been moved to `jail.d/*.conf` files . The
+     `jail.local` file is now getting removed by the module. To
      avoid this, set rm_jail_local to true.
 
  * 2.0: `ignoreip` both on the main class and in fail2ban::jail (and thus in all
      fail2ban::jail::* classes too) is no longer expected to be a string. It is
      now a list of strings that automatically gets joined with spaces. Users of
      the fail2ban module will need to adjust these parameters.
-
- * `ensure` parameter deprecated in fail2ban::jail since 1.2.0. Will be removed
-     for 2.x.  Since the jail define uses puppetlabs-concat to define a
-     fragment for each jail to be concatenated in `/etc/fail2ban/jail.local`,
-     we're purposefully avoiding to use the ensure parameter. This is because
-     the 2.x branch of puppetlabs-concat has deprecated this parameter and
-     issues warnings to users that are using it. Users of the fail2ban module
-     should instead remove the resources for the jails that must be removed.
 
  * The directory `/etc/fail2ban/jail.d` is now getting purged by default. Users
      who would like to preserve files in this directory that are not managed by
@@ -130,8 +125,7 @@ Here's the full list of parameters you can use:
    with the default value of `purge_jail_dot_d` since removing the jail
    resource will remove the jail file. It can be useful if you set
    `purge_jail_dot_d` to false since then puppet won't automatically remove
-   jails that are not managed anymore. This parameter cannot be used on Debian
-   wheezy.
+   jails that are not managed anymore.
  * `enabled` Should this jail be enabled or not. The subtility between `ensure`
    and this parameter is that ensure will make the contents of the jail appear
    or disappear, while this parameter will let the jail contents be present in
@@ -148,13 +142,7 @@ Here's the full list of parameters you can use:
  * `bantime` Override default duration of a ban for an IP.
  * `ignoreip` Override default IP(s) to ignore (e.g. don't ban these IPs).
    Multiple values should be placed in an array.
- * `order` Optional numerical position. This lets you order jails as you see
-   fit. This parameter should only used on Debian wheezy.
  * `backend` Override default log file following method.
-
-To remove a jail, simply remove the resource for it from your manifests:
-puppetlabs-concat will automatically remove all fragments that are not managed
-with a concat::fragment resource (which the fail2ban::jail define uses).
 
 ### Predefined jails ###
 

@@ -17,12 +17,7 @@ class fail2ban::jail::nginx_http_auth (
 
   case $::osfamily {
     'Debian': {
-      if $::lsbmajdistrelease != '7' {
-        $logpath = '/var/log/nginx*/*error.log'
-      }
-      else {
-        fail ('Debian wheezy is not supported for the nginx_http_auth jail: it doesn\'t have the appropriate filter')
-      }
+      $logpath = '/var/log/nginx*/*error.log'
     }
     'RedHat': {
       $logpath = '%(nginx_error_log)s'
