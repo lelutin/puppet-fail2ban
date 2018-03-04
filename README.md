@@ -32,9 +32,17 @@ This module depends on the following modules to function:
 
 This module supports
 
- * Debian 7, 8 and 9
+ * Debian 7 and 8
  * RHEL 6 and 7
  * CentOs 6 and 7
+
+Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
+:---------------|:----------:|:----------:|:----------:|:----------:
+**2.x**         | **yes**    | **yes**    | no         | no
+**3.x**         | no         | no         | **yes**    | **yes**
+
+Version 2.x is in maintenance mode only. If you need to use this module with
+puppet 4.x or 5.x then you should use version 3.x of this module.
 
 Please note that a bug in puppet 3.x with regards to package dependencies will
 make it print warnings about missing dependencies. This issue was fixed in

@@ -38,9 +38,7 @@ class fail2ban::config {
         }
       }
       else {
-        $jail_template_name = "${module_name}/debian/stretch.jail.conf.erb"
-        $before_include = 'iptables-common.conf'
-        $debian_compat = false
+        fail('This release of debian is unsupported, use version 3.x or higher of the fail2ban module')
       }
     }
     'RedHat': { $jail_template_name = "${module_name}/rhel/jail.conf.erb" }
