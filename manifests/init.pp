@@ -5,49 +5,25 @@
 
 class fail2ban (
   # Options for jail.conf
-  $ignoreip         = ['127.0.0.1'],
+  Array[String, 0] $ignoreip = ['127.0.0.1'],
+  #TODO can the three following params be forced to integers?
   $bantime          = '600',
   $findtime         = '600',
   $maxretry         = '3',
-  $ignorecommand    = '',
-  $backend          = 'auto',
-  $destemail        = 'root@localhost',
-  $banaction        = 'iptables-multiport',
-  $chain            = 'INPUT',
-  $mta              = 'sendmail',
-  $protocol         = 'tcp',
-  $action           = '%(action_)s',
-  $usedns           = 'warn',
+  String $ignorecommand = '',
+  Enum['auto','pyinotify','gamin','polling','systemd'] $backend = 'auto',
+  String $destemail = 'root@localhost',
+  String $banaction = 'iptables-multiport',
+  String $chain = 'INPUT',
+  String $mta = 'sendmail',
+  Enum['tcp','udp','icmp','all'] $protocol = 'tcp',
+  String $action = '%(action_)s',
+  Enum['yes','no','warn'] $usedns = 'warn',
   # Options that change how the module behaves
-  $rm_jail_local    = true,
-  $purge_jail_dot_d = true,
-  $persistent_bans  = false,
+  Boolean $rm_jail_local = true,
+  Boolean $purge_jail_dot_d = true,
+  Boolean $persistent_bans = false,
 ) {
-
-  validate_array($ignoreip)
-  $valid_backends = [
-      'auto',
-      'pyinotify',
-      'gamin',
-      'polling',
-      'systemd'
-  ]
-  $valid_backend_message = join($valid_backends, ', ')
-
-  validate_re(
-    $backend, $valid_backends,
-    "backend must be one of: ${valid_backend_message}."
-  )
-  validate_re(
-    $protocol, ['tcp', 'udp', 'icmp', 'all'],
-    'protocol must be one of tcp, udp, icmp or all.'
-  )
-  validate_bool($rm_jail_local)
-  validate_bool($purge_jail_dot_d)
-  validate_re(
-    $usedns, ['yes', 'no', 'warn'], 'usedns value must be yes, no or warn.'
-  )
-  validate_bool($persistent_bans)
 
   anchor { 'fail2ban::begin': }
   -> class { 'fail2ban::install': }

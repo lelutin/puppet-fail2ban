@@ -4,19 +4,14 @@
 # arguments need to be arrays
 #
 define fail2ban::filter (
-  $failregexes,
-  $ensure    = present,
-  $ignoreregexes = [],
-  $includes = [],
-  $includes_after = [],
-  $additional_defs = []
+  Array[String, 1] $failregexes,
+  Enum['present', 'absent'] $ensure = 'present',
+  Array[String, 0] $ignoreregexes = [],
+  Array[String, 0] $includes = [],
+  Array[String, 0] $includes_after = [],
+  Array[String, 0] $additional_defs = []
 ) {
   include fail2ban::config
-
-  validate_array($ignoreregexes)
-  validate_array($includes)
-  validate_array($includes_after)
-  validate_array($additional_defs)
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,

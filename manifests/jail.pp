@@ -1,30 +1,23 @@
 # Setup a fail2ban jail.
 #
 define fail2ban::jail (
-  $port,
-  $filter,
-  $logpath       = false,
-  $ensure        = present,
-  $enabled       = true,
-  $protocol      = false,
-  $maxretry      = false,
-  $findtime      = false,
-  $ignorecommand = false,
-  $action        = false,
-  $banaction     = false,
-  $bantime       = false,
-  $ignoreip      = [],
-  $backend       = false,
+  Variant[Integer, String] $port,
+  String $filter,
+  Variant[Boolean, String] $logpath = false,
+  Enum['present','absent'] $ensure = 'present',
+  Boolean $enabled = true,
+  Variant[Boolean, Enum['tcp','udp','icmp','all']] $protocol = false,
+  Variant[Boolean, Integer] $maxretry = false,
+  Variant[Boolean, Integer] $findtime = false,
+  Variant[Boolean, String] $ignorecommand = false,
+  Variant[Boolean, String] $action = false,
+  Variant[Boolean, String] $banaction = false,
+  Variant[Boolean, Integer] $bantime = false,
+  Array[String, 0] $ignoreip = [],
+  Variant[Boolean, Enum['auto','pyinotify','gamin','polling','systemd']] $backend = false,
 ) {
   include fail2ban::config
 
-  validate_re(
-    $ensure, ['present', 'absent'], 'ensure must be either present or absent.'
-  )
-  validate_bool($enabled)
-  if $maxretry { validate_integer($maxretry, '', 0) }
-  if $findtime { validate_integer($findtime, '', 0) }
-  if $bantime { validate_integer($bantime, '', 0) }
   if $backend == 'systemd' {
     if $logpath {
       fail('logpath must not be set when $backend is \'systemd\'')
@@ -35,7 +28,6 @@ define fail2ban::jail (
       fail('logpath must be set unless $backend is \'systemd\'')
     }
   }
-  validate_array($ignoreip)
 
   if $port == 'all' {
     $portrange = '1:65535'
