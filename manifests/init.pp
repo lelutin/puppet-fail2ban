@@ -25,10 +25,12 @@ class fail2ban (
   Boolean $persistent_bans = false,
 ) {
 
-  anchor { 'fail2ban::begin': }
-  -> class { 'fail2ban::install': }
-  -> class { 'fail2ban::config': }
-  ~> class { 'fail2ban::service': }
-  -> anchor { 'fail2ban::end': }
+  contain fail2ban::install
+  contain fail2ban::config
+  contain fail2ban::service
+
+  Class['fail2ban::install']
+  -> Class['fail2ban::config']
+  ~> Class['fail2ban::service']
 
 }
