@@ -41,7 +41,10 @@ class fail2ban::config {
         fail('This release of debian is unsupported, use version 3.x or higher of the fail2ban module')
       }
     }
-    'RedHat': { $jail_template_name = "${module_name}/rhel/jail.conf.erb" }
+    'RedHat': {
+      $jail_template_name = "${module_name}/rhel/jail.conf.erb",
+      $before_include = 'iptables-common.conf'
+    }
     default: { fail("Unsupported Operating System family: ${::osfamily}") }
   }
 
