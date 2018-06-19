@@ -20,13 +20,13 @@ class fail2ban::config {
   $usedns = $fail2ban::usedns
   $persistent_bans = $fail2ban::persistent_bans
 
-  case $::osfamily {
+  case $facts['osfamily'] {
     'Debian': {
       $jail_template_name = "${module_name}/debian/jail.conf.erb"
       $before_include = 'iptables-common.conf'
     }
     'RedHat': { $jail_template_name = "${module_name}/rhel/jail.conf.erb" }
-    default: { fail("Unsupported Operating System family: ${::osfamily}") }
+    default: { fail("Unsupported Operating System family: ${facts['osfamily']}") }
   }
 
   if $fail2ban::purge_jail_dot_d {
