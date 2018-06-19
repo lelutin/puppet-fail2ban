@@ -41,8 +41,11 @@ fail2ban::jail::apache-shellshock:
 fail2ban::jail::assp:
   port: "smtp,465,submission"
   logpath: "/root/path/to/assp/logs/maillog.txt"
+# ports 2000, 5000 and 4520 are associated with the "skinny" module, UNISTIM,
+# and the "dundi" module, respectively.
 fail2ban::jail::asterisk:
-  port: "iax,sip,sip-tls"
+  port: "iax,sip,sip-tls,2000,5000,4520"
+  protocol: "all"
   logpath: "/var/log/asterisk/messages"
   action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]\n           %(mta)s-whois[name=%(__name__)s, dest=\"%(destemail)s\"]"
   maxretry: 10
