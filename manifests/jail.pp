@@ -1,20 +1,22 @@
 # Setup a fail2ban jail.
 #
 define fail2ban::jail (
-  Variant[Integer, String] $port,
-  String $filter,
-  Variant[Boolean, String] $logpath = false,
-  Enum['present','absent'] $ensure = 'present',
-  Boolean $enabled = true,
-  Variant[Boolean, Enum['tcp','udp','icmp','all']] $protocol = false,
-  Variant[Boolean, Integer] $maxretry = false,
-  Variant[Boolean, Integer] $findtime = false,
-  Variant[Boolean, String] $ignorecommand = false,
-  Variant[Boolean, String] $action = false,
-  Variant[Boolean, String] $banaction = false,
-  Variant[Boolean, Integer] $bantime = false,
-  Array[String, 0] $ignoreip = [],
-  Variant[Boolean, Enum['auto','pyinotify','gamin','polling','systemd']] $backend = false,
+  Enum['present','absent']     $ensure             = 'present',
+  Optional[Fail2ban::Port]     $port               = undef,
+  Optional[String]             $filter             = undef,
+  Optional[String]             $logpath            = undef,
+  Boolean                      $enabled            = true,
+  Optional[Fail2ban::Protocol] $protocol           = undef,
+  Optional[Integer]            $maxretry           = undef,
+  Optional[Integer]            $findtime           = undef,
+  Optional[String]             $ignorecommand      = undef,
+  Optional[String]             $action             = undef,
+  Optional[Fail2ban::Usedns]   $usedns             = undef,
+  Optional[String]             $banaction          = undef,
+  Optional[Integer]            $bantime            = undef,
+  Array[String, 0]             $ignoreip           = [],
+  Optional[Fail2ban::Backend]  $backend            = undef,
+  Hash[String, String]         $additional_options = {},
 ) {
   include fail2ban::config
 

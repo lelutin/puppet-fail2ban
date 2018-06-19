@@ -145,7 +145,7 @@ chain = <%= @chain %>
 
 # Ports to be banned
 # Usually should be overridden in a particular jail
-port = 0:65535
+port = <%= @port %>
 
 # Format of user-agent https://tools.ietf.org/html/rfc7231#section-5.5.3
 fail2ban_agent = Fail2Ban/%(fail2ban_version)s

@@ -1,25 +1,32 @@
 [<%= @name %>]
 enabled = <%= @enabled %>
-port = <%= @portrange %>
-filter = <%= @filter %>
-<% if @logpath != false -%>logpath = <%= @logpath %>
+<% if not @portrange.nil? -%>port = <%= @portrange %>
 <% end -%>
-<% if @protocol != false -%>protocol = <%= @protocol %>
+<% if not @filter.nil? -%>filter = <%= @filter %>
 <% end -%>
-<% if @maxretry != false -%>maxretry = <%= @maxretry %>
+<% if not @logpath.nil? -%>logpath = <%= @logpath %>
 <% end -%>
-<% if @findtime != false -%>findtime = <%= @findtime %>
+<% if not @protocol.nil? -%>protocol = <%= @protocol %>
 <% end -%>
-<% if @action != false -%>action = <%= @action %>
+<% if not @maxretry.nil? -%>maxretry = <%= @maxretry %>
 <% end -%>
-<% if @ignorecommand != false -%>ignorecommand = <%= @ignorecommand %>
+<% if not @findtime.nil? -%>findtime = <%= @findtime %>
 <% end -%>
-<% if @banaction != false -%>banaction = <%= @banaction %>
+<% if not @action.nil? -%>action = <%= @action %>
 <% end -%>
-<% if @bantime != false -%>bantime = <%= @bantime %>
+<% if not @ignorecommand.nil? -%>ignorecommand = <%= @ignorecommand %>
+<% end -%>
+<% if not @banaction.nil? -%>banaction = <%= @banaction %>
+<% end -%>
+<% if not @bantime.nil? -%>bantime = <%= @bantime %>
 <% end -%>
 <% if not @ignoreip.empty? -%>ignoreip = <%= @ignoreip.join(' ') %>
 <% end -%>
-<% if @backend != false -%>backend = <%= @backend %>
+<% if not @backend.nil? -%>backend = <%= @backend %>
 <% end -%>
+<% if not @additional_options.empty?
+  @additional_options.each do |opt,value| -%>
+<%= opt %> = <%= value %>
+<% end
+end -%>
 

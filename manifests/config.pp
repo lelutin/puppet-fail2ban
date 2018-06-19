@@ -13,6 +13,7 @@ class fail2ban::config {
   $destemail = $fail2ban::destemail
   $banaction = $fail2ban::banaction
   $chain = $fail2ban::chain
+  $port = $fail2ban::port
   $mta = $fail2ban::mta
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action

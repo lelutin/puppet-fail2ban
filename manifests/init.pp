@@ -4,25 +4,25 @@
 #
 
 class fail2ban (
-  # Options for jail.conf
-  Array[String, 0] $ignoreip = ['127.0.0.1'],
-  #TODO can the three following params be forced to integers?
-  $bantime          = '600',
-  $findtime         = '600',
-  $maxretry         = '3',
-  String $ignorecommand = '',
-  Enum['auto','pyinotify','gamin','polling','systemd'] $backend = 'auto',
-  String $destemail = 'root@localhost',
-  String $banaction = 'iptables-multiport',
-  String $chain = 'INPUT',
-  String $mta = 'sendmail',
-  Enum['tcp','udp','icmp','all'] $protocol = 'tcp',
-  String $action = '%(action_)s',
-  Enum['yes','no','warn'] $usedns = 'warn',
   # Options that change how the module behaves
-  Boolean $rm_jail_local = true,
-  Boolean $purge_jail_dot_d = true,
-  Boolean $persistent_bans = false,
+  Boolean            $rm_jail_local    = true,
+  Boolean            $purge_jail_dot_d = true,
+  Boolean            $persistent_bans  = false,
+  # Options for jail.conf
+  Array[String, 0]   $ignoreip         = ['127.0.0.1'],
+  Integer            $bantime          = 600,
+  Integer            $findtime         = 600,
+  Integer            $maxretry         = 3,
+  String             $ignorecommand    = '',
+  Fail2ban::Backend  $backend          = 'auto',
+  String             $destemail        = 'root@localhost',
+  String             $banaction        = 'iptables-multiport',
+  String             $chain            = 'INPUT',
+  Fail2ban::Port     $port             = '0:65535',
+  String             $mta              = 'sendmail',
+  Fail2ban::Protocol $protocol         = 'tcp',
+  String             $action           = '%(action_)s',
+  Fail2ban::Usedns   $usedns           = 'warn',
 ) {
 
   contain fail2ban::install

@@ -105,8 +105,8 @@ global default values. These values can be overridden by individual jails.
 
 ## Defining jails ##
 
-To define a jail, you can use one of the predefined jails (see list below). Or
-you can define your own with the fail2ban::jail defined type:
+To define a jail, you can use one of the jail parameter presets (see list
+below). Or you can define your own with the fail2ban::jail defined type:
 
 ~~~
 fail2ban::jail { 'jenkins':
@@ -148,27 +148,142 @@ Here's the full list of parameters you can use:
 
 ### Predefined jails ###
 
- * apache_noscript
- * apache_overflows
- * apache
+The list at the end of this section contains all of the presets that can be
+used to configure jails more easily. Each of them is a data point -- a hash of
+parameter and values -- in hiera that needs to be gathered with the `lookup()`
+function. Each hash represents parameters and values that should be passed in
+to the `fail2ban::jail` defined type documented above and has a lookup key of
+'fail2ban::jail::$jailname'.
+
+For example to configure a jail for the ssh service with the preset parameters:
+
+~~~
+$ssh_params = lookup('fail2ban::jail::sshd')
+fail2ban::jail { 'sshd':
+  * => $ssh_params,
+}
+~~~
+
+You can also override values from the preset or define new parameters by
+concatenating your own hash to it. In the following example we define new
+parameters `bantime` and `findtime` and we override the preset for `maxretry`:
+
+~~~
+$ssh_extra_params  = {
+  'bantime'  => 300,
+  'findtime' => 200,
+  'maxretry' => 3,
+}
+$ssh_params = lookup('fail2ban::jail::sshd') + $ssh_extra_params
+fail2ban::jail { 'sshd':
+  * => $ssh_params,
+}
+~~~
+
+This way you can set any parameter to the `fail2ban::jail` defined type and
+override preset values.
+
+Here's the full list of currently available presets. To know each preset's
+default values you can inspect files in `data/`.
+
+Watch out: jails by default use the same filter name as the jail name, so make
+sure to either use the same string as the lookup key as the resource name for
+`jail`, or override the `filter` parameter.
+
+ * 3proxy
+ * apache-auth
+ * apache-badbots
+ * apache-noscript
+ * apache-overflows
+ * apache-nohome
+ * apache-botsearch
+ * apache-fakegooglebot
+ * apache-modsecurity
+ * apache-shellshock
+ * assp
  * asterisk
- * courierauth
- * couriersmtp
+ * courier-auth
+ * courier-smtp
+ * cyrus-imap
+ * directadmin
  * dovecot
  * dropbear
- * named_refused_tcp
- * pam_generic
+ * drupal-auth
+ * ejabberd-auth
+ * exim
+ * exim-spam
+ * freeswitch
+ * froxlor-auth
+ * groupoffice
+ * gssftpd
+ * guacamole
+ * horde
+ * kerio
+ * lighttpd-auth
+ * mongodb-auth
+ * monit
+ * murmur
+ * mysql-auth
+   * To log wrong MySQL access attempts add to `/etc/mysql/my.cnf` in
+     `[mysqld]` or equivalent section: `log-warning = 2`
+ * nrpe
+ * named-refused
+ * nginx-http-auth
+ * nginx-limit-req
+   * To use 'nginx-limit-req' jail you should have `ngx_http_limit_req_module`
+     and define `limit_req` and `limit_req_zone` as described in nginx
+     documentation http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
+     or for example see in 'config/filter.d/nginx-limit-req.conf'
+ * nginx-botsearch
+ * nsd
+ * openhab-auth
+ * openwebmail
+ * oracleims
+ * pam-generic
+ * pass2allow-ftp
+ * perdition
+ * php-url-fopen
  * postfix
+ * postfix-rbl
+ * postfix-sasl
  * proftpd
- * pure_ftpd
- * sasl
- * sendmailauth
- * sendmailreject
- * ssh_ddos
- * ssh
+ * pure-ftpd
+ * qmail-rbl
+ * recidive
+   * Ban IPs that get repeatedly banned, but for a longer period of time -- by
+     default for one week and one day. Some warnings apply:
+   1. Make sure that your loglevel specified in fail2ban.conf/.local
+      is not at DEBUG level -- which might then cause fail2ban to fall into
+      an infinite loop constantly feeding itself with non-informative lines
+   2. Increase dbpurgeage defined in fail2ban.conf to e.g. 648000 (7.5 days)
+      to maintain entries for failed logins for sufficient amount of time
+ * roundcube-auth
+ * selinux-ssh
+ * sendmail-auth
+ * sieve
+ * slapd
+ * sogo-auth
+ * solid-pop3d
+ * squid
+ * squirrelmail
+ * sshd
+ * sshd-ddos
+ * stunnel
+   * This pre-defined jail does not specify ports to ban since this service can
+     run on many choices of ports. By default this means that all ports will be
+     blocked for IPs that are banned by this jail. You may want to override the
+     hash to add in specific ports in the `port` parameter.
+ * suhosin
+ * tine20
+ * uwimap-auth
  * vsftpd
+ * webmin-auth
  * wuftpd
- * xinetd_fail
+ * xinetd-fail
+   * This pre-defined jail does not specify ports to ban since this service can
+     run on many choices of ports. By default this means that all ports will be
+     blocked for IPs that are banned by this jail. You may want to override the
+     hash to add in specific ports in the `port` parameter.
 
 ## Defining filters ##
 
