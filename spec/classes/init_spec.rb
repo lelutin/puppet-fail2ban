@@ -2,7 +2,9 @@ require 'spec_helper'
 describe 'fail2ban' do
   let(:title) { 'fail2ban' }
   let(:facts) { {
-    :osfamily => 'Debian',
+    :os => {
+      :family => 'Debian',
+    }
   } }
 
   it { should contain_class('fail2ban::install') }
