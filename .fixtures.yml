@@ -1,3 +1,4 @@
+---
 fixtures:
   symlinks:
     "fail2ban": "#{source_dir}"

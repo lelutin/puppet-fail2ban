@@ -4,7 +4,7 @@ rvm:
   - 2.3.3
   - 2.5.0
 script:
-  - 'bundle exec rake syntax lint spec'
+  - 'bundle exec rake tests'
 env:
   - PUPPET_VERSION=4.8.2
   - PUPPET_VERSION=5.4.0
