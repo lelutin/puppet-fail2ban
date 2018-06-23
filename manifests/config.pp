@@ -1,7 +1,12 @@
-# Configure fail2ban service
+# fail2ban/manifests/config.pp
 #
 # This class should not be included directly. Users must use the fail2ban
 # class.
+#
+# @summary Configure fail2ban service
+#
+# @api private
+#
 class fail2ban::config {
 
   $ignoreip = $fail2ban::ignoreip
