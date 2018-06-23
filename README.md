@@ -47,9 +47,19 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
 
 ## Upgrade notices ##
 
+ * 3.0: all of the defined types for predefined jails in `fail2ban::jail::*`
+     have been removed and instead transformed into data structures with hiera.
+     If you were using the predefined jails, you will need to change your code:
+     please take a look at the new method of using them with `lookup()` further
+     down in this file.
+
  * 3.0: fail2ban::jail's `order` parameter was removed. Users should adapt their
      calls in order to remove this parameter. All jail files are now just
      individual files dropped in jail.d and order is not relevant there.
+
+ * 3.0: Deprecation notice: the `persistent_bans` parameter to the `fail2ban`
+     class is now deprecated and will be removed for the 4.0 release. fail2ban
+     can now manage persistent bans naturally by using its own sqlite3 database.
 
  * 2.0: Jail definitions have been moved to `jail.d/*.conf` files . The
      `jail.local` file is now getting removed by the module. To
@@ -100,7 +110,8 @@ global default values. These values can be overridden by individual jails.
  * `persistent_bans` Boolean value that ensure bans persist over time (0.8.x or older).
    This feature is builtin with 0.9.x.
    `/etc/fail2ban/persistent.bans` file is created and populated by
-   `/etc/fail2ban/action.d/iptables-multiport.conf`.
+   `/etc/fail2ban/action.d/iptables-multiport.conf`. This parameter is bound to
+   be removed in release 4.0 of the module.
    Default value is false.
 
 ## Defining jails ##
