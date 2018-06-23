@@ -77,6 +77,10 @@ usedns = <%= @usedns %>
 #
 #   auto:   will use the system locale setting
 logencoding = <%= @logencoding %>
+<% if not @logpath.nil? -%>
+# Default path for log files used by jails
+logpath = <%= @logpath %>
+<% end -%>
 
 # "enabled" enables the jails.
 #  By default all jails are disabled, and it should stay this way.
@@ -91,6 +95,13 @@ enabled = <%= @enabled %>
 # By default jails have names matching their filter name
 #
 filter = <%= @filter %>
+
+<% if not @failregex.nil? -%># Regular expressions to add to all filters' failregex
+failregex = <%= @failregex %>
+<% end -%>
+<% if not @ignoreregex.nil? -%># Regular expressions to add to all filters' ignoreregex
+ignoreregex = <%= @ignoreregex %>
+<% end -%>
 
 # ACTIONS
 #

@@ -27,7 +27,10 @@ class fail2ban::config {
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
   $usedns = $fail2ban::usedns
+  $logpath = $fail2ban::logpath
   $logencoding = $fail2ban::logencoding
+  $failregex = $fail2ban::failregex
+  $ignoreregex = $fail2ban::ignoreregex
 
   case $facts['os']['family'] {
     'Debian': {

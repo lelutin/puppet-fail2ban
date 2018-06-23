@@ -68,9 +68,18 @@
 # @param usedns
 #   Default behaviour whether or not to resolve IPs when they are found in a
 #   log by a filter.
+# @param logpath
+#   Default path to log file being used by jails. This value is usually not set
+#   and logpath is defined for each jail for more clarity.
 # @param logencoding
 #   Name of the encoding of log files. If set to "auto", fail2ban will use what
 #   is set in the system's locale setting.
+# @param failregex
+#   Regular expressions to add to all filters' failregex. This is usually not
+#   used.
+# @param ignoreregex
+#   Regular expressions to add to all filters' ignoreregex. This is usually not
+#   used but could be useful to have something excluded from bans everywhere.
 #
 class fail2ban (
   # Options that change how the module behaves
@@ -97,7 +106,10 @@ class fail2ban (
   Fail2ban::Protocol $protocol           = 'tcp',
   String             $action             = '%(action_)s',
   Fail2ban::Usedns   $usedns             = 'warn',
+  Optional[String]   $logpath            = undef,
   String             $logencoding        = 'auto',
+  Optional[String]   $failregex          = undef,
+  Optional[String]   $ignoreregex        = undef,
 ) {
 
   contain fail2ban::install
