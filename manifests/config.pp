@@ -9,6 +9,9 @@
 #
 class fail2ban::config {
 
+  $persistent_bans = $fail2ban::persistent_bans
+
+  $enabled = $fail2ban::enabled
   $ignoreip = $fail2ban::ignoreip
   $bantime = $fail2ban::bantime
   $findtime = $fail2ban::findtime
@@ -16,6 +19,7 @@ class fail2ban::config {
   $ignorecommand = $fail2ban::ignorecommand
   $backend = $fail2ban::backend
   $destemail = $fail2ban::destemail
+  $sender = $fail2ban::sender
   $banaction = $fail2ban::banaction
   $chain = $fail2ban::chain
   $port = $fail2ban::port
@@ -23,7 +27,7 @@ class fail2ban::config {
   $protocol = $fail2ban::protocol
   $action = $fail2ban::action
   $usedns = $fail2ban::usedns
-  $persistent_bans = $fail2ban::persistent_bans
+  $logencoding = $fail2ban::logencoding
 
   case $facts['os']['family'] {
     'Debian': {
