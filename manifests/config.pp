@@ -9,6 +9,36 @@
 #
 class fail2ban::config {
 
+  $loglvl = $fail2ban::loglvl
+  $logtarget = $fail2ban::logtarget
+  $syslogsocket = $fail2ban::syslogsocket
+  $socket = $fail2ban::socket
+  $pidfile = $fail2ban::pidfile
+  $dbfile = $fail2ban::dbfile
+  $dbpurgeage = $fail2ban::dbpurgeage
+
+  file { '/etc/fail2ban/fail2ban.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    content => template('fail2ban/fail2ban.conf.erb'),
+  }
+
+  if $fail2ban::rm_fail2ban_local {
+    file { '/etc/fail2ban/fail2ban.local':
+      ensure => absent,
+    }
+  }
+  if $fail2ban::purge_fail2ban_dot_d {
+    file { '/etc/fail2ban/fail2ban.d':
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+    }
+  }
+
+
   $persistent_bans = $fail2ban::persistent_bans
 
   $enabled = $fail2ban::enabled

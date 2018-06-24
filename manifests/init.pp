@@ -9,14 +9,36 @@
 #
 # @api public
 #
+# @param rm_fail2ban_local
+#   Force removal of file /etc/fail2ban/fail2ban.local if present.
 # @param rm_jail_local
 #   Force removal of file /etc/fail2ban/jail.local if present.
+# @param purge_fail2ban_dot_d
+#   Remove all unmanaged files in /etc/fail2ban/fail2ban.d/
 # @param purge_jail_dot_d
 #   Remove all unmanaged files in /etc/fail2ban/jail.d/
 # @param persistent_bans
 #   Write out banned IPs to a file on teardown and restore bans when starting
 #   fail2ban back up. This option is deprecated and is bound to be removed in
 #   puppet-fail2ban 4.0
+#
+# @param loglvl
+#   Set fail2ban's loglevel.
+# @param logtarget
+#   Define where fail2ban's logs are sent.
+# @param syslogsocket
+#   Path to syslog's socket file, or "auto" for automatically discovering it.
+# @param socket
+#   Path to fail2ban's own socket file. This file is used by fail2ban-client to
+#   communicate with the daemon.
+# @param pidfile
+#   Path to fail2ban's pid file. This usually needs to be in a place where the
+#   init script or systemd unit file can find it.
+# @param dbfile
+#   Path to fail2ban's database file.
+# @param dbpurgeage
+#   Age of entries in fail2ban's database that get removed when performing a
+#   database purge operation.
 #
 # @param enabled
 #   Whether or not to enable jails by default. fail2ban's man page recommends
@@ -83,9 +105,19 @@
 #
 class fail2ban (
   # Options that change how the module behaves
-  Boolean            $rm_jail_local      = true,
-  Boolean            $purge_jail_dot_d   = true,
-  Boolean            $persistent_bans    = false,
+  Boolean            $rm_fail2ban_local    = true,
+  Boolean            $rm_jail_local        = true,
+  Boolean            $purge_fail2ban_dot_d = true,
+  Boolean            $purge_jail_dot_d     = true,
+  Boolean            $persistent_bans      = false,
+  # Options for fail2ban.conf
+  Fail2ban::Loglevel $loglvl       = 'INFO',
+  String             $logtarget    = '/var/log/fail2ban.log',
+  String             $syslogsocket = 'auto',
+  String             $socket       = '/var/run/fail2ban/fail2ban.sock',
+  String             $pidfile      = '/var/run/fail2ban/fail2ban.pid',
+  String             $dbfile       = '/var/lib/fail2ban/fail2ban.sqlite3',
+  Integer            $dbpurgeage   = 86400,
   # Options for jail.conf
   Boolean            $enabled            = false,
   String             $filter             = '%(__name__)s',
