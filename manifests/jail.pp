@@ -15,6 +15,8 @@
 #
 # @api public
 #
+# @see https://github.com/fail2ban/fail2ban/blob/0.11/man/jail.conf.5 jail.conf(5)
+#
 # @param ensure
 #   Whether resources for the defined jail should be installed or removed.
 # @param enabled
