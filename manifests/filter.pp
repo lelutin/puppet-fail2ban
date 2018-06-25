@@ -10,6 +10,17 @@
 #
 # @api public
 #
+#
+# @example defining filter for jenkins
+#   fail2ban::filter { 'jenkins':
+#     failregexes => [
+#       # Those regexes are really arbitrary examples.
+#       'Invalid login to Jenkins by user mooh by IP \'<HOST>\'',
+#       'Forced entry trial by <HOST>',
+#     ],
+#   }
+#
+#
 # @param failregexes
 #   List of regular expressions that will be run against new log lines as they
 #   reach fail2ban. The regular expressions follow the Python regular

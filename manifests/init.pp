@@ -11,6 +11,16 @@
 #
 # @see https://github.com/fail2ban/fail2ban/blob/0.11/man/jail.conf.5 jail.conf(5)
 #
+#
+# @example basic usage
+#   class { 'fail2ban: }
+#
+# @example ignore localhost and another non-routable IP
+#   class { 'fail2ban':
+#     ignoreip => ['127.0.0.1', '10.0.0.1'],
+#   }
+#
+#
 # @param rm_fail2ban_local
 #   Force removal of file /etc/fail2ban/fail2ban.local if present.
 # @param rm_jail_local

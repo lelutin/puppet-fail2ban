@@ -17,6 +17,33 @@
 #
 # @see https://github.com/fail2ban/fail2ban/blob/0.11/man/jail.conf.5 jail.conf(5)
 #
+#
+# @example creating simple jail for service
+#   fail2ban::jail { 'honeypot':
+#     findtime => 300,
+#     maxretry => 1,
+#     port     => 'all',
+#     logpath  => '/var/log/honeypot.log',
+#   }
+#
+# @example using a pre-defined jail
+#   $ssh_params = lookup('fail2ban::jail::sshd')
+#   fail2ban::jail { 'sshd':
+#     * => $ssh_params,
+#   }
+#
+# @example overriding parameters from a pre-defined jail
+#   $ssh_extra_params  = {
+#     'bantime'  => 300,
+#     'findtime' => 200,
+#     'maxretry' => 3,
+#   }
+#   $ssh_params = lookup('fail2ban::jail::sshd') + $ssh_extra_params
+#   fail2ban::jail { 'sshd':
+#     * => $ssh_params,
+#   }
+#
+#
 # @param ensure
 #   Whether resources for the defined jail should be installed or removed.
 # @param enabled
