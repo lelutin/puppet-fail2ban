@@ -21,8 +21,9 @@ class fail2ban::config {
 
   case $::osfamily {
     'Debian': {
+      $jail_template_name = "${module_name}/debian/jail.conf.erb"
+
       if versioncmp($::operatingsystemrelease, '9') < 1 {
-        $jail_template_name = "${module_name}/debian/jail.conf.erb"
         # Debian wheezy and jessie use the old fail2ban version 0.8.x which doesn't
         # have iptables-common.conf yet.
         $before_include = 'iptables-blocktype.conf'
@@ -36,9 +37,6 @@ class fail2ban::config {
             content => "#File managed by puppet\n[Init]\nblocktype = REJECT --reject-with icmp-port-unreachable",
           }
         }
-      }
-      else {
-        fail('This release of debian is unsupported, use version 3.x or higher of the fail2ban module')
       }
     }
     'RedHat': { $jail_template_name = "${module_name}/rhel/jail.conf.erb" }

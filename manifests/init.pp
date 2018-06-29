@@ -24,6 +24,11 @@ class fail2ban (
   $persistent_bans  = false,
 ) {
 
+  if versioncmp($::clientversion, '4') >= 0 {
+    # Running puppet client 4.0 or greater
+    fail("This version of the module supports only pupet 2.7 and 3.x. Since your are using a more recent version of puppet, you should think about migrating to version 3.x of this module (don't forget to read the upgrade notices)")
+  }
+
   validate_array($ignoreip)
   $valid_backends = [
       'auto',
