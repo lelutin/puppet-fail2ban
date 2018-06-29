@@ -38,6 +38,9 @@ class fail2ban::config {
           }
         }
       }
+      else {
+        $before_include = 'iptables-common.conf'
+      }
     }
     'RedHat': {
       $jail_template_name = "${module_name}/rhel/jail.conf.erb"
