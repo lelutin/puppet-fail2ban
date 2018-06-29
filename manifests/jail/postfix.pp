@@ -13,7 +13,7 @@ class fail2ban::jail::postfix (
   # Use default postfix filter
   fail2ban::jail { 'postfix':
     enabled  => true,
-    port     => 'smtp,smtps',
+    port     => 'smtp,smtps,submission',
     filter   => 'postfix',
     logpath  => $logpath,
     findtime => $findtime,

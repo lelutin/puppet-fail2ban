@@ -13,7 +13,7 @@ class fail2ban::jail::couriersmtp (
   # Use default couriersmtp filter from debian
   fail2ban::jail { 'couriersmtp':
     enabled  => true,
-    port     => 'smtp,smtps',
+    port     => 'smtp,smtps,submission',
     filter   => 'couriersmtp',
     logpath  => $logpath,
     findtime => $findtime,
