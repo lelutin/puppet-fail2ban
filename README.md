@@ -32,7 +32,7 @@ This module depends on the following modules to function:
 
 This module supports
 
- * Debian 7 and 8
+ * Debian 7, 8 and 9
  * RHEL 6 and 7
  * CentOs 6 and 7
 
