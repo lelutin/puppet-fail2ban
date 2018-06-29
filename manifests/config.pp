@@ -39,7 +39,10 @@ class fail2ban::config {
         }
       }
     }
-    'RedHat': { $jail_template_name = "${module_name}/rhel/jail.conf.erb" }
+    'RedHat': {
+      $jail_template_name = "${module_name}/rhel/jail.conf.erb"
+      $before_include = 'iptables-common.conf'
+    }
     default: { fail("Unsupported Operating System family: ${::osfamily}") }
   }
 
