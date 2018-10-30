@@ -157,7 +157,10 @@ class fail2ban (
 ) {
 
   if $persistent_bans {
-    warning('deprecation warning: This option is deprecated and is bound to be removed in puppet-fail2ban 4.0: fail2ban now restores bans across service restarts.')
+    deprecation(
+      'fail2ban_persistent_bans',
+      'This option is bound to be removed in puppet-fail2ban 4.0: fail2ban now restores bans across service restarts.'
+    )
   }
 
   contain fail2ban::install
