@@ -49,7 +49,8 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
 
  * 3.1: `fail2ban.local` and all unmanaged files in `fail2ban.d` are now being
      purged by default. Users who have local modifications that they want to
-     keep should set `$rm_fail2ban_local` and/or `$purge_fail2ban_d` to true.
+     keep should set `$rm_fail2ban_local`, `$rm_jail_local` and/or
+     `$purge_fail2ban_d` to false.
 
  * 3.0: all of the defined types for predefined jails in `fail2ban::jail::*`
      have been removed and instead transformed into data structures with hiera.
