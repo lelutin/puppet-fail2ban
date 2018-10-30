@@ -1,10 +1,11 @@
 # Puppet module for fail2ban #
 
-Install and manage fail2ban with puppet
+Install and manage fail2ban with puppet to block bruteforce attempts.
 
 To use this module just include the jail2ban class. To change default
-configurations in /etc/fail2ban/jail.conf, you can pass values to parameters to
-the fail2ban class. See section below for full list of parameters.
+configurations in `jail.conf` or `fail2ban.conf`, you can pass values to
+parameters to the fail2ban class. See section below for full list of
+parameters.
 
 Here's an example that sets default ignored IP address to local host and
 another non-routed IP:
@@ -15,10 +16,11 @@ class { 'fail2ban':
 }
 ~~~
 
-You can create a jail with the fail2ban::jail defined type (see section below)
-or you can use one of the predefined fail2ban::jail::* classes.
+You can create a jail with the `fail2ban::jail` defined type (see section below)
+and you can use one of the predefined `fail2ban::jail::*` hiera hashes as
+parameters to the `fail2ban::jail` defined type.
 
-You can also create a filter for use with jails with the fail2ban::filter
+You can also create a filter for use with jails with the `fail2ban::filter`
 defined type (see section below).
 
 [![Build Status](https://travis-ci.org/lelutin/puppet-fail2ban.svg?branch=master)](https://travis-ci.org/lelutin/puppet-fail2ban)
@@ -27,7 +29,7 @@ defined type (see section below).
 
 This module depends on the following modules to function:
 
- * puppetlabs' stdlib module (at least version 3.0.0)
+ * puppetlabs' stdlib module (at least version 4.6.0)
 
 ## Compatibility ##
 
@@ -49,8 +51,7 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
 
  * 3.1: `fail2ban.local` and all unmanaged files in `fail2ban.d` are now being
      purged by default. Users who have local modifications that they want to
-     keep should set `$rm_fail2ban_local`, `$rm_jail_local` and/or
-     `$purge_fail2ban_d` to false.
+     keep should set `$rm_fail2ban_local` and/or `$purge_fail2ban_d` to false.
 
  * 3.0: all of the defined types for predefined jails in `fail2ban::jail::*`
      have been removed and instead transformed into data structures with hiera.
@@ -58,7 +59,7 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
      please take a look at the new method of using them with `lookup()` further
      down in this file.
 
- * 3.0: fail2ban::jail's `order` parameter was removed. Users should adapt their
+ * 3.0: `fail2ban::jail`'s `order` parameter was removed. Users should adapt their
      calls in order to remove this parameter. All jail files are now just
      individual files dropped in jail.d and order is not relevant there.
 
@@ -68,12 +69,12 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
 
  * 2.0: Jail definitions have been moved to `jail.d/*.conf` files . The
      `jail.local` file is now getting removed by the module. To
-     avoid this, set rm_jail_local to true.
+     avoid this, set `rm_jail_local` to true.
 
- * 2.0: `ignoreip` both on the main class and in fail2ban::jail (and thus in all
-     fail2ban::jail::* classes too) is no longer expected to be a string. It is
-     now a list of strings that automatically gets joined with spaces. Users of
-     the fail2ban module will need to adjust these parameters.
+ * 2.0: `ignoreip` both on the main class and in `fail2ban::jail` (and thus in
+     all `fail2ban::jail::*` classes too) is no longer expected to be a string.
+     It is now a list of strings that automatically gets joined with spaces.
+     Users of the fail2ban module will need to adjust these parameters.
 
  * The directory `/etc/fail2ban/jail.d` is now getting purged by default. Users
      who would like to preserve files in this directory that are not managed by
@@ -122,7 +123,7 @@ global default values. These values can be overridden by individual jails.
 ## Defining jails ##
 
 To define a jail, you can use one of the jail parameter presets (see list
-below). Or you can define your own with the fail2ban::jail defined type:
+below). Or you can define your own with the `fail2ban::jail` defined type:
 
 ~~~
 fail2ban::jail { 'jenkins':
@@ -169,7 +170,7 @@ used to configure jails more easily. Each of them is a data point -- a hash of
 parameter and values -- in hiera that needs to be gathered with the `lookup()`
 function. Each hash represents parameters and values that should be passed in
 to the `fail2ban::jail` defined type documented above and has a lookup key of
-'fail2ban::jail::$jailname'.
+`fail2ban::jail::$jailname`.
 
 For example to configure a jail for the ssh service with the preset parameters:
 
@@ -304,7 +305,7 @@ sure to either use the same string as the lookup key as the resource name for
 ## Defining filters ##
 
 You might want to define new filters for your new jails. To do that, you can
-use the fail2ban::filter defined type:
+use the `fail2ban::filter` defined type:
 
 ~~~
 fail2ban::filter { 'jenkins':
