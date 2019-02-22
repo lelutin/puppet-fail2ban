@@ -42,7 +42,7 @@ This module supports
 Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
 :---------------|:----------:|:----------:|:----------:|:----------:
 **2.x**         | **yes**    | **yes**    | no         | no
-**3.x**         | no         | no         | **yes**    | **yes**
+**3.x**         | no         | no         | **4.10+**  | **yes**
 
 Version 2.x is in maintenance mode only. If you need to use this module with
 puppet 4.x or 5.x then you should use version 3.x of this module.
