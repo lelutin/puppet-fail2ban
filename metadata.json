@@ -34,7 +34,6 @@
       "operatingsystemrelease":[ "6", "7" ]
     }
   ],
-  "data_provider": "hiera",
   "tags": ["fail2ban", "iptables", "bruteforce", "firewall"]
 }
 
