@@ -1,4 +1,3 @@
 forge 'https://forgeapi.puppetlabs.com'
 
-mod 'lelutin-fail2ban',
-  :git => '/vagrant/'
+metadata

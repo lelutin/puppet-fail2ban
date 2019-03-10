@@ -336,3 +336,35 @@ Here's the full list of parameters you can use with the defined type:
    Lines will be placed in the file as they are in the list. Default value is
    an empty list.
 
+## Running tests ##
+
+This module has some tests that you can run to ensure that everything is
+working as expected.
+
+### Unit tests ###
+
+The unit tests are built with rspec-puppet. You can use the Gemfile with the
+`tests` group to install what's needed to run the unit test.
+
+The usual rspec-puppet_helper rake tasks are available. You can also use a
+convenience task `tests` to run everything. The following two commands achieve
+the same result:
+
+    rake syntax lint spec
+    rake tests
+
+### Funtionality testing ###
+
+Unit tests are great, but sometimes it's nice to actually run the code in order
+to see if everything is setup properly and that the software is working as
+expected.
+
+This repository has a `Vagrantfile` that you can use to bring up a VM and run
+this module inside. The `Vagrantfile` expects you to have the vagrant plugin
+`vagrant-librarian-puppet` installed. If you don't have it you can also
+download this module's requirements (see `metadata.json`) and place them inside
+`tests/modules/`.
+
+A couple of manifest files inside `tests/` prepare sets of use cases. You can
+modify the `Vagrantfile` to use any of them for provisioning the VM.
+

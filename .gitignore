@@ -3,3 +3,7 @@
 spec/fixtures
 /doc
 /.yardoc
+.librarian
+.tmp
+/tests/Puppetfile.lock
+/tests/modules/**
