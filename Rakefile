@@ -1,3 +1,5 @@
+require 'puppetlabs_spec_helper/rake_tasks'
+
 task :tests do
   require 'puppetlabs_spec_helper/rake_tasks'
   PuppetSyntax.exclude_paths = ["spec/fixtures/**/*.pp", "vendor/**/*", "pkg/**/*"]
