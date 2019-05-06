@@ -19,7 +19,7 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease":[ "9" ]
+      "operatingsystemrelease":[ "9", "10" ]
     },
     {
       "operatingsystem": "Ubuntu",
