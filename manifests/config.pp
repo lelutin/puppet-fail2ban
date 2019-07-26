@@ -42,6 +42,7 @@ class fail2ban::config {
   $persistent_bans = $fail2ban::persistent_bans
 
   $enabled = $fail2ban::enabled
+  $filter = $fail2ban::filter
   $ignoreip = $fail2ban::ignoreip
   $bantime = $fail2ban::bantime
   $findtime = $fail2ban::findtime
@@ -50,7 +51,9 @@ class fail2ban::config {
   $backend = $fail2ban::backend
   $destemail = $fail2ban::destemail
   $sender = $fail2ban::sender
+  $fail2ban_agent = $fail2ban::fail2ban_agent
   $banaction = $fail2ban::banaction
+  $banaction_allports = $fail2ban::banaction_allports
   $chain = $fail2ban::chain
   $port = $fail2ban::port
   $mta = $fail2ban::mta
