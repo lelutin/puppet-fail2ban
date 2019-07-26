@@ -49,6 +49,15 @@ puppet 4.x or 5.x then you should use version 3.x of this module.
 
 ## Upgrade notices ##
 
+ * 3.2: No pre-defined jail sends out an email as an action by default. Users
+     who still want to receive emails when an action is taken can override the
+     `action` field from the predefined jail data and append the action the
+     following: `\n           %(mta)s-whois[name=%(__name__)s,
+     dest=\"%(destemail)s\"]`
+
+     Also note that puppet 4.x prior to 4.10 is not supported anymore, and that
+     hiera 5 is now required (hence the limitation for the puppet version.
+
  * 3.1: `fail2ban.local` and all unmanaged files in `fail2ban.d` are now being
      purged by default. Users who have local modifications that they want to
      keep should set `$rm_fail2ban_local` and/or `$purge_fail2ban_d` to false.
