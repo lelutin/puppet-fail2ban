@@ -57,6 +57,11 @@ backend = <%= @backend %>
 #        but it will be logged as info.
 usedns = <%= @usedns %>
 
+<% if not @logpath.nil? -%>
+# Default path for log files used by jails
+logpath = <%= @logpath %>
+<% end -%>
+
 #
 # Destination email address used solely for the interpolations in
 # jail.{conf,local} configuration files.
