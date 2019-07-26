@@ -123,6 +123,8 @@ class fail2ban (
   Boolean            $purge_jail_dot_d     = true,
   Boolean            $persistent_bans      = false,
   # Options for fail2ban.conf
+  String[1]          $fail2ban_conf_template
+    = 'fail2ban/fail2ban.conf.erb',
   Fail2ban::Loglevel $loglvl       = 'INFO',
   String             $logtarget    = '/var/log/fail2ban.log',
   String             $syslogsocket = 'auto',
@@ -131,6 +133,8 @@ class fail2ban (
   String             $dbfile       = '/var/lib/fail2ban/fail2ban.sqlite3',
   Integer            $dbpurgeage   = 86400,
   # Options for jail.conf
+  String[1]         $jail_conf_template
+    = $fail2ban::params::jail_conf_template,
   Boolean            $enabled            = false,
   String             $filter             = '%(__name__)s',
   Array[String, 0]   $ignoreip           = ['127.0.0.1'],
@@ -154,7 +158,7 @@ class fail2ban (
   String             $logencoding        = 'auto',
   Optional[String]   $failregex          = undef,
   Optional[String]   $ignoreregex        = undef,
-) {
+) inherits fail2ban::params {
 
   if $persistent_bans {
     deprecation(

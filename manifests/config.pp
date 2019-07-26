@@ -22,7 +22,7 @@ class fail2ban::config {
     owner   => 'root',
     group   => 0,
     mode    => '0644',
-    content => template('fail2ban/fail2ban.conf.erb'),
+    content => template($fail2ban::fail2ban_conf_template),
   }
 
   if $fail2ban::rm_fail2ban_local {
@@ -65,17 +65,7 @@ class fail2ban::config {
   $failregex = $fail2ban::failregex
   $ignoreregex = $fail2ban::ignoreregex
 
-  case $facts['os']['family'] {
-    'Debian': {
-      $jail_template_name = "${module_name}/debian/jail.conf.erb"
-      $before_include = 'iptables-common.conf'
-    }
-    'RedHat': {
-      $jail_template_name = "${module_name}/rhel/jail.conf.erb"
-      $before_include = 'iptables-common.conf'
-    }
-    default: { fail("Unsupported Operating System family: ${facts['os']['family']}") }
-  }
+  $before_include = 'iptables-common.conf'
 
   if $fail2ban::purge_jail_dot_d {
     file { '/etc/fail2ban/jail.d':
@@ -104,7 +94,7 @@ class fail2ban::config {
     owner   => 'root',
     group   => 0,
     mode    => '0644',
-    content => template($jail_template_name),
+    content => template($fail2ban::jail_conf_template),
   }
 
   if $fail2ban::rm_jail_local {
