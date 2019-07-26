@@ -47,7 +47,7 @@ fail2ban::jail::asterisk:
   port: "iax,sip,sip-tls,2000,5000,4520"
   protocol: "all"
   logpath: "/var/log/asterisk/messages"
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]\n           %(mta)s-whois[name=%(__name__)s, dest=\"%(destemail)s\"]"
+  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   maxretry: 10
 fail2ban::jail::courier-auth:
   port: "smtp,smtps,submission,imap,imaps,pop3,pop3s"
@@ -88,7 +88,7 @@ fail2ban::jail::exim-spam:
 fail2ban::jail::freeswitch:
   port: "iax,sip,sip-tls"
   logpath: "/var/log/freeswitch.log"
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]\n           %(mta)s-whois[name=%(__name__)s, dest=\"%(destemail)s\"]"
+  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   maxretry: 10
 fail2ban::jail::froxlor-auth:
   port: "http,https"
