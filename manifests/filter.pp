@@ -65,7 +65,7 @@ define fail2ban::filter (
     content => template('fail2ban/filter.erb'),
     owner   => 'root',
     group   => 0,
-    mode    => '0644',
+    mode    => $config_file_mode,
     require => Class['fail2ban::config'],
     notify  => Class['fail2ban::service'],
   }

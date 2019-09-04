@@ -144,7 +144,7 @@ define fail2ban::jail (
     content => template('fail2ban/jail.erb'),
     owner   => 'root',
     group   => 0,
-    mode    => '0644',
+    mode    => $config_file_mode,
     notify  => Class['fail2ban::service']
   }
 

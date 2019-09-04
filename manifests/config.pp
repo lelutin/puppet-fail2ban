@@ -16,12 +16,13 @@ class fail2ban::config {
   $pidfile = $fail2ban::pidfile
   $dbfile = $fail2ban::dbfile
   $dbpurgeage = $fail2ban::dbpurgeage
+  $config_file_mode = $fail2ban::config_file_mode
 
   file { '/etc/fail2ban/fail2ban.conf':
     ensure  => present,
     owner   => 'root',
     group   => 0,
-    mode    => '0644',
+    mode    => $config_file_mode,
     content => template('fail2ban/fail2ban.conf.erb'),
   }
 
@@ -88,14 +89,14 @@ class fail2ban::config {
     file { '/etc/fail2ban/persistent.bans':
       ensure  => 'present',
       replace => 'no',
-      mode    => '0644',
+      mode    => $config_file_mode,
     }
   }
   file { '/etc/fail2ban/action.d/iptables-multiport.conf':
     ensure  => present,
     owner   => 'root',
     group   => 0,
-    mode    => '0644',
+    mode    => $config_file_mode,
     content => template('fail2ban/iptables-multiport.erb'),
   }
 
@@ -103,7 +104,7 @@ class fail2ban::config {
     ensure  => present,
     owner   => 'root',
     group   => 0,
-    mode    => '0644',
+    mode    => $config_file_mode,
     content => template($jail_template_name),
   }
 
