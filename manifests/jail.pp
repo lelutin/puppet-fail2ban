@@ -49,6 +49,8 @@
 # @param enabled
 #   Whether or not a jail is enabled. Setting this to false makes it possible
 #   to keep configuration around for a certain jail but temporarily disable it.
+# @param config_file_mode
+#   Permission mode given to the jail file created by this defined type.
 #
 # @param port
 #   Comma separated list of ports, port ranges or service names (as found in
@@ -102,6 +104,7 @@
 define fail2ban::jail (
   Enum['present','absent']     $ensure             = 'present',
   Boolean                      $enabled            = true,
+  String                       $config_file_mode   = '0644',
   # Params that override default settings for a particular jail
   Optional[Fail2ban::Port]     $port               = undef,
   Optional[String]             $filter             = undef,
