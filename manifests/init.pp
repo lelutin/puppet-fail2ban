@@ -11,6 +11,12 @@
 #
 # @see https://github.com/fail2ban/fail2ban/blob/0.11/man/jail.conf.5 jail.conf(5)
 #
+# @note `blocktype` is not offered as a global option since it's not a great
+#   idea to set a globally used default value for this option. It's used
+#   differently by all actions and different values are expected from each
+#   action, so it's generally recommended to override this for each action
+#   individually by creating a `.local` file in `actions.d`.
+#
 #
 # @example basic usage
 #   class { 'fail2ban: }
