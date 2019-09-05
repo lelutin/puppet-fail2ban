@@ -348,6 +348,36 @@ Here's the full list of parameters you can use with the defined type:
    Lines will be placed in the file as they are in the list. Default value is
    an empty list.
 
+## nftables support ##
+
+Fail2ban supports nftables with the `nftables-multiport` and
+`nftables-allports` actions. Since nftables is now used by default since
+debian buster, here's how to quickly enable usage of nftables for fail2ban:
+
+Only two parameters need to be changed.
+
+ * `chain` needs to be set to lowercase
+ * `banaction` needs to be set to the action of your choice.
+
+Here's an example minimal configuration for using nftables:
+
+~~~
+class { 'fail2ban':
+  banaction      => 'nftables-multiport',
+  chain          => 'input',
+}
+$ssh_params = lookup('fail2ban::jail::sshd')
+fail2ban::jail { 'sshd':
+  * => $ssh_params,
+}
+~~~
+
+Do note that upon service restart, fail2ban will not create the ip set and the
+corresponding rule right away. They will only be added whenever the first
+"action" is taken (so when banning the first IP for a jail). After that you
+should see both the set and the rule for that jail when running
+`nft list ruleset`.
+
 ## Running tests ##
 
 This module has some tests that you can run to ensure that everything is
