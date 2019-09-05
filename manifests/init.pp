@@ -125,13 +125,14 @@ class fail2ban (
   # Options for fail2ban.conf
   String[1]          $fail2ban_conf_template
     = 'fail2ban/fail2ban.conf.erb',
-  Fail2ban::Loglevel $loglvl       = 'INFO',
-  String             $logtarget    = '/var/log/fail2ban.log',
-  String             $syslogsocket = 'auto',
-  String             $socket       = '/var/run/fail2ban/fail2ban.sock',
-  String             $pidfile      = '/var/run/fail2ban/fail2ban.pid',
-  String             $dbfile       = '/var/lib/fail2ban/fail2ban.sqlite3',
-  Integer            $dbpurgeage   = 86400,
+  Fail2ban::Loglevel $loglvl           = 'INFO',
+  String             $logtarget        = '/var/log/fail2ban.log',
+  String             $syslogsocket     = 'auto',
+  String             $config_file_mode = '0644',
+  String             $socket           = '/var/run/fail2ban/fail2ban.sock',
+  String             $pidfile          = '/var/run/fail2ban/fail2ban.pid',
+  String             $dbfile           = '/var/lib/fail2ban/fail2ban.sqlite3',
+  Integer            $dbpurgeage       = 86400,
   # Options for jail.conf
   String[1]         $jail_conf_template
     = $fail2ban::params::jail_conf_template,
