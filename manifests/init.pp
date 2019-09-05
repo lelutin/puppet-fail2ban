@@ -33,6 +33,8 @@
 #   Write out banned IPs to a file on teardown and restore bans when starting
 #   fail2ban back up. This option is deprecated and is bound to be removed in
 #   puppet-fail2ban 4.0
+# @param config_file_mode
+#   File mode set on all fail2ban configuration files managed by this module.
 #
 # @param loglvl
 #   Set fail2ban's loglevel.
@@ -122,13 +124,13 @@ class fail2ban (
   Boolean            $purge_fail2ban_dot_d = true,
   Boolean            $purge_jail_dot_d     = true,
   Boolean            $persistent_bans      = false,
+  String             $config_file_mode     = '0644',
   # Options for fail2ban.conf
   String[1]          $fail2ban_conf_template
     = 'fail2ban/fail2ban.conf.erb',
   Fail2ban::Loglevel $loglvl           = 'INFO',
   String             $logtarget        = '/var/log/fail2ban.log',
   String             $syslogsocket     = 'auto',
-  String             $config_file_mode = '0644',
   String             $socket           = '/var/run/fail2ban/fail2ban.sock',
   String             $pidfile          = '/var/run/fail2ban/fail2ban.pid',
   String             $dbfile           = '/var/lib/fail2ban/fail2ban.sqlite3',
