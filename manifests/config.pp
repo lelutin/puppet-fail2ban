@@ -164,4 +164,5 @@ class fail2ban::config {
       mode   => $config_file_mode,
       source => 'puppet:///modules/fail2ban/debian/action_d_iptables-common.conf',
     }
+  }
 }
