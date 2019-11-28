@@ -134,4 +134,34 @@ class fail2ban::config {
     }
   }
 
+  # Here, we're checking a fact that might not have a value on more recent
+  # hosts with a recent version of facter. That's all right since we're only
+  # aiming to add support for debian jessie with what package versions are
+  # available in that release and its backports source.
+  if $facts['operatingsystemmajrelease'] == '8' {
+    # Those files will imitate how configuration is laid out in more recent
+    # versions so that jails will actually work. It's an ugly hack that's
+    # just meant to make it possible to drag some old iptables-based hosts
+    # around until they finally get upgraded.
+    file { '/etc/fail2ban/paths-common.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 0,
+      mode   => $config_file_mode,
+      source => 'puppet:///modules/fail2ban/debian/paths-common.conf',
+    }
+    file { '/etc/fail2ban/paths-debian.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 0,
+      mode   => $config_file_mode,
+      source => 'puppet:///modules/fail2ban/debian/paths-debian.conf',
+    }
+    file { '/etc/fail2ban/action.d/iptables-common.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 0,
+      mode   => $config_file_mode,
+      source => 'puppet:///modules/fail2ban/debian/action_d_iptables-common.conf',
+    }
 }
