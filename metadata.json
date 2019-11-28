@@ -1,6 +1,6 @@
 {
   "name": "LeLutin-fail2ban",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "author": "LeLutin",
   "summary": "Manage fail2ban bruteforce protector",
   "license": "GPL-3.0+",
