@@ -10,6 +10,8 @@
 #
 # @api public
 #
+# @see https://fail2ban.readthedocs.io/en/latest/filters.html
+#
 #
 # @example defining filter for jenkins
 #   fail2ban::filter { 'jenkins':
