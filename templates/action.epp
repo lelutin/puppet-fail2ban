@@ -1,0 +1,40 @@
+# Fail2Ban configuration file
+#
+
+<% if ! $includes.empty or ! $includes_after.empty { -%>
+[INCLUDES]
+<%   if ! $includes.empty { -%>
+before = <%= $includes.join("\n         ") %>
+<%   } -%>
+<%   if ! $includes_after.empty { -%>
+after = <%= $includes_after.join("\n        ") %>
+<%   } -%>
+
+<% } -%>
+[Definition]
+
+<% $additional_defs.each |String $line| { -%>
+<%=  $line %>
+<% } -%>
+##
+<% if ! $actionstart.empty { -%>
+actionstart = <%= $actionstart.join("\n              ") %>
+
+<% } -%>
+<% if ! $actionstop.empty { -%>
+actionstop = <%= $actionstop.join("\n             ") %>
+
+<% } -%>
+<% if ! $actioncheck.empty { -%>
+actioncheck = <%= $actioncheck.join("\n              ") %>
+
+<% } -%>
+actionban = <%= $actionban.join("\n            ") %>
+
+actionunban = <%= $actionunban.join("\n              ") %>
+
+[Init]
+
+<% $init.each |String $line| { -%>
+<%=  $line %>
+<% } -%>
