@@ -11,7 +11,8 @@ class fail2ban::config {
 
   # This variable is determined here since it overrides the normally permitted
   # values.
-  if $facts['os']['release']['major'] == '8' {
+  if $facts['os']['family'] == 'Debian' and
+    $facts['os']['release']['major'] == '8' {
     # fail2ban 0.8 had integer loglevels, whereas 0.9 has symbolic names for
     # levels.
     #
