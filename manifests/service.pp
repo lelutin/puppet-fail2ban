@@ -9,10 +9,12 @@
 #
 class fail2ban::service {
 
-  service { 'fail2ban':
-    ensure    => running,
-    enable    => true,
-    hasstatus => true,
+  if $fail2ban::manage_service {
+    service { 'fail2ban':
+      ensure    => running,
+      enable    => true,
+      hasstatus => true,
+    }
   }
 
 }

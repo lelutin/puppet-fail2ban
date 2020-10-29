@@ -122,6 +122,8 @@
 # @param ignoreregex
 #   Regular expressions to add to all filters' ignoreregex. This is usually not
 #   used but could be useful to have something excluded from bans everywhere.
+# @param manage_service
+#   Manage the fail2ban service, true by default
 #
 class fail2ban (
   # Options that change how the module behaves
@@ -167,6 +169,7 @@ class fail2ban (
   String             $logencoding        = 'auto',
   Optional[String]   $failregex          = undef,
   Optional[String]   $ignoreregex        = undef,
+  Boolean            $manage_service     = true,
 ) inherits fail2ban::params {
 
   if $persistent_bans {
