@@ -47,6 +47,7 @@ fail2ban::jail::asterisk:
   port: "iax,sip,sip-tls,2000,5000,4520"
   protocol: "all"
   logpath: "/var/log/asterisk/messages"
+  # yamllint disable-line rule:line-length
   action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   maxretry: 10
 fail2ban::jail::courier-auth:
@@ -88,6 +89,7 @@ fail2ban::jail::exim-spam:
 fail2ban::jail::freeswitch:
   port: "iax,sip,sip-tls"
   logpath: "/var/log/freeswitch.log"
+  # yamllint disable-line rule:line-length
   action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   maxretry: 10
 fail2ban::jail::froxlor-auth:
@@ -121,6 +123,7 @@ fail2ban::jail::monit:
   logpath: "/var/log/monit"
 fail2ban::jail::murmur:
   port: "64738"
+  # yamllint disable-line rule:line-length
   action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=tcp, chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=udp, chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   logpath: "/var/log/mumble-server/mumble-server.log"
 # To log wrong MySQL access attempts add to /etc/my.cnf in [mysqld] or
@@ -151,7 +154,8 @@ fail2ban::jail::nginx-http-auth:
   port: "http,https"
   logpath: "%(nginx_error_log)s"
 # To use 'nginx-limit-req' jail you should have `ngx_http_limit_req_module`
-# and define `limit_req` and `limit_req_zone` as described in nginx documentation
+# and define `limit_req` and `limit_req_zone` as described in nginx
+# documentation:
 # http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
 # or for example see in 'config/filter.d/nginx-limit-req.conf'
 fail2ban::jail::nginx-limit-req:
@@ -163,6 +167,7 @@ fail2ban::jail::nginx-botsearch:
   maxretry: 2
 fail2ban::jail::nsd:
   port: "53"
+  # yamllint disable-line rule:line-length
   action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
   logpath: "/var/log/nsd.log"
 fail2ban::jail::openhab-auth:
@@ -301,4 +306,3 @@ fail2ban::jail::xinetd-fail:
   logpath: "%(syslog_daemon)s"
   backend: "%(syslog_backend)s"
   maxretry: 2
-
