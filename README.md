@@ -44,13 +44,22 @@ This module supports
 
 Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
 :---------------|:----------:|:----------:|:----------:|:----------:
-**2.x**         | **yes**    | **yes**    | no         | no
 **3.x**         | no         | no         | **4.10+**  | **yes**
 
-Version 2.x is in maintenance mode only. If you need to use this module with
-puppet 4.x or 5.x then you should use version 3.x of this module.
-
 ## Upgrade notices ##
+
+ * 3.3: Support for the 2.x branch was discontinued. Only puppet 4.x+ is
+     supported from now on.
+
+     Technical documentation in the README.md file is now limited to only
+     examples of how to use the module. For a technical reference of all
+     classes, defined types and their parameters, please refer to REFERENCE.md
+     or generate html documentation with puppet-strings.
+
+     Note that debian 8 is still being supported for a little while, but with
+     the expectation that users use this module with puppet 4.x+. Debian 8's
+     support cycle is almost over, thus so it is for this module. Expect
+     support to be removed from this module in the coming months.
 
  * 3.2: No pre-defined jail sends out an email as an action by default. Users
      who still want to receive emails when an action is taken can override the
@@ -377,6 +386,24 @@ corresponding rule right away. They will only be added whenever the first
 "action" is taken (so when banning the first IP for a jail). After that you
 should see both the set and the rule for that jail when running
 `nft list ruleset`.
+
+## Generating documentation ##
+
+This module uses puppet-strings comments, so you can generate HTML
+documentation in the `docs` directory with the following command:
+
+~~~
+puppet strings generate manifests
+~~~
+
+At each release, documentation is also output to the REFERENCES.md file in
+markdown format with the following command. This makes the reference
+documentation show up on forge.puppet.com and you can consult it after cloning
+the repository even if you don't have puppet-strings installed:
+
+~~~
+puppet strings generate --format markdown
+~~~
 
 ## Running tests ##
 
