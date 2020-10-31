@@ -10,6 +10,9 @@ describe 'fail2ban' do
 
     :os => {
       :family => 'Debian',
+      :release => {
+        :major => '10',
+      },
     }
   } }
 
