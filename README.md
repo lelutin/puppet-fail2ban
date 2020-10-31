@@ -8,7 +8,8 @@ ___Table of contents___:
     1. [Defining jails](#defining-jails)
         1. [Predefined jails](#predefined-jails)
     1. [Defining filters](#defining-filters)
-    1. [nftables support](#nftables-support)
+    1. [Defining actions](#defining-actions)
+        1. [nftables support](#nftables-support)
 1. [Requirements](#requirements)
 1. [Compatibility](#compatibility)
 1. [Upgrade notices](#upgrade-notices)
@@ -220,13 +221,37 @@ fail2ban::filter { 'jenkins':
 }
 ~~~
 
-### nftables support ###
+### Defining actions ###
+
+Fail2ban can do pretty much what you want it to do when an IP matches a filter
+enough times during the rate limit set by the jail using both the filter and
+actions.
+
+To define a new action, you can use the `fail2ban::action` defined type.
+Here's an example that would call out to a fictitious REST API whenever an IP
+address is banned and unbanned:
+
+~~~
+fail2ban::action { 'rest_api':
+  ensure      => present,
+  actionban   => ['curl -s -X PUT http://yourapi:8080/theapi/v4/firewall/rules -H "Content-Type:application/json" -H "Authorization: ..." -d "{\"ban\": \"<ip>\"}"'],
+  actionunban => ['curl -s -X DELETE http://yourapi:8080/theapi/v4/firewall/rules/1 -H "Authorization: ..."'],
+}
+~~~
+
+#### nftables support ####
 
 Fail2ban supports nftables with the `nftables-multiport` and
-`nftables-allports` actions. Since nftables is now used by default since
-debian buster, here's how to quickly enable usage of nftables for fail2ban:
+`nftables-allports` actions that are shipped with the fail2ban binary. These
+actions use nftables' `set` functionality to contain banned IPs instead of
+adding a firewall rule for each new banned IP. This should make your firewall
+more efficient if you have lots of banned IPs.
 
-Only two parameters need to be changed.
+Since nftables is now used by default on Debian since the buster release (but
+`iptables` is still used by fail2ban's default action), here's how to quickly
+enable usage of nftables for fail2ban:
+
+Only two global parameters need to be changed:
 
  * `chain` needs to be set to lowercase
  * `banaction` needs to be set to the action of your choice.
@@ -249,6 +274,10 @@ corresponding rule right away. They will only be added whenever the first
 "action" is taken (so when banning the first IP for a jail). After that you
 should see both the set and the rule for that jail when running
 `nft list ruleset`.
+
+To list which IPs are currently banned, you can either use `fail2ban-client
+status sshd` or list elements of the corresponding set: `nft list set
+filter f2b-sshd`
 
 ## Requirements ##
 
