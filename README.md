@@ -1,14 +1,51 @@
 # Puppet module for fail2ban #
 
+___Table of contents___:
+
+1. [Overview](#overview)
+1. [Module description](#module-description)
+1. [Usage](#usage)
+    1. [Defining jails](#defining-jails)
+        1. [Predefined jails](#predefined-jails)
+    1. [Defining filters](#defining-filters)
+    1. [nftables support](#nftables-support)
+1. [Requirements](#requirements)
+1. [Compatibility](#compatibility)
+1. [Upgrade notices](#upgrade-notices)
+1. [Documentation](#documentation)
+1. [Testing](#testing)
+    1. [Unit tests](#unit-tests)
+    1. [Functionality tests](#functionality-tests)
+
+## Overview ##
+
 Install and manage fail2ban with puppet to block bruteforce attempts.
 
-To use this module just include the jail2ban class. To change default
-configurations in `jail.conf` or `fail2ban.conf`, you can pass values to
-parameters to the fail2ban class. See section below for full list of
-parameters.
+## Module description ##
 
-Here's an example that sets default ignored IP address to local host and
-another non-routed IP:
+With this module, you can install fail2ban and define any configuration for
+the service in order to slow down bruteforce attempts on services that need to
+be exposed to the internet.
+
+This module lets you create:
+
+ * actions (e.g. what to do when there's a problematic case)
+ * filters (e.g. how to discover problematic cases)
+ * jails (e.g. combining actions and filters with a rate limit on filter
+     matches)
+
+[![Build Status](https://travis-ci.org/lelutin/puppet-fail2ban.svg?branch=master)](https://travis-ci.org/lelutin/puppet-fail2ban)
+
+## Usage ##
+
+To use this module just include the fail2ban class.
+
+To change default configurations in `jail.conf` or `fail2ban.conf`, you can
+pass values to parameters to the fail2ban class. See technical reference
+documentation for full list of parameters.
+
+Here's an example that sets default ignored IP address for all jails to
+localhost and another non-routed IP:
 
 ~~~
 class { 'fail2ban':
@@ -16,132 +53,7 @@ class { 'fail2ban':
 }
 ~~~
 
-You can create a jail with the `fail2ban::jail` defined type (see section below)
-and you can use one of the predefined `fail2ban::jail::*` hiera hashes as
-parameters to the `fail2ban::jail` defined type.
-
-You can also create a filter for use with jails with the `fail2ban::filter`
-defined type (see section below).
-
-[![Build Status](https://travis-ci.org/lelutin/puppet-fail2ban.svg?branch=master)](https://travis-ci.org/lelutin/puppet-fail2ban)
-
-## Requirements ##
-
-This module depends on the following modules to function:
-
- * puppetlabs' stdlib module (at least version 4.6.0)
-
-## Compatibility ##
-
-This module supports
-
- * Debian 8, 9, 10
-  * Debian 8 support supposes that clients are using puppet 4.x (e.g. backports
-    or upstream packages)
- * Ubuntu 18.04
- * RHEL 6, 7 and 8
- * CentOs 6, 7 and 8
-
-Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
-:---------------|:----------:|:----------:|:----------:|:----------:
-**3.x**         | no         | no         | **4.10+**  | **yes**
-
-## Upgrade notices ##
-
- * 3.3: Support for the 2.x branch was discontinued. Only puppet 4.x+ is
-     supported from now on.
-
-     Technical documentation in the README.md file is now limited to only
-     examples of how to use the module. For a technical reference of all
-     classes, defined types and their parameters, please refer to REFERENCE.md
-     or generate html documentation with puppet-strings.
-
-     Note that debian 8 is still being supported for a little while, but with
-     the expectation that users use this module with puppet 4.x+. Debian 8's
-     support cycle is almost over, thus so it is for this module. Expect
-     support to be removed from this module in the coming months.
-
- * 3.2: No pre-defined jail sends out an email as an action by default. Users
-     who still want to receive emails when an action is taken can override the
-     `action` field from the predefined jail data and append the action the
-     following: `\n           %(mta)s-whois[name=%(__name__)s,
-     dest=\"%(destemail)s\"]`
-
-     Also note that puppet 4.x prior to 4.10 is not supported anymore, and that
-     hiera 5 is now required (hence the limitation for the puppet version.
-
- * 3.1: `fail2ban.local` and all unmanaged files in `fail2ban.d` are now being
-     purged by default. Users who have local modifications that they want to
-     keep should set `$rm_fail2ban_local` and/or `$purge_fail2ban_d` to false.
-
- * 3.0: all of the defined types for predefined jails in `fail2ban::jail::*`
-     have been removed and instead transformed into data structures with hiera.
-     If you were using the predefined jails, you will need to change your code:
-     please take a look at the new method of using them with `lookup()` further
-     down in this file.
-
- * 3.0: `fail2ban::jail`'s `order` parameter was removed. Users should adapt their
-     calls in order to remove this parameter. All jail files are now just
-     individual files dropped in jail.d and order is not relevant there.
-
- * 3.0: Deprecation notice: the `persistent_bans` parameter to the `fail2ban`
-     class is now deprecated and will be removed for the 4.0 release. fail2ban
-     can now manage persistent bans naturally by using its own sqlite3 database.
-
- * 2.0: Jail definitions have been moved to `jail.d/*.conf` files . The
-     `jail.local` file is now getting removed by the module. To
-     avoid this, set `rm_jail_local` to true.
-
- * 2.0: `ignoreip` both on the main class and in `fail2ban::jail` (and thus in
-     all `fail2ban::jail::*` classes too) is no longer expected to be a string.
-     It is now a list of strings that automatically gets joined with spaces.
-     Users of the fail2ban module will need to adjust these parameters.
-
- * The directory `/etc/fail2ban/jail.d` is now getting purged by default. Users
-     who would like to preserve files in this directory that are not managed by
-     puppet should now set the `purge_jail_dot_d` parameter to the `fail2ban`
-     class to false.
-
-## Parameters to fail2ban class ##
-
-All of the values configured through the `fail2ban` class are used to configure
-global default values. These values can be overridden by individual jails.
-
- * `ignoreip` Default ignored IP(s) when parsing logs. Default value is
-   ['127.0.0.1']. Multiple values should be placed in an array.
- * `bantime` Number of seconds during which reaching maxretry gets an IP
-   banned. Default value is '600'
- * `findtime` Time interval (in seconds) before the current time where failures
-   will count towards a ban. Default is '600'.
- * `maxretry` Number of times an IP address must trigger failgregexes to get
-   banned. Default value is '3'
- * `backend` How should fail2ban look for modifications on log files. Default
-   value is 'auto'
- * `destemail` Default email address that should get notifications with the
-   actions that send emails. Default value is 'root@localhost'
- * `banaction` Default action to use for jails. Default value is
-   'iptables-multiport'
- * `mta` Mail Transfer Agent program used for sending out email for actions
-   that send out emails. Default value is 'sendmail'
- * `protocol` Default protocol for jails. Default value is 'tcp'
- * `action` Default action for jails. Default value is '%(action_)s', which is
-   defined as '%(banaction)s[name=%(__name__)s, port="%(port)s",
-   protocol="%(protocol)s]' in jail.conf.
- * `rm_jail_local` Boolean value that decides whether
-   `/etc/fail2ban/jail.local` is removed by puppet or not. Defaut value is true.
- * `purge_jail_dot_d` Boolean value that decides whether
-   `/etc/fail2ban/jail.d/` is purged of files that are not managed by puppet.
-   Default value is true.
- * `usedns` Specifies if jails should trust hostnames in logs. Options are
-   yes, warn or no. Default is warn.
- * `persistent_bans` Boolean value that ensure bans persist over time (0.8.x or older).
-   This feature is builtin with 0.9.x.
-   `/etc/fail2ban/persistent.bans` file is created and populated by
-   `/etc/fail2ban/action.d/iptables-multiport.conf`. This parameter is bound to
-   be removed in release 4.0 of the module.
-   Default value is false.
-
-## Defining jails ##
+### Defining jails ###
 
 To define a jail, you can use one of the jail parameter presets (see list
 below). Or you can define your own with the `fail2ban::jail` defined type:
@@ -154,37 +66,7 @@ fail2ban::jail { 'jenkins':
 }
 ~~~
 
-Here's the full list of parameters you can use:
-
- * `port` List of port names, separated by commas, that will get blocked for a
-   banned IP. Can be "all" to block all ports. This parameter is mandatory.
- * `filter` Name of the filter to use. This parameter is mandatory.
- * `logpath` Path of the log to monitor. This parameter is mandatory unless
-   you are using the systemd backend in which case it should not be set.
- * `ensure` Set this to `absent` to remove a jail. This parameter is useless
-   with the default value of `purge_jail_dot_d` since removing the jail
-   resource will remove the jail file. It can be useful if you set
-   `purge_jail_dot_d` to false since then puppet won't automatically remove
-   jails that are not managed anymore.
- * `enabled` Should this jail be enabled or not. The subtility between `ensure`
-   and this parameter is that ensure will make the contents of the jail appear
-   or disappear, while this parameter will let the jail contents be present in
-   `jail.local` but the jail will be marked as disabled. Default value is
-   'true'
- * `protocol` Override default protocol to ban ports for.
- * `maxretry` Override default number of trials that bans someone.
- * `findtime` Override default interval during which maxretry failures triggers
-   a ban.
- * `action` Override default action used.
- * `banaction` Override default `banaction`. If you don't also override
-   `action`, you will use the same default action template but with a different
-   action name.
- * `bantime` Override default duration of a ban for an IP.
- * `ignoreip` Override default IP(s) to ignore (e.g. don't ban these IPs).
-   Multiple values should be placed in an array.
- * `backend` Override default log file following method.
-
-### Predefined jails ###
+#### Predefined jails ####
 
 The list at the end of this section contains all of the presets that can be
 used to configure jails more easily. Each of them is a data point -- a hash of
@@ -323,7 +205,7 @@ sure to either use the same string as the lookup key as the resource name for
      blocked for IPs that are banned by this jail. You may want to override the
      hash to add in specific ports in the `port` parameter.
 
-## Defining filters ##
+### Defining filters ###
 
 You might want to define new filters for your new jails. To do that, you can
 use the `fail2ban::filter` defined type:
@@ -338,26 +220,7 @@ fail2ban::filter { 'jenkins':
 }
 ~~~
 
-Here's the full list of parameters you can use with the defined type:
-
- * `failregexes` List of regular expressions (strings) that, if matched, will
-   increase IP's maxretry count. This parameter is mandatory.
- * `ensure` Should this filter be present or not. Default value is present
- * `ignoreregexes` List of regular expressions (strings) that, if matched, will
-   invalidate failregex matching. Default value is an empty list.
- * `includes` List of file names that should be included before the filter
-   definition. An `[INCLUDES]` section will be added to the top of the filter
-   configuration file, and the file names in this list will be added to a
-   `before =` line.
- * `includes_after` List of file names that should be included after the filter
-   definition. An `[INCLUDES]` section will be added to the top of the filter
-   configuration file, and the file names in this list will be added to an
-   `after =` line.
- * `additional_defs` List of lines that could define more arbitrary values.
-   Lines will be placed in the file as they are in the list. Default value is
-   an empty list.
-
-## nftables support ##
+### nftables support ###
 
 Fail2ban supports nftables with the `nftables-multiport` and
 `nftables-allports` actions. Since nftables is now used by default since
@@ -387,7 +250,84 @@ corresponding rule right away. They will only be added whenever the first
 should see both the set and the rule for that jail when running
 `nft list ruleset`.
 
-## Generating documentation ##
+## Requirements ##
+
+This module depends on the following modules to function:
+
+ * puppetlabs' stdlib module (at least version 4.6.0)
+
+## Compatibility ##
+
+This module supports
+
+ * Debian 8, 9, 10
+  * Debian 8 support supposes that clients are using puppet 4.x (e.g. backports
+    or upstream packages)
+ * Ubuntu 18.04
+ * RHEL 6, 7 and 8
+ * CentOs 6, 7 and 8
+
+Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
+:---------------|:----------:|:----------:|:----------:|:----------:
+**3.x**         | no         | no         | **4.10+**  | **yes**
+
+## Upgrade notices ##
+
+ * 3.3: Support for the 2.x branch was discontinued. Only puppet 4.x+ is
+     supported from now on.
+
+     Documentation in the `README.md` file is now limited to only examples of
+     how to use the module. For a technical reference of all classes, defined
+     types and their parameters, please refer to REFERENCE.md or generate html
+     documentation with puppet-strings.
+
+     Note that debian 8 is still being supported for a little while, but with
+     the expectation that users use this module with puppet 4.x+. Debian 8's
+     support cycle is almost over, thus so it is for this module. Expect
+     support to be removed from this module in the coming months.
+
+ * 3.2: No pre-defined jail sends out an email as an action by default. Users
+     who still want to receive emails when an action is taken can override the
+     `action` field from the predefined jail data and append the action the
+     following: `\n           %(mta)s-whois[name=%(__name__)s,
+     dest=\"%(destemail)s\"]`
+
+     Also note that puppet 4.x prior to 4.10 is not supported anymore, and that
+     hiera 5 is now required (hence the limitation for the puppet version.
+
+ * 3.1: `fail2ban.local` and all unmanaged files in `fail2ban.d` are now being
+     purged by default. Users who have local modifications that they want to
+     keep should set `$rm_fail2ban_local` and/or `$purge_fail2ban_d` to false.
+
+ * 3.0: all of the defined types for predefined jails in `fail2ban::jail::*`
+     have been removed and instead transformed into data structures with hiera.
+     If you were using the predefined jails, you will need to change your code:
+     please take a look at the new method of using them with `lookup()` further
+     down in this file.
+
+ * 3.0: `fail2ban::jail`'s `order` parameter was removed. Users should adapt their
+     calls in order to remove this parameter. All jail files are now just
+     individual files dropped in jail.d and order is not relevant there.
+
+ * 3.0: Deprecation notice: the `persistent_bans` parameter to the `fail2ban`
+     class is now deprecated and will be removed for the 4.0 release. fail2ban
+     can now manage persistent bans naturally by using its own sqlite3 database.
+
+ * 2.0: Jail definitions have been moved to `jail.d/*.conf` files . The
+     `jail.local` file is now getting removed by the module. To
+     avoid this, set `rm_jail_local` to true.
+
+ * 2.0: `ignoreip` both on the main class and in `fail2ban::jail` (and thus in
+     all `fail2ban::jail::*` classes too) is no longer expected to be a string.
+     It is now a list of strings that automatically gets joined with spaces.
+     Users of the fail2ban module will need to adjust these parameters.
+
+ * The directory `/etc/fail2ban/jail.d` is now getting purged by default. Users
+     who would like to preserve files in this directory that are not managed by
+     puppet should now set the `purge_jail_dot_d` parameter to the `fail2ban`
+     class to false.
+
+## Documentation ##
 
 This module uses puppet-strings comments, so you can generate HTML
 documentation in the `docs` directory with the following command:
@@ -396,16 +336,18 @@ documentation in the `docs` directory with the following command:
 puppet strings generate manifests
 ~~~
 
-At each release, documentation is also output to the REFERENCES.md file in
-markdown format with the following command. This makes the reference
-documentation show up on forge.puppet.com and you can consult it after cloning
-the repository even if you don't have puppet-strings installed:
+At each release, technical documentation about all classes and defined types
+provided by this module and their parameters is also output to the
+`REFERENCES.md` file in this repository in markdown format with the following
+command. This makes the reference documentation show up on forge.puppet.com
+and you can consult it after cloning the repository even if you don't have
+puppet-strings installed:
 
 ~~~
 puppet strings generate --format markdown
 ~~~
 
-## Running tests ##
+## Testing ##
 
 This module has some tests that you can run to ensure that everything is
 working as expected.
@@ -422,7 +364,7 @@ the same result:
     rake syntax lint spec
     rake tests
 
-### Funtionality testing ###
+### Funtionality tests ###
 
 Unit tests are great, but sometimes it's nice to actually run the code in order
 to see if everything is setup properly and that the software is working as
