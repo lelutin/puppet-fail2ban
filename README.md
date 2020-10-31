@@ -2,6 +2,10 @@
 
 Install and manage fail2ban with puppet
 
+IMPORTANT NOTE: the 2.x branch of this module is no longer supported. The
+current 2.0.x versions are still available for ppl who would still need them,
+but fixes for the module with puppet 3.x will not get merged in anymore.
+
 To use this module just include the jail2ban class. To change default
 configurations in /etc/fail2ban/jail.conf, you can pass values to parameters to
 the fail2ban class. See section below for full list of parameters.
