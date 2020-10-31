@@ -39,8 +39,8 @@ This module supports
   * Debian 8 support supposes that clients are using puppet 4.x (e.g. backports
     or upstream packages)
  * Ubuntu 18.04
- * RHEL 6 and 7
- * CentOs 6 and 7
+ * RHEL 6, 7 and 8
+ * CentOs 6, 7 and 8
 
 Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
 :---------------|:----------:|:----------:|:----------:|:----------:
