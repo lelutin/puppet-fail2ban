@@ -1,6 +1,9 @@
 ---
 version: 5
 hierarchy:
+  - name: "OS major release"
+    path: "%{facts.os.name}-%{facts.os.distro.release.major}.yaml"
+
   - name: "OS family"
     path: "%{facts.os.family}.yaml"
 
