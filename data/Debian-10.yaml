@@ -1,0 +1,16 @@
+---
+fail2ban::jail::sshd-ddos:
+  filter: "sshd[mode=ddos]"
+  port: "ssh"
+  logpath: "%(sshd_log)s"
+  backend: "%(sshd_backend)s"
+fail2ban::jail::postfix-rbl:
+  filter: "postfix[mode=rbl]"
+  port: "smtp,465,submission"
+  logpath: "%(postfix_log)s"
+  backend: "%(postfix_backend)s"
+  maxretry: 1
+fail2ban::jail::postfix-sasl:
+  filter: "postfix[mode=auth]"
+  logpath: "%(postfix_log)s"
+  backend: "%(postfix_backend)s"
