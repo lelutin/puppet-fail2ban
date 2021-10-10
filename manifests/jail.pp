@@ -60,8 +60,9 @@
 #   is usually to use a filter with the same name as the jail name (although
 #   this could be changed by the filter parameter on the fail2ban class).
 # @param logpath
-#   Absolute path to the log file against which regular expressions should be
-#   verified to catch activity that you want to block.
+#   Absolute path to the log files against which regular expressions should be
+#   verified to catch activity that you want to block. Multiple logpath can be
+#   set with an array.
 # @param protocol
 #   Name of the protocol to ban using the action.
 # @param maxretry
@@ -102,24 +103,24 @@
 #   checking is done on the contents of this hash.
 #
 define fail2ban::jail (
-  Enum['present','absent']     $ensure             = 'present',
-  Boolean                      $enabled            = true,
-  String                       $config_file_mode   = '0644',
+  Enum['present','absent']       $ensure             = 'present',
+  Boolean                        $enabled            = true,
+  String                         $config_file_mode   = '0644',
   # Params that override default settings for a particular jail
-  Optional[Fail2ban::Port]     $port               = undef,
-  Optional[String]             $filter             = undef,
-  Optional[String]             $logpath            = undef,
-  Optional[Fail2ban::Protocol] $protocol           = undef,
-  Optional[Integer]            $maxretry           = undef,
-  Optional[Integer]            $findtime           = undef,
-  Optional[String]             $ignorecommand      = undef,
-  Optional[String]             $action             = undef,
-  Optional[Fail2ban::Usedns]   $usedns             = undef,
-  Optional[String]             $banaction          = undef,
-  Optional[Integer]            $bantime            = undef,
-  Array[String, 0]             $ignoreip           = [],
-  Optional[Fail2ban::Backend]  $backend            = undef,
-  Hash[String, String]         $additional_options = {},
+  Optional[Fail2ban::Port]       $port               = undef,
+  Optional[String]               $filter             = undef,
+  Variant[String, Array[String]] $logpath            = [],
+  Optional[Fail2ban::Protocol]   $protocol           = undef,
+  Optional[Integer]              $maxretry           = undef,
+  Optional[Integer]              $findtime           = undef,
+  Optional[String]               $ignorecommand      = undef,
+  Optional[String]               $action             = undef,
+  Optional[Fail2ban::Usedns]     $usedns             = undef,
+  Optional[String]               $banaction          = undef,
+  Optional[Integer]              $bantime            = undef,
+  Array[String, 0]               $ignoreip           = [],
+  Optional[Fail2ban::Backend]    $backend            = undef,
+  Hash[String, String]           $additional_options = {},
 ) {
   include fail2ban::config
 
