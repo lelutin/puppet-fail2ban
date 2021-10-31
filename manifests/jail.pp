@@ -125,12 +125,12 @@ define fail2ban::jail (
   include fail2ban::config
 
   if $backend == 'systemd' {
-    if $logpath {
+    if ! empty($logpath) {
       fail('logpath must not be set when $backend is \'systemd\'')
     }
   }
   else {
-    if $logpath == false {
+    if empty($logpath) {
       fail('logpath must be set unless $backend is \'systemd\'')
     }
   }
