@@ -57,9 +57,9 @@ backend = <%= @backend %>
 #        but it will be logged as info.
 usedns = <%= @usedns %>
 
-<% if not @logpath.nil? -%>
+<% if not @logpath.empty? -%>
 # Default path for log files used by jails
-logpath = <%= @logpath %>
+logpath = <%= [@logpath].flatten().join("\n          ") %>
 <% end -%>
 
 #

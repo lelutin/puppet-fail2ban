@@ -66,9 +66,9 @@ class fail2ban::config {
   # Non-trivial override of default logpath value for jessie when param not set
   # fail2ban 0.8 expects to have logpath defined somewhere..
   if ($facts['os']['family'] == 'Debian') and
-    ($facts['os']['release']['major'] == '8' ) and (! $fail2ban::logpath)
+    ($facts['os']['release']['major'] == '8' ) and empty($fail2ban::logpath)
   {
-    $logpath = '/var/log/messages'
+    $logpath = ['/var/log/messages']
   }
   else {
     $logpath = $fail2ban::logpath

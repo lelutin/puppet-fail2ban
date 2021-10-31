@@ -63,7 +63,7 @@ below). Or you can define your own with the `fail2ban::jail` defined type:
 fail2ban::jail { 'jenkins':
   port    => 'all',
   filter  => 'jenkins',
-  logpath => '/var/log/jenkins.log',
+  logpath => ['/var/log/jenkins.log'],
 }
 ~~~
 

@@ -20,16 +20,16 @@
 #
 # @example creating simple jail for service
 #   fail2ban::jail { 'honeypot':
-#     findtime => 300,
-#     maxretry => 1,
-#     port     => 'all',
-#     logpath  => '/var/log/honeypot.log',
+#     findtime   => 300,
+#     maxretry   => 1,
+#     port       => 'all',
+#     logpath    => ['/var/log/honeypot.log'],
 #   }
 #
 # @example using a pre-defined jail
 #   $ssh_params = lookup('fail2ban::jail::sshd')
 #   fail2ban::jail { 'sshd':
-#     * => $ssh_params,
+#     *          => $ssh_params,
 #   }
 #
 # @example overriding parameters from a pre-defined jail
@@ -40,7 +40,7 @@
 #   }
 #   $ssh_params = lookup('fail2ban::jail::sshd') + $ssh_extra_params
 #   fail2ban::jail { 'sshd':
-#     * => $ssh_params,
+#     *          => $ssh_params,
 #   }
 #
 #
@@ -60,9 +60,10 @@
 #   is usually to use a filter with the same name as the jail name (although
 #   this could be changed by the filter parameter on the fail2ban class).
 # @param logpath
-#   Absolute path to the log files against which regular expressions should be
-#   verified to catch activity that you want to block. Multiple logpath can be
-#   set with an array.
+#   Array of absolute paths to the log files against which regular expressions
+#   should be verified to catch activity that you want to block. This
+#   parameter must be set to a non-empty array when not using the 'systemd'
+#   backend, however it must be empty if the 'systemd' backend is used.
 # @param protocol
 #   Name of the protocol to ban using the action.
 # @param maxretry
@@ -94,7 +95,7 @@
 #   failregex. The IPs that fit the descriptions in this parameter will never
 #   get banned by the jail.
 # @param backend
-#   Method used by fail2ban to obtain new log lines from the log file in
+#   Method used by fail2ban to obtain new log lines from the log file(s) in
 #   logpath.
 # @param additional_options
 #   Hash of additional values that should be declared of the jail. Keys are the

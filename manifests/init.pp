@@ -111,8 +111,9 @@
 #   Default behaviour whether or not to resolve IPs when they are found in a
 #   log by a filter.
 # @param logpath
-#   Default path to log file being used by jails. This value is usually not set
-#   and logpath is defined for each jail for more clarity.
+#   Array of absolute paths specifying the default path(s) to log file(s) being
+#   used by jails. This value is usually not set and logpath is defined for
+#   each jail for more clarity.
 # @param logencoding
 #   Name of the encoding of log files. If set to "auto", fail2ban will use what
 #   is set in the system's locale setting.
@@ -127,49 +128,49 @@
 #
 class fail2ban (
   # Options that change how the module behaves
-  Boolean            $rm_fail2ban_local    = true,
-  Boolean            $rm_jail_local        = true,
-  Boolean            $purge_fail2ban_dot_d = true,
-  Boolean            $purge_jail_dot_d     = true,
-  Boolean            $persistent_bans      = false,
-  String             $config_file_mode     = '0644',
+  Boolean                        $rm_fail2ban_local    = true,
+  Boolean                        $rm_jail_local        = true,
+  Boolean                        $purge_fail2ban_dot_d = true,
+  Boolean                        $purge_jail_dot_d     = true,
+  Boolean                        $persistent_bans      = false,
+  String                         $config_file_mode     = '0644',
   # Options for fail2ban.conf
-  String[1]          $fail2ban_conf_template
+  String[1]                      $fail2ban_conf_template
     = 'fail2ban/fail2ban.conf.erb',
-  Fail2ban::Loglevel $loglvl           = 'INFO',
-  String             $logtarget        = '/var/log/fail2ban.log',
-  String             $syslogsocket     = 'auto',
-  String             $socket           = '/var/run/fail2ban/fail2ban.sock',
-  String             $pidfile          = '/var/run/fail2ban/fail2ban.pid',
-  String             $dbfile           = '/var/lib/fail2ban/fail2ban.sqlite3',
-  Integer            $dbpurgeage       = 86400,
+  Fail2ban::Loglevel             $loglvl           = 'INFO',
+  String                         $logtarget        = '/var/log/fail2ban.log',
+  String                         $syslogsocket     = 'auto',
+  String                         $socket           = '/var/run/fail2ban/fail2ban.sock',
+  String                         $pidfile          = '/var/run/fail2ban/fail2ban.pid',
+  String                         $dbfile           = '/var/lib/fail2ban/fail2ban.sqlite3',
+  Integer                        $dbpurgeage       = 86400,
   # Options for jail.conf
-  String[1]         $jail_conf_template
+  String[1]                      $jail_conf_template
     = $fail2ban::params::jail_conf_template,
-  Boolean            $enabled            = false,
-  String             $filter             = '%(__name__)s',
-  Array[String, 0]   $ignoreip           = ['127.0.0.1'],
-  Integer            $bantime            = 600,
-  Integer            $findtime           = 600,
-  Integer            $maxretry           = 3,
-  String             $ignorecommand      = '',
-  Fail2ban::Backend  $backend            = 'auto',
-  String             $destemail          = 'root@localhost',
-  String             $sender             = 'root@localhost',
-  String             $fail2ban_agent     = 'Fail2Ban/%(fail2ban_version)s',
-  String             $banaction          = 'iptables-multiport',
-  String             $banaction_allports = 'iptables-allports',
-  String             $chain              = 'INPUT',
-  Fail2ban::Port     $port               = '0:65535',
-  String             $mta                = 'sendmail',
-  Fail2ban::Protocol $protocol           = 'tcp',
-  String             $action             = '%(action_)s',
-  Fail2ban::Usedns   $usedns             = 'warn',
-  Optional[String]   $logpath            = undef,
-  String             $logencoding        = 'auto',
-  Optional[String]   $failregex          = undef,
-  Optional[String]   $ignoreregex        = undef,
-  Boolean            $manage_service     = true,
+  Boolean                        $enabled            = false,
+  String                         $filter             = '%(__name__)s',
+  Array[String, 0]               $ignoreip           = ['127.0.0.1'],
+  Integer                        $bantime            = 600,
+  Integer                        $findtime           = 600,
+  Integer                        $maxretry           = 3,
+  String                         $ignorecommand      = '',
+  Fail2ban::Backend              $backend            = 'auto',
+  String                         $destemail          = 'root@localhost',
+  String                         $sender             = 'root@localhost',
+  String                         $fail2ban_agent     = 'Fail2Ban/%(fail2ban_version)s',
+  String                         $banaction          = 'iptables-multiport',
+  String                         $banaction_allports = 'iptables-allports',
+  String                         $chain              = 'INPUT',
+  Fail2ban::Port                 $port               = '0:65535',
+  String                         $mta                = 'sendmail',
+  Fail2ban::Protocol             $protocol           = 'tcp',
+  String                         $action             = '%(action_)s',
+  Fail2ban::Usedns               $usedns             = 'warn',
+  Variant[String, Array[String]] $logpath            = [],
+  String                         $logencoding        = 'auto',
+  Optional[String]               $failregex          = undef,
+  Optional[String]               $ignoreregex        = undef,
+  Boolean                        $manage_service     = true,
 ) inherits fail2ban::params {
 
   if $persistent_bans {
