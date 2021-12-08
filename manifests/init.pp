@@ -41,6 +41,8 @@
 #   puppet-fail2ban 4.0
 # @param config_file_mode
 #   File mode set on all fail2ban configuration files managed by this module.
+# @param fail2ban_conf_template
+#   Alternative template to use for the `fail2ban.conf` file.
 #
 # @param loglvl
 #   Set fail2ban's loglevel.
@@ -59,6 +61,9 @@
 # @param dbpurgeage
 #   Age of entries in fail2ban's database that get removed when performing a
 #   database purge operation.
+#
+# @param jail_conf_template
+#   Alternative template to use for the `jail.conf` file.
 #
 # @param enabled
 #   Whether or not to enable jails by default. fail2ban's man page recommends
