@@ -77,6 +77,7 @@ class fail2ban::config {
   $persistent_bans = $fail2ban::persistent_bans
 
   $enabled = $fail2ban::enabled
+  $mode = $fail2ban::mode
   $filter = $fail2ban::filter
   $ignoreip = $fail2ban::ignoreip
   $bantime = $fail2ban::bantime

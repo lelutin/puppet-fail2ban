@@ -148,7 +148,8 @@ class fail2ban (
   String[1]                      $jail_conf_template
     = $fail2ban::params::jail_conf_template,
   Boolean                        $enabled            = false,
-  String                         $filter             = '%(__name__)s',
+  String                         $mode               = 'normal',
+  String                         $filter             = '%(__name__)s[mode=%(mode)s]',
   Array[String, 0]               $ignoreip           = ['127.0.0.1'],
   Integer                        $bantime            = 600,
   Integer                        $findtime           = 600,
