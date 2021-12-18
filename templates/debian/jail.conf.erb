@@ -44,6 +44,10 @@ before = paths-debian.conf
 # MISCELLANEOUS OPTIONS
 #
 
+# "ignoreself" specifies whether the local resp. own IP addresses should be ignored
+# (default is true). Fail2ban will not ban a host which matches such addresses.
+ignoreself = <%= @ignoreself %>
+
 # "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
 # ban a host which matches an address in this list. Several addresses can be
 # defined using space (and/or comma) separator.

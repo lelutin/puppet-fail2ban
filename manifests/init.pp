@@ -81,6 +81,9 @@
 #   configuration files.
 # @param filter
 #   Default name of filter to use for jails.
+# @param ignoreself
+#   If set to false, fail2ban will not ignore IP addresses that are bound to
+#   interfaces on the host.
 # @param ignoreip
 #   Default list of IPs or CIDR prefixes that should not get banned.
 # @param bantime
@@ -162,6 +165,7 @@ class fail2ban (
   Boolean                        $enabled            = false,
   String                         $mode               = 'normal',
   String                         $filter             = '%(__name__)s[mode=%(mode)s]',
+  Boolean                        $ignoreself         = true,
   Array[String, 0]               $ignoreip           = ['127.0.0.1'],
   Integer                        $bantime            = 600,
   Integer                        $findtime           = 600,
