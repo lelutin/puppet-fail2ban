@@ -72,6 +72,13 @@
 #   setting on all jails. If you set purge_jail_dot_d to false, it might be
 #   wiser to keep this to false in order to avoid enabling jails that get
 #   dropped in jail.d.
+# @param mode
+#   Change the default behavior for filters. Watch out however, each
+#   individual filter can define its own value and so most values are not
+#   guaranteed to be available with all filters. The mode will generally
+#   determine which regular expressions the filter will include. To know
+#   exactly which values are available in filters, you need to read their
+#   configuration files.
 # @param filter
 #   Default name of filter to use for jails.
 # @param ignoreip
@@ -153,7 +160,8 @@ class fail2ban (
   String[1]                      $jail_conf_template
     = $fail2ban::params::jail_conf_template,
   Boolean                        $enabled            = false,
-  String                         $filter             = '%(__name__)s',
+  String                         $mode               = 'normal',
+  String                         $filter             = '%(__name__)s[mode=%(mode)s]',
   Array[String, 0]               $ignoreip           = ['127.0.0.1'],
   Integer                        $bantime            = 600,
   Integer                        $findtime           = 600,

@@ -116,6 +116,8 @@ logpath = <%= [@logpath].flatten().join("\n          ") %>
 # false: jail is not enabled
 enabled = <%= @enabled %>
 
+# "mode" defines the mode of the filter (see corresponding filter implementation for more info).
+mode = <%= @mode %>
 
 # "filter" defines the filter to use by the jail.
 #  By default jails have names matching their filter name

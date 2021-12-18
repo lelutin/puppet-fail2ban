@@ -55,6 +55,12 @@
 # @param port
 #   Comma separated list of ports, port ranges or service names (as found in
 #   /etc/services) that should get blocked by the ban action.
+# @param mode
+#   Change the behavior of the filter used by this jail. The mode will
+#   generally determine which regular expressions the filter will include. The
+#   values that this can take are determined by each individual filter. To know
+#   exactly which values are available in filters, you need to read their
+#   configuration files.
 # @param filter
 #   Name of the filter to use for this jail. The default value for the filter
 #   is usually to use a filter with the same name as the jail name (although
@@ -109,6 +115,7 @@ define fail2ban::jail (
   String                         $config_file_mode   = '0644',
   # Params that override default settings for a particular jail
   Optional[Fail2ban::Port]       $port               = undef,
+  Optional[String]               $mode               = undef,
   Optional[String]               $filter             = undef,
   Variant[String, Array[String]] $logpath            = [],
   Optional[Fail2ban::Protocol]   $protocol           = undef,
@@ -127,12 +134,12 @@ define fail2ban::jail (
 
   if $backend == 'systemd' {
     if ! empty($logpath) {
-      fail('logpath must not be set when $backend is \'systemd\'')
+      fail("The backend for fail2ban jail ${name} is 'systemd' so \$logpath must be empty.")
     }
   }
   else {
     if empty($logpath) {
-      fail('logpath must be set unless $backend is \'systemd\'')
+      fail("You must set \$logpath for fail2ban jail ${name}.")
     }
   }
 
