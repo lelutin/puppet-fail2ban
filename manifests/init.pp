@@ -67,6 +67,13 @@
 #   setting on all jails. If you set purge_jail_dot_d to false, it might be
 #   wiser to keep this to false in order to avoid enabling jails that get
 #   dropped in jail.d.
+# @param mode
+#   Change the default behavior for filters. Watch out however, each
+#   individual filter can define its own value and so most values are not
+#   guaranteed to be available with all filters. The mode will generally
+#   determine which regular expressions the filter will include. To know
+#   exactly which values are available in filters, you need to read their
+#   configuration files.
 # @param filter
 #   Default name of filter to use for jails.
 # @param ignoreip
