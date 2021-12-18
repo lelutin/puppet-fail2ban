@@ -2,6 +2,8 @@
 enabled = <%= @enabled %>
 <% if not @portrange.nil? -%>port = <%= @portrange %>
 <% end -%>
+<% if not @mode.nil? -%>mode = <%= @mode %>
+<% end -%>
 <% if not @filter.nil? -%>filter = <%= @filter %>
 <% end -%>
 <% if not @logpath.empty? -%>logpath = <%= [@logpath].flatten().join("\n          ") %>
