@@ -134,12 +134,12 @@ define fail2ban::jail (
 
   if $backend == 'systemd' {
     if ! empty($logpath) {
-      fail('logpath must not be set when $backend is \'systemd\'')
+      fail("The backend for fail2ban jail ${name} is 'systemd' so \$logpath must be empty.")
     }
   }
   else {
     if empty($logpath) {
-      fail('logpath must be set unless $backend is \'systemd\'')
+      fail("You must set \$logpath for fail2ban jail ${name}.")
     }
   }
 
