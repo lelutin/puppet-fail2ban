@@ -39,6 +39,8 @@ class fail2ban::config {
   $pidfile = $fail2ban::pidfile
   $dbfile = $fail2ban::dbfile
   $dbpurgeage = $fail2ban::dbpurgeage
+  $dbmaxmatches = $fail2ban::dbmaxmatches
+  $stacksize = $fail2ban::stacksize
   $config_file_mode = $fail2ban::config_file_mode
 
   file { '/etc/fail2ban/fail2ban.conf':
@@ -79,10 +81,12 @@ class fail2ban::config {
   $enabled = $fail2ban::enabled
   $mode = $fail2ban::mode
   $filter = $fail2ban::filter
+  $ignoreself = $fail2ban::ignoreself
   $ignoreip = $fail2ban::ignoreip
   $bantime = $fail2ban::bantime
   $findtime = $fail2ban::findtime
   $maxretry = $fail2ban::maxretry
+  $maxmatches = $fail2ban::maxmatches
   $ignorecommand = $fail2ban::ignorecommand
   $backend = $fail2ban::backend
   $destemail = $fail2ban::destemail

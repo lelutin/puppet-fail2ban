@@ -61,6 +61,12 @@
 # @param dbpurgeage
 #   Age of entries in fail2ban's database that get removed when performing a
 #   database purge operation.
+# @param dbmaxmatches
+#   Number of matches stored in database per ticket.
+# @param stacksize
+#   Specifies the stack size (in KiB) to be used for subsequently created threads,
+#   and must be 0 or a positive integer value of at least 32. 0 means that
+#   fail2ban will use platform or configured default.
 #
 # @param jail_conf_template
 #   Alternative template to use for the `jail.conf` file.
@@ -93,6 +99,8 @@
 # @param maxretry
 #   Default number of times an IP should be detectd by a filter during findtime
 #   for it to get banned.
+# @param maxmatches
+#   Number of matches stored in ticket.
 # @param ignorecommand
 #   Default command used to determine if an IP should be exempted from being
 #   banned.
@@ -150,15 +158,17 @@ class fail2ban (
   Boolean                        $persistent_bans      = false,
   String                         $config_file_mode     = '0644',
   # Options for fail2ban.conf
-  String[1]                      $fail2ban_conf_template
+  String[1]                          $fail2ban_conf_template
     = 'fail2ban/fail2ban.conf.erb',
-  Fail2ban::Loglevel             $loglvl           = 'INFO',
-  String                         $logtarget        = '/var/log/fail2ban.log',
-  String                         $syslogsocket     = 'auto',
-  String                         $socket           = '/var/run/fail2ban/fail2ban.sock',
-  String                         $pidfile          = '/var/run/fail2ban/fail2ban.pid',
-  String                         $dbfile           = '/var/lib/fail2ban/fail2ban.sqlite3',
-  Integer                        $dbpurgeage       = 86400,
+  Fail2ban::Loglevel                 $loglvl       = 'INFO',
+  String                             $logtarget    = '/var/log/fail2ban.log',
+  String                             $syslogsocket = 'auto',
+  String                             $socket       = '/var/run/fail2ban/fail2ban.sock',
+  String                             $pidfile      = '/var/run/fail2ban/fail2ban.pid',
+  String                             $dbfile       = '/var/lib/fail2ban/fail2ban.sqlite3',
+  Integer                            $dbpurgeage   = 86400,
+  Integer                            $dbmaxmatches = 10,
+  Variant[Integer[0,0], Integer[32]] $stacksize    = 0,
   # Options for jail.conf
   String[1]                      $jail_conf_template
     = $fail2ban::params::jail_conf_template,
@@ -170,6 +180,7 @@ class fail2ban (
   Integer                        $bantime            = 600,
   Integer                        $findtime           = 600,
   Integer                        $maxretry           = 3,
+  Variant[Integer, String]       $maxmatches         = '%(maxretry)s',
   String                         $ignorecommand      = '',
   Fail2ban::Backend              $backend            = 'auto',
   String                         $destemail          = 'root@localhost',

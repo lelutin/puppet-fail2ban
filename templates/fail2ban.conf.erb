@@ -5,11 +5,11 @@
 # Changes:  in most of the cases you should not modify this
 #           file, but provide customizations in fail2ban.local file, e.g.:
 #
-# [Definition]
+# [DEFAULT]
 # loglevel = DEBUG
 #
 
-[Definition]
+[DEFAULT]
 
 # Option: loglevel
 # Notes.: Set the log level output.
@@ -19,7 +19,7 @@
 #         NOTICE
 #         INFO
 #         DEBUG
-# Values: [ LEVEL ]  Default: ERROR
+# Values: [ LEVEL ]  Default: INFO
 #
 loglevel = <%= @loglvl %>
 
@@ -57,7 +57,7 @@ pidfile = <%= @pidfile %>
 
 # Options: dbfile
 # Notes.: Set the file for the fail2ban persistent data to be stored.
-#         A value of ":memory:" means database is only stored in memory
+#         A value of ":memory:" means database is only stored in memory 
 #         and data is lost when fail2ban is stopped.
 #         A value of "None" disables the database.
 # Values: [ None :memory: FILE ] Default: /var/lib/fail2ban/fail2ban.sqlite3
@@ -67,3 +67,20 @@ dbfile = <%= @dbfile %>
 # Notes.: Sets age at which bans should be purged from the database
 # Values: [ SECONDS ] Default: 86400 (24hours)
 dbpurgeage = <%= @dbpurgeage %>
+
+# Options: dbmaxmatches
+# Notes.: Number of matches stored in database per ticket (resolvable via 
+#         tags <ipmatches>/<ipjailmatches> in actions)
+# Values: [ INT ] Default: 10
+dbmaxmatches = <%= @dbmaxmatches %>
+
+[Definition]
+
+
+[Thread]
+
+# Options: stacksize
+# Notes.: Specifies the stack size (in KiB) to be used for subsequently created threads,
+#         and must be 0 or a positive integer value of at least 32.
+# Values: [ SIZE ] Default: 0 (use platform or configured default)
+stacksize = <%= @stacksize %>
