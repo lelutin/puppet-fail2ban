@@ -289,9 +289,7 @@ This module depends on the following modules to function:
 
 This module supports
 
- * Debian 8, 9, 10
-  * Debian 8 support supposes that clients are using puppet 4.x (e.g. backports
-    or upstream packages)
+ * Debian 9, 10, 11
  * Ubuntu 18.04
  * RHEL 6, 7 and 8
  * CentOs 6, 7 and 8

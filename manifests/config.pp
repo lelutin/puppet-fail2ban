@@ -9,29 +9,7 @@
 #
 class fail2ban::config {
 
-  # This variable is determined here since it overrides the normally permitted
-  # values.
-  if $facts['os']['family'] == 'Debian' and
-    $facts['os']['release']['major'] == '8' {
-    # fail2ban 0.8 had integer loglevels, whereas 0.9 has symbolic names for
-    # levels.
-    #
-    # Levels CRITICAL and NOTICE only exist in fail2ban 0.9. We'll make them
-    # correspond to something that should be about the same level of
-    # information on 0.8
-    $int_levels = {
-      'CRITICAL' => 1,
-      'ERROR'    => 1,
-      'WARN'     => 2,
-      'NOTICE'   => 3,
-      'INFO'     => 3,
-      'DEBUG'    => 4,
-    }
-    $loglvl = $int_levels[$fail2ban::loglvl]
-  }
-  else {
-    $loglvl = $fail2ban::loglvl
-  }
+  $loglvl = $fail2ban::loglvl
 
   $logtarget = $fail2ban::logtarget
   $syslogsocket = $fail2ban::syslogsocket
@@ -65,16 +43,7 @@ class fail2ban::config {
   }
 
 
-  # Non-trivial override of default logpath value for jessie when param not set
-  # fail2ban 0.8 expects to have logpath defined somewhere..
-  if ($facts['os']['family'] == 'Debian') and
-    ($facts['os']['release']['major'] == '8' ) and empty($fail2ban::logpath)
-  {
-    $logpath = ['/var/log/messages']
-  }
-  else {
-    $logpath = $fail2ban::logpath
-  }
+  $logpath = $fail2ban::logpath
 
   $persistent_bans = $fail2ban::persistent_bans
 
@@ -142,35 +111,4 @@ class fail2ban::config {
     }
   }
 
-  # Here, we're checking a fact that might not have a value on more recent
-  # hosts with a recent version of facter. That's all right since we're only
-  # aiming to add support for debian jessie with what package versions are
-  # available in that release and its backports source.
-  if $facts['operatingsystemmajrelease'] == '8' {
-    # Those files will imitate how configuration is laid out in more recent
-    # versions so that jails will actually work. It's an ugly hack that's
-    # just meant to make it possible to drag some old iptables-based hosts
-    # around until they finally get upgraded.
-    file { '/etc/fail2ban/paths-common.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 0,
-      mode   => $config_file_mode,
-      source => 'puppet:///modules/fail2ban/debian/paths-common.conf',
-    }
-    file { '/etc/fail2ban/paths-debian.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 0,
-      mode   => $config_file_mode,
-      source => 'puppet:///modules/fail2ban/debian/paths-debian.conf',
-    }
-    file { '/etc/fail2ban/action.d/iptables-common.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 0,
-      mode   => $config_file_mode,
-      source => 'puppet:///modules/fail2ban/debian/action_d_iptables-common.conf',
-    }
-  }
 }

@@ -18,10 +18,6 @@ Vagrant.configure("2") do |config|
     puppet.module_path = "tests/modules"
   end
 
-  config.vm.define :jessie do |jessie|
-    jessie.vm.box = "debian-8-amd64"
-  end
-
   config.vm.define :stretch do |stretch|
     stretch.vm.box = "debian-9-amd64"
   end
