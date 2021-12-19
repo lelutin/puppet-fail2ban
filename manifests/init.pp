@@ -124,8 +124,8 @@
 # @param protocol
 #   Default protocol name used by actions.
 # @param action
-#   Default action that gets called when an IP triggers maxretry number of
-#   times a filter within findtime.
+#   List of default actions that get called when an IP triggers maxretry number
+#   of times a filter within findtime.
 # @param usedns
 #   Default behaviour whether or not to resolve IPs when they are found in a
 #   log by a filter.
@@ -164,38 +164,43 @@ class fail2ban (
   Integer                            $dbmaxmatches,
   Variant[Integer[0,0], Integer[32]] $stacksize,
   # Options for jail.conf
-  String[1]                $jail_conf_template,
-  Boolean                  $enabled,
-  String                   $mode,
-  String                   $filter,
-  Boolean                  $ignoreself,
-  Array[String, 0]         $ignoreip,
-  Integer                  $bantime,
-  Integer                  $findtime,
-  Integer                  $maxretry,
-  Variant[Integer, String] $maxmatches,
-  String                   $ignorecommand,
-  Fail2ban::Backend        $backend,
-  String                   $destemail,
-  String                   $sender,
-  String                   $fail2ban_agent,
-  String                   $banaction,
-  String                   $banaction_allports,
-  String                   $chain,
-  Fail2ban::Port           $port,
-  String                   $mta,
-  Fail2ban::Protocol       $protocol,
-  String                   $action,
-  Fail2ban::Usedns         $usedns,
-  Array[String]            $logpath,
-  String                   $logencoding,
-  Optional[String]         $failregex,
-  Optional[String]         $ignoreregex,
-  Boolean                  $manage_service,
+  String[1]                         $jail_conf_template,
+  Boolean                           $enabled,
+  String                            $mode,
+  String                            $filter,
+  Boolean                           $ignoreself,
+  Array[String, 0]                  $ignoreip,
+  Integer                           $bantime,
+  Integer                           $findtime,
+  Integer                           $maxretry,
+  Variant[Integer, String]          $maxmatches,
+  String                            $ignorecommand,
+  Fail2ban::Backend                 $backend,
+  String                            $destemail,
+  String                            $sender,
+  String                            $fail2ban_agent,
+  String                            $banaction,
+  String                            $banaction_allports,
+  String                            $chain,
+  Fail2ban::Port                    $port,
+  String                            $mta,
+  Fail2ban::Protocol                $protocol,
+  Variant[String, Array[String, 1]] $action,
+  Fail2ban::Usedns                  $usedns,
+  Array[String]                     $logpath,
+  String                            $logencoding,
+  Optional[String]                  $failregex,
+  Optional[String]                  $ignoreregex,
+  Boolean                           $manage_service,
 ) {
 
   if ! $facts['os']['family'] in ['Debian', 'RedHat'] {
     fail("Unsupported Operating System family: ${facts['os']['family']}")
+  }
+
+  if $action =~ String {
+    deprecation('fail2ban_action_param',
+      'The $action parameter will only take an array of strings in 5.x')
   }
 
   contain fail2ban::install

@@ -86,9 +86,8 @@
 #   identifying IPs that should not get banned. It can be used also when
 #   ignoreip is present.
 # @param action
-#   Name of and parameters to the action that should be used to ban and unban
-#   IPs when maxretry matches of failregex has happened for an IP during
-#   findtime.
+#   List of actions that should be used to ban and unban IPs when maxretry
+#   matches of failregex has happened for an IP during findtime.
 # @param usedns
 #   Whether or not to resolve DNS hostname of IPs that have been found by a
 #   failregex.
@@ -126,7 +125,7 @@ define fail2ban::jail (
   Optional[Integer]            $maxretry           = undef,
   Optional[Integer]            $findtime           = undef,
   Optional[String]             $ignorecommand      = undef,
-  Optional[String]             $action             = undef,
+  Optional[Variant[String, Array[String, 1]]] $action = undef,
   Optional[Fail2ban::Usedns]   $usedns             = undef,
   Optional[String]             $banaction          = undef,
   Optional[Integer]            $bantime            = undef,
@@ -135,6 +134,11 @@ define fail2ban::jail (
   Hash[String, String]         $additional_options = {},
 ) {
   include fail2ban::config
+
+  if $action =~ String {
+    deprecation('fail2ban_action_param',
+      'The $action parameter will only take an array of strings in 5.x')
+  }
 
   if $backend == 'systemd' {
     if ! empty($logpath) {

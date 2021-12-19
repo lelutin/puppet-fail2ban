@@ -16,7 +16,7 @@ enabled = <%= $enabled %>
 <% } -%>
 <% if $findtime !~ Undef { -%>findtime = <%= $findtime %>
 <% } -%>
-<% if $action !~ Undef { -%>action = <%= $action %>
+<% if $action !~ Undef { -%>action = <%= [$action].flatten().join("\n         ") %>
 <% } -%>
 <% if $ignorecommand !~ Undef { -%>ignorecommand = <%= $ignorecommand %>
 <% } -%>

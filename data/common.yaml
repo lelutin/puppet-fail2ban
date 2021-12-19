@@ -35,7 +35,8 @@ fail2ban::chain: 'INPUT'
 fail2ban::port: '0:65535'
 fail2ban::mta: 'sendmail'
 fail2ban::protocol: 'tcp'
-fail2ban::action: '%(action_)s'
+fail2ban::action:
+  - '%(action_)s'
 fail2ban::usedns: 'warn'
 fail2ban::logpath: []
 fail2ban::logencoding: 'auto'
