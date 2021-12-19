@@ -155,9 +155,30 @@ define fail2ban::jail (
     $portrange = $port
   }
 
+  $jail_options = {
+    jail_name          => $name,
+    enabled            => $enabled,
+    port               => $portrange,
+    mode               => $mode,
+    filter             => $filter,
+    logpath            => $logpath,
+    logencoding        => $logencoding,
+    protocol           => $protocol,
+    maxretry           => $maxretry,
+    findtime           => $findtime,
+    ignorecommand      => $ignorecommand,
+    action             => $action,
+    usedns             => $usedns,
+    banaction          => $banaction,
+    bantime            => $bantime,
+    ignoreip           => $ignoreip,
+    backend            => $backend,
+    additional_options => $additional_options,
+  }
+
   file { "/etc/fail2ban/jail.d/${name}.conf":
     ensure  => $ensure,
-    content => template('fail2ban/jail.erb'),
+    content => epp('fail2ban/jail.epp', $jail_options),
     owner   => 'root',
     group   => 0,
     mode    => $config_file_mode,

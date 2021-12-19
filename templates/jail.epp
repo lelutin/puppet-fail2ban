@@ -1,0 +1,36 @@
+[<%= $jail_name %>]
+enabled = <%= $enabled %>
+<% if $portrange !~ Undef { -%>port = <%= $portrange %>
+<% } -%>
+<% if $mode !~ Undef { -%>mode = <%= $mode %>
+<% } -%>
+<% if $filter !~ Undef { -%>filter = <%= $filter %>
+<% } -%>
+<% if ! $logpath.empty { -%>logpath = <%= $logpath.join("\n          ") %>
+<% } -%>
+<% if $logencoding !~ Undef { -%>logencoding = <%= $logencoding %>
+<% } -%>
+<% if $protocol !~ Undef { -%>protocol = <%= $protocol %>
+<% } -%>
+<% if $maxretry !~ Undef { -%>maxretry = <%= $maxretry %>
+<% } -%>
+<% if $findtime !~ Undef { -%>findtime = <%= $findtime %>
+<% } -%>
+<% if $action !~ Undef { -%>action = <%= $action %>
+<% } -%>
+<% if $ignorecommand !~ Undef { -%>ignorecommand = <%= $ignorecommand %>
+<% } -%>
+<% if $banaction !~ Undef { -%>banaction = <%= $banaction %>
+<% } -%>
+<% if $bantime !~ Undef { -%>bantime = <%= $bantime %>
+<% } -%>
+<% if ! $ignoreip.empty { -%>ignoreip = <%= $ignoreip.join(' ') %>
+<% } -%>
+<% if $backend !~ Undef { -%>backend = <%= $backend %>
+<% } -%>
+<% if ! $additional_options.empty {
+  $additional_options.each |String $opt, String $value| { -%>
+<%= $opt %> = <%= $value %>
+<% }
+} -%>
+

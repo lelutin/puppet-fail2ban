@@ -4,7 +4,7 @@ fail2ban::rm_jail_local: true
 fail2ban::purge_fail2ban_dot_d: true
 fail2ban::purge_jail_dot_d: true
 fail2ban::config_file_mode: '0644'
-fail2ban::fail2ban_conf_template: 'fail2ban/fail2ban.conf.erb'
+fail2ban::fail2ban_conf_template: 'fail2ban/fail2ban.conf.epp'
 fail2ban::loglvl: 'INFO'
 fail2ban::logtarget: '/var/log/fail2ban.log'
 fail2ban::syslogsocket: 'auto'
@@ -14,7 +14,7 @@ fail2ban::dbfile: '/var/lib/fail2ban/fail2ban.sqlite3'
 fail2ban::dbpurgeage: 86400
 fail2ban::dbmaxmatches: 10
 fail2ban::stacksize: 0
-fail2ban::jail_conf_template: "fail2ban/debian/jail.conf.erb"
+fail2ban::jail_conf_template: "fail2ban/debian/jail.conf.epp"
 fail2ban::enabled: false
 fail2ban::mode: 'normal'
 fail2ban::filter: '%(__name__)s[mode=%(mode)s]'

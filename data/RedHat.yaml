@@ -1,2 +1,2 @@
 ---
-fail2ban::jail_conf_template: "fail2ban/rhel/jail.conf.erb"
+fail2ban::jail_conf_template: "fail2ban/rhel/jail.conf.epp"

@@ -1,21 +1,21 @@
 # Fail2Ban configuration file
 #
 
-<% if ! @includes.empty? or ! @includes_after.empty? -%>
+<% if ! $includes.empty or ! $includes_after.empty { -%>
 [INCLUDES]
-<%   if ! @includes.empty? -%>
-before = <%= @includes.join("\n         ") %>
-<%   end -%>
-<%   if ! @includes_after.empty? -%>
-after = <%= @includes_after.join("\n        ") %>
-<%   end -%>
+<%   if ! $includes.empty { -%>
+before = <%= $includes.join("\n         ") %>
+<%   } -%>
+<%   if ! $includes_after.empty { -%>
+after = <%= $includes_after.join("\n        ") %>
+<%   } -%>
 
-<% end -%>
+<% } -%>
 [Definition]
 
-<% @additional_defs.each do |line| -%>
-<%=  line %>
-<% end -%>
+<% $additional_defs.each |String $line| { -%>
+<%=  $line %>
+<% } -%>
 
 # Option:  failregex
 # Notes.:  regex to match the password failures messages in the logfile. The
@@ -24,10 +24,10 @@ after = <%= @includes_after.join("\n        ") %>
 #          (?:::f{4,6}:)?(?P<host>[\w\-.^_]+)
 # Values:  TEXT
 #
-failregex = <%= @failregexes.join("\n            ") %>
+failregex = <%= $failregexes.join("\n            ") %>
 
 # Option:  ignoreregex
 # Notes.:  regex to ignore. If this regex matches, the line is ignored.
 # Values:  TEXT
 #
-ignoreregex = <%= @ignoreregexes.join("\n              ") %>
+ignoreregex = <%= $ignoreregexes.join("\n              ") %>

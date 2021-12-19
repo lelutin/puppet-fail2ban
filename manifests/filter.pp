@@ -65,9 +65,17 @@ define fail2ban::filter (
 ) {
   include fail2ban::config
 
+  $filter_options = {
+    failregexes     => $failregexes,
+    ignoreregexes   => $ignoreregexes,
+    includes        => $includes,
+    includes_after  => $includes_after,
+    additional_defs => $additional_defs,
+  }
+
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,
-    content => template('fail2ban/filter.erb'),
+    content => epp('fail2ban/filter.epp', $filter_options),
     owner   => 'root',
     group   => 0,
     mode    => $config_file_mode,

@@ -21,7 +21,7 @@
 #         DEBUG
 # Values: [ LEVEL ]  Default: INFO
 #
-loglevel = <%= @loglvl %>
+loglevel = <%= $loglvl %>
 
 # Option: logtarget
 # Notes.: Set the log target. This could be a file, SYSLOG, STDERR or STDOUT.
@@ -32,13 +32,13 @@ loglevel = <%= @loglvl %>
 #         (e.g. /etc/logrotate.d/fail2ban on Debian systems)
 # Values: [ STDOUT | STDERR | SYSLOG | SYSOUT | FILE ]  Default: STDERR
 #
-logtarget = <%= @logtarget %>
+logtarget = <%= $logtarget %>
 
 # Option: syslogsocket
 # Notes: Set the syslog socket file. Only used when logtarget is SYSLOG
 #        auto uses platform.system() to determine predefined paths
 # Values: [ auto | FILE ]  Default: auto
-syslogsocket = <%= @syslogsocket %>
+syslogsocket = <%= $syslogsocket %>
 
 # Option: socket
 # Notes.: Set the socket file. This is used to communicate with the daemon. Do
@@ -46,14 +46,14 @@ syslogsocket = <%= @syslogsocket %>
 #         communicate with the server afterwards.
 # Values: [ FILE ]  Default: /var/run/fail2ban/fail2ban.sock
 #
-socket = <%= @socket %>
+socket = <%= $socket %>
 
 # Option: pidfile
 # Notes.: Set the PID file. This is used to store the process ID of the
 #         fail2ban server.
 # Values: [ FILE ]  Default: /var/run/fail2ban/fail2ban.pid
 #
-pidfile = <%= @pidfile %>
+pidfile = <%= $pidfile %>
 
 # Options: dbfile
 # Notes.: Set the file for the fail2ban persistent data to be stored.
@@ -61,18 +61,18 @@ pidfile = <%= @pidfile %>
 #         and data is lost when fail2ban is stopped.
 #         A value of "None" disables the database.
 # Values: [ None :memory: FILE ] Default: /var/lib/fail2ban/fail2ban.sqlite3
-dbfile = <%= @dbfile %>
+dbfile = <%= $dbfile %>
 
 # Options: dbpurgeage
 # Notes.: Sets age at which bans should be purged from the database
 # Values: [ SECONDS ] Default: 86400 (24hours)
-dbpurgeage = <%= @dbpurgeage %>
+dbpurgeage = <%= $dbpurgeage %>
 
 # Options: dbmaxmatches
 # Notes.: Number of matches stored in database per ticket (resolvable via 
 #         tags <ipmatches>/<ipjailmatches> in actions)
 # Values: [ INT ] Default: 10
-dbmaxmatches = <%= @dbmaxmatches %>
+dbmaxmatches = <%= $dbmaxmatches %>
 
 [Definition]
 
@@ -83,4 +83,4 @@ dbmaxmatches = <%= @dbmaxmatches %>
 # Notes.: Specifies the stack size (in KiB) to be used for subsequently created threads,
 #         and must be 0 or a positive integer value of at least 32.
 # Values: [ SIZE ] Default: 0 (use platform or configured default)
-stacksize = <%= @stacksize %>
+stacksize = <%= $stacksize %>
