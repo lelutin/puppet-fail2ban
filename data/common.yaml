@@ -48,7 +48,7 @@ fail2ban::manage_service: true
 #  example of how to use those structures.
 #
 fail2ban::jail::3proxy:
-  port: "3128"
+  port: 3128
   logpath:
     - "/var/log/3proxy.log"
 fail2ban::jail::apache-auth:
@@ -58,7 +58,7 @@ fail2ban::jail::apache-auth:
 fail2ban::jail::apache-badbots:
   port: "http,https"
   logpath:
-    - "%(apache_error_log)s"
+    - "%(apache_access_log)s"
   bantime: 172800
   maxretry: 1
 fail2ban::jail::apache-noscript:
@@ -83,7 +83,7 @@ fail2ban::jail::apache-botsearch:
 fail2ban::jail::apache-fakegooglebot:
   port: "http,https"
   logpath:
-    - "%(apache_error_log)s"
+    - "%(apache_access_log)s"
   maxretry: 1
   ignorecommand: "%(ignorecommands_dir)s/apache-fakegooglebot <ip>"
 fail2ban::jail::apache-modsecurity:
@@ -103,20 +103,34 @@ fail2ban::jail::assp:
 # ports 2000, 5000 and 4520 are associated with the "skinny" module, UNISTIM,
 # and the "dundi" module, respectively.
 fail2ban::jail::asterisk:
-  port: "iax,sip,sip-tls,2000,5000,4520"
-  protocol: "all"
+  port: "5060,5061"
   logpath:
     - "/var/log/asterisk/messages"
   # yamllint disable-line rule:line-length
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
+  action: "%(default/action_)s[name=%(__name__)s-tcp, protocol=\"tcp\"]\n           %(default/action_)s[name=%(__name__)s-udp, protocol=\"udp\"]"
   maxretry: 10
+fail2ban::jail::bitwarden:
+  port: "http,https"
+  logpath:
+    - "/home/*/bwdata/logs/identity/Identity/log.txt"
+fail2ban::jail::centreon:
+  port: "http,https"
+  logpath:
+    - "/var/log/centreon/login.log"
+fail2ban::jail::counter-strike:
+  logpath:
+    - "/opt/cstrike/logs/L[0-9]*.log"
+  additional_options:
+    tcpport: "27030,27031,27032,27033,27034,27035,27036,27037,27038,27039"
+    udpport: "1200,27000,27001,27002,27003,27004,27005,27006,27007,27008,27009,27010,27011,27012,27013,27014,27015"
+    action_: "%(default/action_)s[name=%(__name__)s-tcp, port=\"%(tcpport)s\", protocol=\"tcp\"]\n           %(default/action_)s[name=%(__name__)s-udp, port=\"%(udpport)s\", protocol=\"udp\"]"
 fail2ban::jail::courier-auth:
-  port: "smtp,smtps,submission,imap,imaps,pop3,pop3s"
+  port: "smtp,465,submission,imap,imaps,pop3,pop3s"
   logpath:
     - "%(syslog_mail)s"
   backend: "%(syslog_backend)s"
 fail2ban::jail::courier-smtp:
-  port: "smtp,smtps,submission"
+  port: "smtp,465,submission"
   logpath:
     - "%(syslog_mail)s"
   backend: "%(syslog_backend)s"
@@ -126,11 +140,15 @@ fail2ban::jail::cyrus-imap:
     - "%(syslog_mail)s"
   backend: "%(syslog_backend)s"
 fail2ban::jail::directadmin:
-  port: "2222"
+  port: 2222
   logpath:
     - "/var/log/directadmin/login.log"
+fail2ban::jail::domino-smtp:
+  port: "smtp,ssmtp"
+  logpath:
+    - "/home/domino01/data/IBM_TECHNICAL_SUPPORT/console.log"
 fail2ban::jail::dovecot:
-  port: "imap2,imaps,pop3,pop3s,smtp,smtps,submission,sieve"
+  port: "pop3,pop3s,imap,imaps,submission,465,sieve"
   logpath:
     - "%(dovecot_log)s"
   backend: "%(dovecot_backend)s"
@@ -145,7 +163,7 @@ fail2ban::jail::drupal-auth:
     - "%(syslog_daemon)s"
   backend: "%(syslog_backend)s"
 fail2ban::jail::ejabberd-auth:
-  port: "5222"
+  port: 5222
   logpath:
     - "/var/log/ejabberd/ejabberd.log"
 fail2ban::jail::exim:
@@ -157,17 +175,25 @@ fail2ban::jail::exim-spam:
   logpath:
     - "%(exim_main_log)s"
 fail2ban::jail::freeswitch:
-  port: "iax,sip,sip-tls"
+  port: "5060,5061"
   logpath:
     - "/var/log/freeswitch.log"
   # yamllint disable-line rule:line-length
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
+  action: "%(default/action_)s[name=%(__name__)s-tcp, protocol=\"tcp\"]\n           %(default/action_)s[name=%(__name__)s-udp, protocol=\"udp\"]"
   maxretry: 10
 fail2ban::jail::froxlor-auth:
   port: "http,https"
   logpath:
     - "%(syslog_authpriv)s"
   backend: "%(syslog_backend)s"
+fail2ban::jail::gitlab:
+  port: "http,https"
+  logpath:
+    - "/var/log/gitlab/gitlab-rails/application.log"
+fail2ban::jail::grafana:
+  port: "http,https"
+  logpath:
+    - "/var/log/grafana/grafana.log"
 fail2ban::jail::groupoffice:
   port: "http,https"
   logpath:
@@ -181,6 +207,13 @@ fail2ban::jail::guacamole:
   port: "http,https"
   logpath:
     - "/var/log/tomcat*/catalina.out"
+# HAProxy by default doesn't log to file you'll need to set it up to forward
+# logs to a syslog server which would then write them to disk.
+# See "haproxy-http-auth" filter for a brief cautionary note when setting
+# maxretry and findtime.
+fail2ban::jail::haproxy-http-auth:
+  logpath:
+    - "/var/log/haproxy.log"
 fail2ban::jail::horde:
   port: "http,https"
   logpath:
@@ -194,17 +227,18 @@ fail2ban::jail::lighttpd-auth:
   logpath:
     - "%(lighttpd_error_log)s"
 fail2ban::jail::mongodb-auth:
-  port: "27017"
+  port: 27017
   logpath:
     - "/var/log/mongodb/mongodb.log"
 fail2ban::jail::monit:
-  port: "2812"
+  port: 2812
   logpath:
     - "/var/log/monit"
+    - "/var/log/monit.log"
 fail2ban::jail::murmur:
-  port: "64738"
+  port: 64738
   # yamllint disable-line rule:line-length
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=tcp, chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=udp, chain=\"%(chain)s\", actname=%(banaction)s-udp]"
+  action: "%(default/action_)s[name=%(__name__)s-tcp, protocol=\"tcp\"]\n           %(default/action_)s[name=%(__name__)s-udp, protocol=\"udp\"]"
   logpath:
     - "/var/log/mumble-server/mumble-server.log"
 # To log wrong MySQL access attempts add to /etc/my.cnf in [mysqld] or
@@ -218,15 +252,16 @@ fail2ban::jail::murmur:
 # for own logfile
 # [mysqld]
 # log-error=/var/log/mysqld.log
-fail2ban::jail::mysql-auth:
-  name: "mysql-auth"
-  port: "3306"
+fail2ban::jail::mysqld-auth:
+  port: 3306
   logpath:
     - "%(mysql_log)s"
   backend: "%(mysql_backend)s"
-fail2ban::jail::nrpe:
-  port: "5666"
+# consider low maxretry and a long bantime
+# nobody except your own Nagios server should ever probe nrpe
+fail2ban::jail::nagios:
   logpath:
+    # nrpe.cfg may define a different log_facility
     - "%(syslog_daemon)s"
   backend: "%(syslog_backend)s"
   maxretry: 1
@@ -253,14 +288,14 @@ fail2ban::jail::nginx-botsearch:
     - "%(nginx_error_log)s"
   maxretry: 2
 fail2ban::jail::nsd:
-  port: "53"
+  port: 53
   # yamllint disable-line rule:line-length
-  action: "%(banaction)s[name=%(__name__)s-tcp, port=\"%(port)s\", protocol=\"tcp\", chain=\"%(chain)s\", actname=%(banaction)s-tcp]\n           %(banaction)s[name=%(__name__)s-udp, port=\"%(port)s\", protocol=\"udp\", chain=\"%(chain)s\", actname=%(banaction)s-udp]"
+  action: "%(default/action_)s[name=%(__name__)s-tcp, protocol=\"tcp\"]\n           %(default/action_)s[name=%(__name__)s-udp, protocol=\"udp\"]"
   logpath:
     - "/var/log/nsd.log"
 fail2ban::jail::openhab-auth:
   filter: "openhab"
-  action: "iptables-allports[name=NoAuthFailures]"
+  action: "%(banaction_allports)s"
   logpath:
     - "/opt/openhab/logs/request.log"
 fail2ban::jail::openwebmail:
@@ -279,8 +314,10 @@ fail2ban::jail::pam-generic:
 fail2ban::jail::pass2allow-ftp:
   port: "ftp,ftp-data,ftps,ftps-data"
   filter: "apache-pass[knocking_url=\"%(knocking_url)s\"]"
+  action: "%(action_)s[blocktype=%(blocktype)s, returntype=%(returntype)s,\n               actionstart_on_demand=false, actionrepair_on_unban=true]"
   logpath:
     - "%(apache_access_log)s"
+  # 1h
   bantime: 3600
   maxretry: 1
   findtime: 1
@@ -289,7 +326,6 @@ fail2ban::jail::pass2allow-ftp:
     blocktype: "RETURN"
     returntype: "DROP"
 fail2ban::jail::perdition:
-  name: "perdition"
   port: "imap,imaps,pop3,pop3s"
   logpath:
     - "%(syslog_mail)s"
@@ -297,8 +333,19 @@ fail2ban::jail::perdition:
 fail2ban::jail::php-url-fopen:
   port: "http,https"
   logpath:
-    - "%(nginx_access_log)s\n          %(apache_access_log)s"
+    - "%(nginx_access_log)s"
+    - "%(apache_access_log)s"
+fail2ban::jail::phpmyadmin-syslog:
+  port: "http,https"
+  logpath:
+    - "%(syslog_authpriv)s"
+  backend: "%(syslog_backend)s"
+fail2ban::jail::portsentry:
+  logpath:
+    - "/var/lib/portsentry/portsentry.history"
+  maxretry: 1
 fail2ban::jail::postfix:
+  mode: "more"
   port: "smtp,465,submission"
   logpath:
     - "%(postfix_log)s"
@@ -347,6 +394,12 @@ fail2ban::jail::roundcube-auth:
   port: "http,https"
   logpath:
     - "%(roundcube_errors_log)s"
+# For Mac OS Screen Sharing Service (VNC)
+fail2ban::jail::screensharing:
+  logpath:
+    - "/var/log/system.log"
+  additional_options:
+    logencoding: "utf-8"
 fail2ban::jail::selinux-ssh:
   port: "ssh"
   logpath:
@@ -355,6 +408,10 @@ fail2ban::jail::sendmail-auth:
   port: "submission,465,smtp"
   logpath:
     - "%(syslog_mail)s"
+  backend: "%(syslog_backend)s"
+fail2ban::jail::sendmail-reject:
+  port: "smtp,465,submission"
+  logpath: "%(syslog_mail)s"
   backend: "%(syslog_backend)s"
 fail2ban::jail::sieve:
   port: "smtp,465,submission"
@@ -365,6 +422,11 @@ fail2ban::jail::slapd:
   port: "ldap,ldaps"
   logpath:
     - "/var/log/slapd.log"
+fail2ban::jail::softethervpn:
+  port: "500,4500"
+  protocol: "udp"
+  logpath:
+    - "/usr/local/vpnserver/security_log/*/sec.log"
 fail2ban::jail::sogo-auth:
   port: "http,https"
   logpath:
@@ -378,7 +440,7 @@ fail2ban::jail::squid:
   logpath:
     - "/var/log/squid/access.log"
 fail2ban::jail::squirrelmail:
-  port: "smtp,465,submission,imap2,imaps,pop3,pop3s,http,https,socks"
+  port: "smtp,465,submission,imap,imap2,imaps,pop3,pop3s,http,https,socks"
   logpath:
     - "/var/lib/squirrelmail/prefs/squirrelmail_access_log"
 fail2ban::jail::sshd:
@@ -402,6 +464,12 @@ fail2ban::jail::tine20:
   port: "http,https"
   logpath:
     - "/var/log/tine20/tine20.log"
+# to use 'traefik-auth' filter you have to configure your Traefik instance,
+# see `filter.d/traefik-auth.conf` for details and service example.
+fail2ban::jail::traefik-auth:
+  port: "http,https"
+  logpath:
+    - "/var/log/traefik/access.log"
 fail2ban::jail::uwimap-auth:
   port: "imap,imaps"
   logpath:
@@ -412,7 +480,7 @@ fail2ban::jail::vsftpd:
   logpath:
     - "%(vsftpd_log)s"
 fail2ban::jail::webmin-auth:
-  port: "10000"
+  port: 10000
   logpath:
     - "%(syslog_authpriv)s"
   backend: "%(syslog_backend)s"
@@ -427,3 +495,11 @@ fail2ban::jail::xinetd-fail:
     - "%(syslog_daemon)s"
   backend: "%(syslog_backend)s"
   maxretry: 2
+fail2ban::jail::znc-adminlog:
+  port: 6667
+  logpath:
+    - "/var/lib/znc/moddata/adminlog/znc.log"
+fail2ban::jail::zoneminder:
+  port: "http,https"
+  logpath:
+    - "%(apache_error_log)s"
