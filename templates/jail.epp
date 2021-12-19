@@ -1,6 +1,6 @@
 [<%= $jail_name %>]
 enabled = <%= $enabled %>
-<% if $portrange !~ Undef { -%>port = <%= $portrange %>
+<% if $port !~ Undef { -%>port = <%= $port %>
 <% } -%>
 <% if $mode !~ Undef { -%>mode = <%= $mode %>
 <% } -%>
