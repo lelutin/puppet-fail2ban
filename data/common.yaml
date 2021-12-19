@@ -3,7 +3,6 @@ fail2ban::rm_fail2ban_local: true
 fail2ban::rm_jail_local: true
 fail2ban::purge_fail2ban_dot_d: true
 fail2ban::purge_jail_dot_d: true
-fail2ban::persistent_bans: false
 fail2ban::config_file_mode: '0644'
 fail2ban::fail2ban_conf_template: 'fail2ban/fail2ban.conf.erb'
 fail2ban::loglvl: 'INFO'

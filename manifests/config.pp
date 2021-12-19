@@ -45,8 +45,6 @@ class fail2ban::config {
 
   $logpath = $fail2ban::logpath
 
-  $persistent_bans = $fail2ban::persistent_bans
-
   $enabled = $fail2ban::enabled
   $mode = $fail2ban::mode
   $filter = $fail2ban::filter
@@ -81,20 +79,6 @@ class fail2ban::config {
       recurse => true,
       purge   => true,
     }
-  }
-  if $persistent_bans {
-    file { '/etc/fail2ban/persistent.bans':
-      ensure  => 'present',
-      replace => 'no',
-      mode    => $config_file_mode,
-    }
-  }
-  file { '/etc/fail2ban/action.d/iptables-multiport.conf':
-    ensure  => present,
-    owner   => 'root',
-    group   => 0,
-    mode    => $config_file_mode,
-    content => template('fail2ban/iptables-multiport.erb'),
   }
 
   file { '/etc/fail2ban/jail.conf':

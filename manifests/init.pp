@@ -35,10 +35,6 @@
 #   Remove all unmanaged files in /etc/fail2ban/fail2ban.d/
 # @param purge_jail_dot_d
 #   Remove all unmanaged files in /etc/fail2ban/jail.d/
-# @param persistent_bans
-#   Write out banned IPs to a file on teardown and restore bans when starting
-#   fail2ban back up. This option is deprecated and is bound to be removed in
-#   puppet-fail2ban 4.0
 # @param config_file_mode
 #   File mode set on all fail2ban configuration files managed by this module.
 # @param fail2ban_conf_template
@@ -155,7 +151,6 @@ class fail2ban (
   Boolean $rm_jail_local,
   Boolean $purge_fail2ban_dot_d,
   Boolean $purge_jail_dot_d,
-  Boolean $persistent_bans,
   String  $config_file_mode,
   # Options for fail2ban.conf
   String[1]                          $fail2ban_conf_template,
@@ -201,13 +196,6 @@ class fail2ban (
 
   if ! $facts['os']['family'] in ['Debian', 'RedHat'] {
     fail("Unsupported Operating System family: ${facts['os']['family']}")
-  }
-
-  if $persistent_bans {
-    deprecation(
-      'fail2ban_persistent_bans',
-      'This option is bound to be removed in puppet-fail2ban 4.0: fail2ban now restores bans across service restarts.'
-    )
   }
 
   contain fail2ban::install
