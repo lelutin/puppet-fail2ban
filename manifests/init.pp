@@ -147,11 +147,11 @@
 #
 class fail2ban (
   # Options that change how the module behaves
-  Boolean $rm_fail2ban_local,
-  Boolean $rm_jail_local,
-  Boolean $purge_fail2ban_dot_d,
-  Boolean $purge_jail_dot_d,
-  String  $config_file_mode,
+  Boolean           $rm_fail2ban_local,
+  Boolean           $rm_jail_local,
+  Boolean           $purge_fail2ban_dot_d,
+  Boolean           $purge_jail_dot_d,
+  Stdlib::Filemode  $config_file_mode,
   # Options for fail2ban.conf
   String[1]                          $fail2ban_conf_template,
   Fail2ban::Loglevel                 $loglvl,
