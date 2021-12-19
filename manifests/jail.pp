@@ -70,6 +70,9 @@
 #   should be verified to catch activity that you want to block. This
 #   parameter must be set to a non-empty array when not using the 'systemd'
 #   backend, however it must be empty if the 'systemd' backend is used.
+# @param logencoding
+#   Name of the encoding of log files. If set to "auto", fail2ban will use what
+#   is set in the system's locale setting.
 # @param protocol
 #   Name of the protocol to ban using the action.
 # @param maxretry
@@ -118,6 +121,7 @@ define fail2ban::jail (
   Optional[String]             $mode               = undef,
   Optional[String]             $filter             = undef,
   Array[String]                $logpath            = [],
+  Optional[String]             $logencoding        = undef,
   Optional[Fail2ban::Protocol] $protocol           = undef,
   Optional[Integer]            $maxretry           = undef,
   Optional[Integer]            $findtime           = undef,

@@ -398,8 +398,7 @@ fail2ban::jail::roundcube-auth:
 fail2ban::jail::screensharing:
   logpath:
     - "/var/log/system.log"
-  additional_options:
-    logencoding: "utf-8"
+  logencoding: "utf-8"
 fail2ban::jail::selinux-ssh:
   port: "ssh"
   logpath:

@@ -8,6 +8,8 @@ enabled = <%= @enabled %>
 <% end -%>
 <% if not @logpath.empty? -%>logpath = <%= @logpath.join("\n          ") %>
 <% end -%>
+<% if not @logencoding.nil? -%>logencoding = <%= @logencoding %>
+<% end -%>
 <% if not @protocol.nil? -%>protocol = <%= @protocol %>
 <% end -%>
 <% if not @maxretry.nil? -%>maxretry = <%= @maxretry %>
