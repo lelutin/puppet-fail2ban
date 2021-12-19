@@ -300,6 +300,42 @@ Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
 
 ## Upgrade notices ##
 
+* 4.0.0: Support for Debian 11 was added, but Debian 8 was removed from
+  supported releases.
+
+  With the removal of debian 8 support, the `$persistent_bans` parameter was
+  removed since it is not needed anymore. This has the side-effect of stopping
+  management of the `actions.d/iptables-multiport.conf` file, so users may let
+  their package manager change it back to its default form now.
+
+  A couple of new parameters have been added to match newly available
+  configuration options in the fail2ban version in Debian bullseye.
+
+  Watch out though, the `$logpath` parameter has changed data type from
+  `String` to `Array[String]` so you'll need to adapt your calls to the main
+  class and to the `jail` defined type.
+
+  The `$action` parameter in the main class and in the `fail2ban::jail` defined
+  type now accept an array of strings. Using a simple `String` is now
+  considered deprecated and the data type will get removed in version 5.x of
+  the module.
+
+  Some new default jails were added to match what's available in newer
+  versions of fail2ban. You can check them out in `data/common.yaml`.
+
+  Some default jails were modified. You might want to check what their changes
+  are before upgrading. Namely:
+
+  * asterisk
+  * dovecot
+  * freeswitch
+  * murmur
+  * mysql-auth was renamed to mysqld-auth
+  * nrpe was renamed to nagios
+  * nsd
+  * openhab-auth
+  * openwebmail
+
  * 3.3: Support for the 2.x branch was discontinued. Only puppet 4.x+ is
      supported from now on.
 
