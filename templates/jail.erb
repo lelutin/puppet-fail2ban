@@ -6,7 +6,7 @@ enabled = <%= @enabled %>
 <% end -%>
 <% if not @filter.nil? -%>filter = <%= @filter %>
 <% end -%>
-<% if not @logpath.empty? -%>logpath = <%= [@logpath].flatten().join("\n          ") %>
+<% if not @logpath.empty? -%>logpath = <%= @logpath.join("\n          ") %>
 <% end -%>
 <% if not @protocol.nil? -%>protocol = <%= @protocol %>
 <% end -%>

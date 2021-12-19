@@ -150,7 +150,7 @@ usedns = <%= @usedns %>
 logencoding = <%= @logencoding %>
 <% if not @logpath.empty? -%>
 # Default path for log files used by jails
-logpath = <%= [@logpath].flatten().join("\n          ") %>
+logpath = <%= @logpath.join("\n          ") %>
 <% end -%>
 
 # "enabled" enables the jails.
