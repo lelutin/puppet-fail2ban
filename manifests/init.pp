@@ -37,9 +37,11 @@
 #   Remove all unmanaged files in /etc/fail2ban/jail.d/
 # @param config_file_mode
 #   File mode set on all fail2ban configuration files managed by this module.
+# @param manage_service
+#   Manage the fail2ban service, true by default
+#
 # @param fail2ban_conf_template
 #   Alternative template to use for the `fail2ban.conf` file.
-#
 # @param loglvl
 #   Set fail2ban's loglevel.
 # @param logtarget
@@ -81,58 +83,13 @@
 #   determine which regular expressions the filter will include. To know
 #   exactly which values are available in filters, you need to read their
 #   configuration files.
-# @param filter
-#   Default name of filter to use for jails.
-# @param ignoreself
-#   If set to false, fail2ban will not ignore IP addresses that are bound to
-#   interfaces on the host.
-# @param ignoreip
-#   Default list of IPs or CIDR prefixes that should not get banned.
-# @param bantime
-#   Default duration in number of seconds to ban an IP address for.
-# @param findtime
-#   Default interval during which to count occurences of an IP.
-# @param maxretry
-#   Default number of times an IP should be detectd by a filter during findtime
-#   for it to get banned.
-# @param maxmatches
-#   Number of matches stored in ticket.
-# @param ignorecommand
-#   Default command used to determine if an IP should be exempted from being
-#   banned.
-# @param ignorecache
-#   If set, caches the results from `ignoreip`, `ignoreself` and
-#   `ignorecommand` for a set amount of time to avoid calling `ignorecommand`
-#   repeatedly.
 # @param backend
 #   Default method used to get information from logs.
-# @param destemail
-#   Default email address used as recipient by actions that send out emails.
-# @param sender
-#   Default email address set as sender by actions that send out emails.
-# @param fail2ban_agent
-#   User-agent sent on HTTP requests that are made by some actions.
-# @param banaction
-#   Default action name extrapolated when defining some of the default actions.
-# @param banaction_allports
-#   Default action name that can be extrapolated when defining some of the
-#   default actions. This one is meant to ban all ports at once instead of
-#   specific ones.
-# @param chain
-#   Default name of the iptables chain used by iptables-based actions.
-# @param port
-#   Default comma separated list of ports, port names or port ranges used by
-#   actions when banning an IP.
-# @param mta
-#   Default program name used for sending out email by actions that do so.
-# @param protocol
-#   Default protocol name used by actions.
-# @param action
-#   List of default actions that get called when an IP triggers maxretry number
-#   of times a filter within findtime.
 # @param usedns
 #   Default behaviour whether or not to resolve IPs when they are found in a
 #   log by a filter.
+# @param filter
+#   Default name of filter to use for jails.
 # @param logpath
 #   Array of absolute paths specifying the default path(s) to log file(s) being
 #   used by jails. This value is usually not set and logpath is defined for
@@ -150,8 +107,51 @@
 # @param ignoreregex
 #   Regular expressions to add to all filters' ignoreregex. This is usually not
 #   used but could be useful to have something excluded from bans everywhere.
-# @param manage_service
-#   Manage the fail2ban service, true by default
+# @param ignoreself
+#   If set to false, fail2ban will not ignore IP addresses that are bound to
+#   interfaces on the host.
+# @param ignoreip
+#   Default list of IPs or CIDR prefixes that should not get banned.
+# @param ignorecommand
+#   Default command used to determine if an IP should be exempted from being
+#   banned.
+# @param ignorecache
+#   If set, caches the results from `ignoreip`, `ignoreself` and
+#   `ignorecommand` for a set amount of time to avoid calling `ignorecommand`
+#   repeatedly.
+# @param maxretry
+#   Default number of times an IP should be detectd by a filter during findtime
+#   for it to get banned.
+# @param maxmatches
+#   Number of matches stored in ticket.
+# @param findtime
+#   Default interval during which to count occurences of an IP.
+# @param action
+#   List of default actions that get called when an IP triggers maxretry number
+#   of times a filter within findtime.
+# @param bantime
+#   Default duration in number of seconds to ban an IP address for.
+# @param banaction
+#   Default action name extrapolated when defining some of the default actions.
+# @param banaction_allports
+#   Default action name that can be extrapolated when defining some of the
+#   default actions. This one is meant to ban all ports at once instead of
+#   specific ones.
+# @param chain
+#   Default name of the iptables chain used by iptables-based actions.
+# @param port
+#   Default comma separated list of ports, port names or port ranges used by
+#   actions when banning an IP.
+# @param protocol
+#   Default protocol name used by actions.
+# @param mta
+#   Default program name used for sending out email by actions that do so.
+# @param destemail
+#   Default email address used as recipient by actions that send out emails.
+# @param sender
+#   Default email address set as sender by actions that send out emails.
+# @param fail2ban_agent
+#   User-agent sent on HTTP requests that are made by some actions.
 #
 class fail2ban (
   # Options that change how the module behaves
@@ -160,6 +160,7 @@ class fail2ban (
   Boolean           $purge_fail2ban_dot_d,
   Boolean           $purge_jail_dot_d,
   Stdlib::Filemode  $config_file_mode,
+  Boolean           $manage_service,
   # Options for fail2ban.conf
   String[1]                          $fail2ban_conf_template,
   Fail2ban::Loglevel                 $loglvl,
@@ -175,34 +176,35 @@ class fail2ban (
   String[1]                         $jail_conf_template,
   Boolean                           $enabled,
   String                            $mode,
-  String                            $filter,
-  Boolean                           $ignoreself,
-  Array[String, 0]                  $ignoreip,
-  Integer[0]                        $bantime,
-  Integer[1]                        $findtime,
-  Integer[1]                        $maxretry,
-  Variant[Integer[1], String]       $maxmatches,
-  String                            $ignorecommand,
-  Optional[String]                  $ignorecache,
   Fail2ban::Backend                 $backend,
-  String                            $destemail,
-  String                            $sender,
-  String                            $fail2ban_agent,
-  String                            $banaction,
-  String                            $banaction_allports,
-  String                            $chain,
-  Fail2ban::Port                    $port,
-  String                            $mta,
-  Fail2ban::Protocol                $protocol,
-  Variant[String, Array[String, 1]] $action,
   Fail2ban::Usedns                  $usedns,
+  String                            $filter,
   Array[String]                     $logpath,
   String                            $logencoding,
   Optional[String]                  $logtimezone,
   Optional[String]                  $prefregex,
   Optional[String]                  $failregex,
   Optional[String]                  $ignoreregex,
-  Boolean                           $manage_service,
+  Boolean                           $ignoreself,
+  Array[String, 0]                  $ignoreip,
+  String                            $ignorecommand,
+  Optional[String]                  $ignorecache,
+  Integer[1]                        $maxretry,
+  Variant[Integer[1], String]       $maxmatches,
+  Integer[1]                        $findtime,
+  Variant[String, Array[String, 1]] $action,
+  Integer[0]                        $bantime,
+  String                            $banaction,
+  String                            $banaction_allports,
+  String                            $chain,
+  Fail2ban::Port                    $port,
+  Fail2ban::Protocol                $protocol,
+  #  options for email-based actions
+  String                            $mta,
+  String                            $destemail,
+  String                            $sender,
+  #  option for http-based actions
+  String                            $fail2ban_agent,
 ) {
 
   if ! $facts['os']['family'] in ['Debian', 'RedHat'] {

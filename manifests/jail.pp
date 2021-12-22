@@ -46,21 +46,24 @@
 #
 # @param ensure
 #   Whether resources for the defined jail should be installed or removed.
-# @param enabled
-#   Whether or not a jail is enabled. Setting this to false makes it possible
-#   to keep configuration around for a certain jail but temporarily disable it.
 # @param config_file_mode
 #   Permission mode given to the jail file created by this defined type.
 #
-# @param port
-#   Comma separated list of ports, port ranges or service names (as found in
-#   /etc/services) that should get blocked by the ban action.
+# @param enabled
+#   Whether or not a jail is enabled. Setting this to false makes it possible
+#   to keep configuration around for a certain jail but temporarily disable it.
 # @param mode
 #   Change the behavior of the filter used by this jail. The mode will
 #   generally determine which regular expressions the filter will include. The
 #   values that this can take are determined by each individual filter. To know
 #   exactly which values are available in filters, you need to read their
 #   configuration files.
+# @param backend
+#   Method used by fail2ban to obtain new log lines from the log file(s) in
+#   logpath.
+# @param usedns
+#   Whether or not to resolve DNS hostname of IPs that have been found by a
+#   failregex.
 # @param filter
 #   Name of the filter to use for this jail. The default value for the filter
 #   is usually to use a filter with the same name as the jail name (although
@@ -73,38 +76,35 @@
 # @param logencoding
 #   Name of the encoding of log files. If set to "auto", fail2ban will use what
 #   is set in the system's locale setting.
-# @param protocol
-#   Name of the protocol to ban using the action.
-# @param maxretry
-#   Number of failregex matches during findtime after which an IP gets banned.
-# @param findtime
-#   Time period in seconds during which maxretry number of matches will get an
-#   IP banned.
+# @param ignoreip
+#   List of IPs or CIDR prefixes to ignore when identifying matches of
+#   failregex. The IPs that fit the descriptions in this parameter will never
+#   get banned by the jail.
 # @param ignorecommand
 #   Command used to determine if an IP should found by a failregex be ignored.
 #   This can be used to have a more complex and dynamic method of listing and
 #   identifying IPs that should not get banned. It can be used also when
 #   ignoreip is present.
+# @param maxretry
+#   Number of failregex matches during findtime after which an IP gets banned.
+# @param findtime
+#   Time period in seconds during which maxretry number of matches will get an
+#   IP banned.
 # @param action
 #   List of actions that should be used to ban and unban IPs when maxretry
 #   matches of failregex has happened for an IP during findtime.
-# @param usedns
-#   Whether or not to resolve DNS hostname of IPs that have been found by a
-#   failregex.
+# @param bantime
+#   Time period in seconds for which an IP is banned if maxretry matches of
+#   failregex happen for the same IP during findtime.
 # @param banaction
 #   Name of the action that is extrapolated in default action definitions, or
 #   in the action param. This can let you override the action name but keep the
 #   default parameters to the action.
-# @param bantime
-#   Time period in seconds for which an IP is banned if maxretry matches of
-#   failregex happen for the same IP during findtime.
-# @param ignoreip
-#   List of IPs or CIDR prefixes to ignore when identifying matches of
-#   failregex. The IPs that fit the descriptions in this parameter will never
-#   get banned by the jail.
-# @param backend
-#   Method used by fail2ban to obtain new log lines from the log file(s) in
-#   logpath.
+# @param port
+#   Comma separated list of ports, port ranges or service names (as found in
+#   /etc/services) that should get blocked by the ban action.
+# @param protocol
+#   Name of the protocol to ban using the action.
 # @param additional_options
 #   Hash of additional values that should be declared of the jail. Keys are the
 #   value name and values are placed to the right of the "=". This can be used
@@ -113,24 +113,24 @@
 #
 define fail2ban::jail (
   Enum['present','absent']     $ensure             = 'present',
-  Boolean                      $enabled            = true,
   String                       $config_file_mode   = '0644',
   # Params that override default settings for a particular jail
-  Optional[Fail2ban::Port]     $port               = undef,
+  Boolean                      $enabled            = true,
   Optional[String]             $mode               = undef,
+  Optional[Fail2ban::Backend]  $backend            = undef,
+  Optional[Fail2ban::Usedns]   $usedns             = undef,
   Optional[String]             $filter             = undef,
   Array[String]                $logpath            = [],
   Optional[String]             $logencoding        = undef,
-  Optional[Fail2ban::Protocol] $protocol           = undef,
+  Array[String, 0]             $ignoreip           = [],
+  Optional[String]             $ignorecommand      = undef,
   Optional[Integer]            $maxretry           = undef,
   Optional[Integer]            $findtime           = undef,
-  Optional[String]             $ignorecommand      = undef,
   Optional[Variant[String, Array[String, 1]]] $action = undef,
-  Optional[Fail2ban::Usedns]   $usedns             = undef,
-  Optional[String]             $banaction          = undef,
   Optional[Integer]            $bantime            = undef,
-  Array[String, 0]             $ignoreip           = [],
-  Optional[Fail2ban::Backend]  $backend            = undef,
+  Optional[String]             $banaction          = undef,
+  Optional[Fail2ban::Port]     $port               = undef,
+  Optional[Fail2ban::Protocol] $protocol           = undef,
   Hash[String, String]         $additional_options = {},
 ) {
   include fail2ban::config
