@@ -25,6 +25,7 @@ fail2ban::findtime: 600
 fail2ban::maxretry: 3
 fail2ban::maxmatches: '%(maxretry)s'
 fail2ban::ignorecommand: ''
+fail2ban::ignorecache: ~
 fail2ban::backend: 'auto'
 fail2ban::destemail: 'root@localhost'
 fail2ban::sender: 'root@localhost'
@@ -40,6 +41,8 @@ fail2ban::action:
 fail2ban::usedns: 'warn'
 fail2ban::logpath: []
 fail2ban::logencoding: 'auto'
+fail2ban::logtimezone: ~
+fail2ban::prefregex: ~
 fail2ban::failregex: ~
 fail2ban::ignoreregex: ~
 fail2ban::manage_service: true

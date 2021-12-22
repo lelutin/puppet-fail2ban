@@ -100,6 +100,10 @@
 # @param ignorecommand
 #   Default command used to determine if an IP should be exempted from being
 #   banned.
+# @param ignorecache
+#   If set, caches the results from `ignoreip`, `ignoreself` and
+#   `ignorecommand` for a set amount of time to avoid calling `ignorecommand`
+#   repeatedly.
 # @param backend
 #   Default method used to get information from logs.
 # @param destemail
@@ -136,6 +140,10 @@
 # @param logencoding
 #   Name of the encoding of log files. If set to "auto", fail2ban will use what
 #   is set in the system's locale setting.
+# @param logtimezone
+#   Force a timezone by default for logs that don't specify them on timestamps.
+# @param prefregex
+#   Regular expression to parse common part in every message.
 # @param failregex
 #   Regular expressions to add to all filters' failregex. This is usually not
 #   used.
@@ -175,6 +183,7 @@ class fail2ban (
   Integer                           $maxretry,
   Variant[Integer, String]          $maxmatches,
   String                            $ignorecommand,
+  Optional[String]                  $ignorecache,
   Fail2ban::Backend                 $backend,
   String                            $destemail,
   String                            $sender,
@@ -189,6 +198,8 @@ class fail2ban (
   Fail2ban::Usedns                  $usedns,
   Array[String]                     $logpath,
   String                            $logencoding,
+  Optional[String]                  $logtimezone,
+  Optional[String]                  $prefregex,
   Optional[String]                  $failregex,
   Optional[String]                  $ignoreregex,
   Boolean                           $manage_service,

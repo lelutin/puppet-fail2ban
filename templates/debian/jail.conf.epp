@@ -96,6 +96,10 @@ ignoreip = <%= $ignoreip.join(" ") %>
 #
 # ignorecommand = /path/to/command <ip>
 ignorecommand = <%= $ignorecommand %>
+<% if $ignorecache !~ Undef { -%>
+# Cache results of ignorecommand to avoid repeatedly calling it.
+ignorecache = <%= $ignorecache %>
+<% } -%>
 
 # "bantime" is the number of seconds that a host is banned.
 bantime = <%= $bantime %>
@@ -152,6 +156,10 @@ logencoding = <%= $logencoding %>
 # Default path for log files used by jails
 logpath = <%= $logpath.join("\n          ") %>
 <% } -%>
+<% if $logtimezone !~ Undef { -%>
+# Force timezone for all log files by default
+logtimezone = <%= $logtimezone %>
+<% } -%>
 
 # "enabled" enables the jails.
 #  By default all jails are disabled, and it should stay this way.
@@ -169,6 +177,11 @@ mode = <%= $mode %>
 #  By default jails have names matching their filter name
 #
 filter = <%= $filter %>
+<% if $prefregex !~ Undef { -%>
+
+# Regular expression to parse common part in every message.
+prefregex = <%= $prefregex %>
+<% } -%>
 <% if $failregex !~ Undef { -%>
 
 # Regular expressions to add to all filters' failregex
