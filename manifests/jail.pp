@@ -20,16 +20,16 @@
 #
 # @example creating simple jail for service
 #   fail2ban::jail { 'honeypot':
-#     findtime   => 300,
-#     maxretry   => 1,
-#     port       => 'all',
-#     logpath    => ['/var/log/honeypot.log'],
+#     findtime => 300,
+#     maxretry => 1,
+#     port     => 'all',
+#     logpath  => ['/var/log/honeypot.log'],
 #   }
 #
 # @example using a pre-defined jail
 #   $ssh_params = lookup('fail2ban::jail::sshd')
 #   fail2ban::jail { 'sshd':
-#     *          => $ssh_params,
+#     * => $ssh_params,
 #   }
 #
 # @example overriding parameters from a pre-defined jail
@@ -40,7 +40,7 @@
 #   }
 #   $ssh_params = lookup('fail2ban::jail::sshd') + $ssh_extra_params
 #   fail2ban::jail { 'sshd':
-#     *          => $ssh_params,
+#     * => $ssh_params,
 #   }
 #
 #
@@ -76,6 +76,19 @@
 # @param logencoding
 #   Name of the encoding of log files. If set to "auto", fail2ban will use what
 #   is set in the system's locale setting.
+# @param logtimezone
+#   Force a timezone if the logs don't specify them on timestamps.
+# @param prefregex
+#   Regular expression to parse common part in every message for this jail.
+# @param failregex
+#   Regular expressions to add to the failregex of the filter used by this
+#   jail.
+# @param ignoreregex
+#   Regular expressions to add to the ignoreregex of the filter used by this
+#   jail.
+# @param ignoreself
+#   If set to false, fail2ban will not ignore IP addresses, for this jail, that
+#   are bound to interfaces on the host.
 # @param ignoreip
 #   List of IPs or CIDR prefixes to ignore when identifying matches of
 #   failregex. The IPs that fit the descriptions in this parameter will never
@@ -85,8 +98,14 @@
 #   This can be used to have a more complex and dynamic method of listing and
 #   identifying IPs that should not get banned. It can be used also when
 #   ignoreip is present.
+# @param ignorecache
+#   If set, caches the results from `ignoreip`, `ignoreself` and
+#   `ignorecommand` for a set amount of time to avoid calling `ignorecommand`
+#   repeatedly.
 # @param maxretry
 #   Number of failregex matches during findtime after which an IP gets banned.
+# @param maxmatches
+#   Number of matches stored in ticket.
 # @param findtime
 #   Time period in seconds during which maxretry number of matches will get an
 #   IP banned.
@@ -100,16 +119,38 @@
 #   Name of the action that is extrapolated in default action definitions, or
 #   in the action param. This can let you override the action name but keep the
 #   default parameters to the action.
+# @param banaction_allports
+#   Action name that can be extrapolated by some of the default actions. This
+#   one is meant to ban all ports at once instead of specific ones. Setting
+#   this will change the action for this jail.
+# @param chain
+#   Name of the iptables chain used by iptables-based actions.
 # @param port
 #   Comma separated list of ports, port ranges or service names (as found in
 #   /etc/services) that should get blocked by the ban action.
 # @param protocol
 #   Name of the protocol to ban using the action.
+# @param mta
+#   Program name used for sending out email by actions that do so.
+# @param destemail
+#   Email address used as recipient by actions that send out emails. Setting
+#   this will override destemail for this jail only.
+# @param sender
+#   Email address set as sender by actions that send out emails.
+# @param fail2ban_agent
+#   User-agent sent on HTTP requests that are made by some actions.
 # @param additional_options
-#   Hash of additional values that should be declared of the jail. Keys are the
-#   value name and values are placed to the right of the "=". This can be used
-#   to declare arbitrary values for filters or actions to use. No syntax
-#   checking is done on the contents of this hash.
+#   Hash of additional values that should be declared for the jail. Keys
+#   represent the jail configuration value names and hash values are placed to
+#   the right of the "=". This can be used to declare arbitrary values for
+#   filters or actions to use. No syntax checking is done on the contents of
+#   this hash.
+#   Note that any keys in this hash that correspond to a parameter name for
+#   this defined type will get overridden by the value that the defined type's
+#   parameter was given (e.g. if there is mode => '0600' in additional_options,
+#   the value of mode in the file on disk will not take on the value '0600'
+#   since there is a resource parameter that already corresponds to this key
+#   name).
 #
 define fail2ban::jail (
   Enum['present','absent']     $ensure             = 'present',
