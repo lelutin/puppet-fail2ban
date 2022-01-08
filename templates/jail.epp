@@ -1,5 +1,21 @@
 [<%= $jail_name %>]
-<% $options.each |String $opt, Any $value| { -%>
-<% if $value !~ Undef { %><%= $opt %> = <%= $value %>
-<% }
-} -%>
+<%
+$options.each |String $opt, Any $value| {
+  if $value !~ Undef {
+    if $value =~ Array {
+      # This looks horrible but the Puppet DSL doesn't seem to offer a better
+      #   way to generate a string of x repetitions of a substring more easily
+      #   than this.
+      $offset = range(1,length($opt)+3).map |$x| { " " }.join("")
+-%>
+<%= $opt %> = <%= $value.join("\n${offset}") %>
+<%
+    }
+    else {
+-%>
+<%= $opt %> = <%= $value %>
+<%
+    }
+  }
+}
+-%>

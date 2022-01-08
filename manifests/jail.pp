@@ -168,7 +168,7 @@ define fail2ban::jail (
   Optional[String]             $failregex          = undef,
   Optional[String]             $ignoreregex        = undef,
   Optional[Boolean]            $ignoreself         = undef,
-  Array[String, 0]             $ignoreip           = [],
+  Optional[Array[String, 1]]   $ignoreip           = undef,
   Optional[String]             $ignorecommand      = undef,
   Optional[String]             $ignorecache        = undef,
   Optional[Integer[1]]         $maxretry           = undef,
@@ -192,6 +192,11 @@ define fail2ban::jail (
   if $action =~ String {
     deprecation('fail2ban_action_param',
       'The $action parameter will only take an array of strings in 5.x')
+
+    $real_action = [$action]
+  }
+  else {
+    $real_action = $action
   }
 
   if $backend == 'systemd' {
@@ -219,20 +224,20 @@ define fail2ban::jail (
     backend            => $backend,
     usedns             => $usedns,
     filter             => $filter,
-    logpath            => $logpath.join("\n          "),
+    logpath            => $logpath,
     logencoding        => $logencoding,
     logtimezone        => $logtimezone,
     prefregex          => $prefregex,
     failregex          => $failregex,
     ignoreregex        => $ignoreregex,
     ignoreself         => $ignoreself,
-    ignoreip           => $ignoreip.join(' '),
+    ignoreip           => $ignoreip,
     ignorecommand      => $ignorecommand,
     ignorecache        => $ignorecache,
     maxretry           => $maxretry,
     maxmatches         => $maxmatches,
     findtime           => $findtime,
-    action             => [$action].flatten().join("\n         "),
+    action             => $real_action,
     bantime            => $bantime,
     banaction          => $banaction,
     banaction_allports => $banaction_allports,
