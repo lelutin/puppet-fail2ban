@@ -102,11 +102,12 @@
 # @param prefregex
 #   Regular expression to parse common part in every message.
 # @param failregex
-#   Regular expressions to add to all filters' failregex. This is usually not
-#   used.
+#   Array of regular expressions to add to all filters' failregex. This is
+#   usually not used at the global level, but it can still be set.
 # @param ignoreregex
-#   Regular expressions to add to all filters' ignoreregex. This is usually not
-#   used but could be useful to have something excluded from bans everywhere.
+#   Array of regular expressions to add to all filters' ignoreregex. This is
+#   usually not used at the global level, but could be useful to have something
+#   excluded from bans everywhere.
 # @param ignoreself
 #   If set to false, fail2ban will not ignore IP addresses that are bound to
 #   interfaces on the host.
@@ -183,8 +184,8 @@ class fail2ban (
   String                            $logencoding = 'auto',
   Optional[String]                  $logtimezone = undef,
   Optional[String]                  $prefregex = undef,
-  Optional[String]                  $failregex = undef,
-  Optional[String]                  $ignoreregex = undef,
+  Optional[Variant[String, Array[String[1]]]] $failregex = undef,
+  Optional[Variant[String, Array[String[1]]]] $ignoreregex = undef,
   Boolean                           $ignoreself = true,
   Array[String, 0]                  $ignoreip = ['127.0.0.1'],
   String                            $ignorecommand = '',
@@ -214,6 +215,14 @@ class fail2ban (
   if $action =~ String {
     deprecation('fail2ban_action_param',
       'The $action parameter will only take an array of strings in 5.x')
+  }
+  if $failregex =~ String {
+    deprecation('fail2ban_failregex_param',
+      'The $failregex parameter will only take an array of strings in 5.x')
+  }
+  if $ignoreregex =~ String {
+    deprecation('fail2ban_ignoreregex_param',
+      'The $ignoreregex parameter will only take an array of strings in 5.x')
   }
 
   contain fail2ban::install

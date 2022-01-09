@@ -185,12 +185,12 @@ prefregex = <%= $prefregex %>
 <% if $failregex !~ Undef { -%>
 
 # Regular expressions to add to all filters' failregex
-failregex = <%= $failregex %>
+failregex = <%= [$failregex].flatten().join("\n            ") %>
 <% } -%>
 <% if $ignoreregex !~ Undef { -%>
 
 # Regular expressions to add to all filters' ignoreregex
-ignoreregex = <%= $ignoreregex %>
+ignoreregex = <%= [$ignoreregex].flatten().join("\n              ") %>
 <% } -%>
 
 

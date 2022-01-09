@@ -320,6 +320,11 @@ Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
   considered deprecated and the data type will get removed in version 5.x of
   the module.
 
+  Similarly, the `$failregex` and `$ignoreregex` parameters in the main class
+  now accept an array of strings and using a simple `String` is now considered
+  deprecated. The `String` type will be removed from those parameters in
+  version `5.x` of the module.
+
   Some new default jails were added to match what's available in newer
   versions of fail2ban. You can check them out in `data/common.yaml`.
 
