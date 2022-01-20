@@ -27,6 +27,10 @@
 #   Whether the resources should be installed or removed.
 # @param config_file_mode
 #   Permission mode given to the filter file created by this defined type.
+# @param timeout
+#   Special tag in the Init section that, if present, defines the maximum
+#   period of time in seconds that an action command can be executed before
+#   being killed.
 # @param init
 #   List of arbitrary lines that will be a part of the [Init] section. All
 #   tags (variables) defined in this section can be overridden by any
@@ -61,9 +65,10 @@ define fail2ban::action (
   Enum['present', 'absent'] $ensure = 'present',
   String                    $config_file_mode = '0644',
   # general action configuration
-  Array[String] $init = [],
-  Array[String] $includes = [],
-  Array[String] $includes_after = [],
+  Optional[Integer[1]] $timeout = undef,
+  Array[String]        $init = [],
+  Array[String]        $includes = [],
+  Array[String]        $includes_after = [],
   # main action definition
   Array[String]    $additional_defs = [],
   Array[String[1]] $actioncheck = [],
@@ -81,6 +86,7 @@ define fail2ban::action (
     actionstop      => $actionstop,
     actionban       => $actionban,
     actionunban     => $actionunban,
+    timeout         => $timeout,
     init            => $init,
   }
 

@@ -35,6 +35,9 @@ actionunban = <%= $actionunban.join("\n              ") %>
 
 [Init]
 
+<% if $timeout !~ Undef { -%>
+timeout = <%= $timeout %>
+<% } -%>
 <% $init.each |String $line| { -%>
 <%=  $line %>
 <% } -%>
