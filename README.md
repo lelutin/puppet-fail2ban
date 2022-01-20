@@ -3,20 +3,21 @@
 ___Table of contents___:
 
 1. [Overview](#overview)
-1. [Module description](#module-description)
-1. [Usage](#usage)
-    1. [Defining jails](#defining-jails)
-        1. [Predefined jails](#predefined-jails)
-    1. [Defining filters](#defining-filters)
-    1. [Defining actions](#defining-actions)
-        1. [nftables support](#nftables-support)
-1. [Requirements](#requirements)
-1. [Compatibility](#compatibility)
-1. [Upgrade notices](#upgrade-notices)
-1. [Documentation](#documentation)
-1. [Testing](#testing)
-    1. [Unit tests](#unit-tests)
-    1. [Functionality tests](#functionality-tests)
+2. [Module description](#module-description)
+3. [Usage](#usage)
+   * [Defining jails](#defining-jails)
+     * [Predefined jails](#predefined-jails)
+   * [Defining filters](#defining-filters)
+   * [Defining actions](#defining-actions)
+     * [Python action scripts](#python-action-scripts)
+     * [nftables support](#nftables-support)
+4. [Requirements](#requirements)
+5. [Compatibility](#compatibility)
+6. [Upgrade notices](#upgrade-notices)
+7. [Documentation](#documentation)
+8. [Testing](#testing)
+   * [Unit tests](#unit-tests)
+   * [Funtionality tests](#funtionality-tests)
 
 ## Overview ##
 
@@ -239,6 +240,19 @@ fail2ban::action { 'rest_api':
   actionunban => ['curl -s -X DELETE http://yourapi:8080/theapi/v4/firewall/rules/1 -H "Authorization: ..."'],
 }
 ~~~
+
+#### Python action scripts ####
+
+Fail2ban lets users define actions as python scripts. These these actions
+should exist within a file within `/etc/fail2ban/action/$action.py` where
+`$action` is the name of the action.
+
+The contents of those files can differ wildly. Other than ensuring the
+location of the file and its permissions, this module wouldn't actually add
+much more on top of simply managing the python scripts as `file` resources, so
+no defined resource type was created for them. If you manage such an action
+script, it is recommended to make it signal `Class['fail2ban::service']` (e.g.
+with `~>`) in order to automatically restart the service upon changes.
 
 #### nftables support ####
 
