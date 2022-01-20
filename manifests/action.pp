@@ -23,22 +23,14 @@
 #   }
 #
 #
-# @param actionban
-#   List of commands that are executed when fail2ban has found too many
-#   matches for a given IP address.
-# @param actionunban
-#   List of commands that are executed after `bantime` has elapsed.
 # @param ensure
 #   Whether the resources should be installed or removed.
-# @param actioncheck
-#   List of commands that are run by fail2ban before any other action to
-#   verify that the environment (or setup) is still in good shape.
-# @param actionstart
-#   List of commands that are executed when the jail is started.
-# @param actionstop
-#   List of commands that are executed when the jail is stopped.
 # @param config_file_mode
 #   Permission mode given to the filter file created by this defined type.
+# @param init
+#   List of arbitrary lines that will be a part of the [Init] section. All
+#   tags (variables) defined in this section can be overridden by any
+#   individual jail to change the action's behaviour.
 # @param includes
 #   List of files to include before considering the rest of the action
 #   definition. These files can declare variables used by the action to set
@@ -50,23 +42,33 @@
 #   definition section, for anything that didn't fit in other parameters. Each
 #   item in the list is output on its own line in the action file. No syntax
 #   checking is done.
-# @param init
-#   List of arbitrary lines that will be a part of the [Init] section. All
-#   tags (variables) defined in this section can be overridden by any
-#   individual jail to change the action's behaviour.
+# @param actionban
+#   List of commands that are executed when fail2ban has found too many
+#   matches for a given IP address.
+# @param actionunban
+#   List of commands that are executed after `bantime` has elapsed.
+# @param actioncheck
+#   List of commands that are run by fail2ban before any other action to
+#   verify that the environment (or setup) is still in good shape.
+# @param actionstart
+#   List of commands that are executed when the jail is started.
+# @param actionstop
+#   List of commands that are executed when the jail is stopped.
 #
 define fail2ban::action (
-  Array[String[1], 1] $actionban,
-  Array[String[1], 1] $actionunban,
+  Array[String[1], 1]       $actionban,
+  Array[String[1], 1]       $actionunban,
   Enum['present', 'absent'] $ensure = 'present',
-  Array[String[1]]    $actioncheck = [],
-  Array[String[1]]    $actionstart = [],
-  Array[String[1]]    $actionstop  = [],
-  String              $config_file_mode = '0644',
-  Array[String]       $includes = [],
-  Array[String]       $includes_after = [],
-  Array[String]       $additional_defs = [],
-  Array[String]       $init = [],
+  String                    $config_file_mode = '0644',
+  # general action configuration
+  Array[String] $init = [],
+  Array[String] $includes = [],
+  Array[String] $includes_after = [],
+  # main action definition
+  Array[String]    $additional_defs = [],
+  Array[String[1]] $actioncheck = [],
+  Array[String[1]] $actionstart = [],
+  Array[String[1]] $actionstop  = [],
 ) {
   require fail2ban::config
 
