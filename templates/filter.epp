@@ -17,6 +17,38 @@ after = <%= $includes_after.join("\n        ") %>
 <%=  $line %>
 <% } -%>
 
+<%
+if $maxlines !~ Undef {
+-%>
+maxlines = <%= $maxlines %>
+
+<%
+}
+-%>
+<%
+if $datepattern !~ Undef {
+-%>
+datepattern = <%= $datepattern %>
+
+<%
+}
+-%>
+<%
+if $journalmatch !~ Undef {
+-%>
+journalmatch = <%= $journalmatch %>
+
+<%
+}
+-%>
+<%
+if $prefregex !~ Undef {
+-%>
+prefregex = <%= $prefregex %>
+
+<%
+}
+-%>
 # Option:  failregex
 # Notes.:  regex to match the password failures messages in the logfile. The
 #          host must be matched by a group named "host". The tag "<HOST>" can
@@ -31,3 +63,16 @@ failregex = <%= $failregexes.join("\n            ") %>
 # Values:  TEXT
 #
 ignoreregex = <%= $ignoreregexes.join("\n              ") %>
+<%
+if ! $init.empty {
+-%>
+
+[Init]
+<%
+  $init.each |String $line| {
+-%>
+<%= $line %>
+<%
+  }
+}
+-%>
