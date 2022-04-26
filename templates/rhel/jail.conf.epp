@@ -136,6 +136,8 @@ port = <%= $port %>
 banaction = <%= $banaction %>
 banaction_allports = <%= $banaction_allports %>
 
+unbanaction = <%= $banaction_allports %>
+
 # The simplest action to take: ban only
 action_ = %(banaction)s[name=%(__name__)s, bantime="%(bantime)s", port="%(port)s", protocol="%(protocol)s", chain="%(chain)s"]
 
