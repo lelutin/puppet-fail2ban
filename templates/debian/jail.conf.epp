@@ -222,6 +222,8 @@ fail2ban_agent = <%= $fail2ban_agent %>
 banaction = <%= $banaction %>
 banaction_allports = <%= $banaction_allports %>
 
+unbanaction = <%= $banaction_allports %>
+
 # The simplest action to take: ban only
 action_ = %(banaction)s[port="%(port)s", protocol="%(protocol)s", chain="%(chain)s"]
 
