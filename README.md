@@ -124,10 +124,14 @@ sure to either use the same string as the lookup key as the resource name for
 * apache-shellshock
 * assp
 * asterisk
+* bitwarden
+* centreon
+* counter-strike
 * courier-auth
 * courier-smtp
 * cyrus-imap
 * directadmin
+* domino-smtp
 * dovecot
 * dropbear
 * drupal-auth
@@ -136,9 +140,12 @@ sure to either use the same string as the lookup key as the resource name for
 * exim-spam
 * freeswitch
 * froxlor-auth
+* gitlab
+* grafana
 * groupoffice
 * gssftpd
 * guacamole
+* haproxy-http-auth
 * horde
 * kerio
 * lighttpd-auth
@@ -148,7 +155,7 @@ sure to either use the same string as the lookup key as the resource name for
 * mysql-auth
   * To log wrong MySQL access attempts add to `/etc/mysql/my.cnf` in
     `[mysqld]` or equivalent section: `log-warning = 2`
-* nrpe
+* nagios
 * named-refused
 * nginx-http-auth
 * nginx-limit-req
@@ -166,6 +173,8 @@ sure to either use the same string as the lookup key as the resource name for
 * pass2allow-ftp
 * perdition
 * php-url-fopen
+* phpmyadmin-syslog
+* portsentry
 * postfix
 * postfix-rbl
 * postfix-sasl
@@ -181,10 +190,13 @@ sure to either use the same string as the lookup key as the resource name for
   2. Increase dbpurgeage defined in fail2ban.conf to e.g. 648000 (7.5 days)
      to maintain entries for failed logins for sufficient amount of time
 * roundcube-auth
+* screensharing
 * selinux-ssh
 * sendmail-auth
+* sendmail-reject
 * sieve
 * slapd
+* softethervpn
 * sogo-auth
 * solid-pop3d
 * squid
@@ -198,6 +210,7 @@ sure to either use the same string as the lookup key as the resource name for
     hash to add in specific ports in the `port` parameter.
 * suhosin
 * tine20
+* traefik-auth
 * uwimap-auth
 * vsftpd
 * webmin-auth
@@ -207,6 +220,8 @@ sure to either use the same string as the lookup key as the resource name for
     run on many choices of ports. By default this means that all ports will be
     blocked for IPs that are banned by this jail. You may want to override the
     hash to add in specific ports in the `port` parameter.
+* znc-adminlog
+* zoneminder
 
 ### Defining filters ###
 
