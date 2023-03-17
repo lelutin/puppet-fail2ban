@@ -412,23 +412,29 @@ Versions        | Puppet 2.7 | Puppet 3.x | Puppet 4.x | Puppet 5.x |
 
 ## Documentation ##
 
-This module uses puppet-strings comments, so you can generate HTML
-documentation in the `docs` directory with the following command:
+This module uses puppet-strings comments. The most stable way of using
+puppet-strings is to reuse the same version as what's specified in the Gemfile,
+so start by running `gem install` (you might need to setup local path for
+non-root install first).
+
+Then you can generate HTML documentation in the `docs` directory with the
+following command:
 
 ~~~bash
-puppet strings generate manifests
+bundle exec rake strings:generate
 ~~~
 
-Whenever a change is made to the interface and the corrsponding puppet-strings
+Whenever a change is made to the interface and the corresponding puppet-strings
 documentation, technical documentation about all classes and defined types
 provided by this module and their parameters is also output to the
-`REFERENCE.md` file in this repository in markdown format with the following
-command. This makes the reference documentation show up on forge.puppet.com
-and you can consult it after cloning the repository even if you don't have
-puppet-strings installed:
+`REFERENCE.md` file in this repository in markdown format. This makes the
+reference documentation show up on forge.puppet.com and you can consult it
+after cloning the repository even if you don't have puppet-strings installed.
+The `REFERENCE.md` file should be updated along with the code in order for CI
+to be happy. You can do this with:
 
 ~~~bash
-puppet strings generate --format markdown > REFERENCE.md
+bundle exec rake strings:generate:reference
 ~~~
 
 ## Testing ##
