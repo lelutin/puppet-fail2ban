@@ -23,6 +23,9 @@
 #   }
 #
 #
+# @param filter_template
+#   Path to the epp template given to the epp() function in order to render
+#   the filter file.
 # @param failregexes
 #   List of regular expressions that will be run against new log lines as they
 #   reach fail2ban. The regular expressions follow the Python regular
@@ -74,6 +77,7 @@
 #   filter journal entries.
 #
 define fail2ban::filter (
+  String[1] $filter_template = 'fail2ban/filter.epp',
   Array[String, 1] $failregexes,
   Enum['present', 'absent'] $ensure = 'present',
   String           $config_file_mode = '0644',
@@ -106,7 +110,7 @@ define fail2ban::filter (
 
   file { "/etc/fail2ban/filter.d/${name}.conf":
     ensure  => $ensure,
-    content => epp('fail2ban/filter.epp', $filter_options),
+    content => epp($filter_template, $filter_options),
     owner   => 'root',
     group   => 0,
     mode    => $config_file_mode,

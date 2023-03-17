@@ -702,6 +702,7 @@ fail2ban::filter { 'jenkins':
 
 The following parameters are available in the `fail2ban::filter` defined type:
 
+* [`filter_template`](#-fail2ban--filter--filter_template)
 * [`failregexes`](#-fail2ban--filter--failregexes)
 * [`ensure`](#-fail2ban--filter--ensure)
 * [`config_file_mode`](#-fail2ban--filter--config_file_mode)
@@ -714,6 +715,15 @@ The following parameters are available in the `fail2ban::filter` defined type:
 * [`maxlines`](#-fail2ban--filter--maxlines)
 * [`datepattern`](#-fail2ban--filter--datepattern)
 * [`journalmatch`](#-fail2ban--filter--journalmatch)
+
+##### <a name="-fail2ban--filter--filter_template"></a>`filter_template`
+
+Data type: `String[1]`
+
+Path to the epp template given to the epp() function in order to render
+the filter file.
+
+Default value: `'fail2ban/filter.epp'`
 
 ##### <a name="-fail2ban--filter--failregexes"></a>`failregexes`
 
