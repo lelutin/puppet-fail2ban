@@ -419,15 +419,16 @@ documentation in the `docs` directory with the following command:
 puppet strings generate manifests
 ~~~
 
-At each release, technical documentation about all classes and defined types
+Whenever a change is made to the interface and the corrsponding puppet-strings
+documentation, technical documentation about all classes and defined types
 provided by this module and their parameters is also output to the
-`REFERENCES.md` file in this repository in markdown format with the following
+`REFERENCE.md` file in this repository in markdown format with the following
 command. This makes the reference documentation show up on forge.puppet.com
 and you can consult it after cloning the repository even if you don't have
 puppet-strings installed:
 
 ~~~bash
-puppet strings generate --format markdown
+puppet strings generate --format markdown > REFERENCE.md
 ~~~
 
 ## Testing ##

@@ -10,7 +10,6 @@
 
 * [`fail2ban`](#fail2ban): Manage fail2ban and its configuration to jam bruteforce attempts on
 services running on a computer.
-* [`fail2ban::params`](#fail2banparams): Default values for params of the main class
 
 #### Private Classes
 
@@ -26,15 +25,19 @@ services running on a computer.
 
 ### Data types
 
-* [`Fail2ban::Backend`](#fail2banbackend): Backend names that fail2ban understands Can be one of the pre-defined backend names or a python-style variable
+* [`Fail2ban::Backend`](#fail2banbackend): Backend names that fail2ban understands Can be one of the pre-defined backend names, "systemd" with optionally a list of parameters between s
+* [`Fail2ban::Dbfile`](#fail2bandbfile): Where fail2ban's database gets stored. None disables storage
 * [`Fail2ban::Loglevel`](#fail2banloglevel): How much logging is needed from fail2ban
+* [`Fail2ban::Logtarget`](#fail2banlogtarget): Where logs are sent
 * [`Fail2ban::Port`](#fail2banport): Possible values for the port parameter ports can be specified by number, but you can also pass in a comma-separated list of values in a strin
 * [`Fail2ban::Protocol`](#fail2banprotocol): Options for protocol type This is used by the default action iptables-multiport to defined what protocol to ban for the specified ports.
+* [`Fail2ban::Syslogsocket`](#fail2bansyslogsocket): Path to a socket for communication with syslog, or 'auto' for letting fail2ban auto-discover the path.
+* [`Fail2ban::Time`](#fail2bantime): Time in seconds for some configuration options can be specified either in an integer number of seconds, or an abbreviation that can help spec
 * [`Fail2ban::Usedns`](#fail2banusedns): Possible values for usedns parameter
 
 ## Classes
 
-### `fail2ban`
+### <a name="fail2ban"></a>`fail2ban`
 
 fail2ban/manifests/init.pp
 
@@ -69,9 +72,56 @@ class { 'fail2ban':
 
 #### Parameters
 
-The following parameters are available in the `fail2ban` class.
+The following parameters are available in the `fail2ban` class:
 
-##### `rm_fail2ban_local`
+* [`rm_fail2ban_local`](#rm_fail2ban_local)
+* [`rm_jail_local`](#rm_jail_local)
+* [`purge_fail2ban_dot_d`](#purge_fail2ban_dot_d)
+* [`purge_jail_dot_d`](#purge_jail_dot_d)
+* [`config_file_mode`](#config_file_mode)
+* [`manage_service`](#manage_service)
+* [`fail2ban_conf_template`](#fail2ban_conf_template)
+* [`loglvl`](#loglvl)
+* [`logtarget`](#logtarget)
+* [`syslogsocket`](#syslogsocket)
+* [`socket`](#socket)
+* [`pidfile`](#pidfile)
+* [`dbfile`](#dbfile)
+* [`dbpurgeage`](#dbpurgeage)
+* [`dbmaxmatches`](#dbmaxmatches)
+* [`stacksize`](#stacksize)
+* [`jail_conf_template`](#jail_conf_template)
+* [`enabled`](#enabled)
+* [`mode`](#mode)
+* [`backend`](#backend)
+* [`usedns`](#usedns)
+* [`filter`](#filter)
+* [`logpath`](#logpath)
+* [`logencoding`](#logencoding)
+* [`logtimezone`](#logtimezone)
+* [`prefregex`](#prefregex)
+* [`failregex`](#failregex)
+* [`ignoreregex`](#ignoreregex)
+* [`ignoreself`](#ignoreself)
+* [`ignoreip`](#ignoreip)
+* [`ignorecommand`](#ignorecommand)
+* [`ignorecache`](#ignorecache)
+* [`maxretry`](#maxretry)
+* [`maxmatches`](#maxmatches)
+* [`findtime`](#findtime)
+* [`action`](#action)
+* [`bantime`](#bantime)
+* [`banaction`](#banaction)
+* [`banaction_allports`](#banaction_allports)
+* [`chain`](#chain)
+* [`port`](#port)
+* [`protocol`](#protocol)
+* [`mta`](#mta)
+* [`destemail`](#destemail)
+* [`sender`](#sender)
+* [`fail2ban_agent`](#fail2ban_agent)
+
+##### <a name="rm_fail2ban_local"></a>`rm_fail2ban_local`
 
 Data type: `Boolean`
 
@@ -79,7 +129,7 @@ Force removal of file /etc/fail2ban/fail2ban.local if present.
 
 Default value: ``true``
 
-##### `rm_jail_local`
+##### <a name="rm_jail_local"></a>`rm_jail_local`
 
 Data type: `Boolean`
 
@@ -87,7 +137,7 @@ Force removal of file /etc/fail2ban/jail.local if present.
 
 Default value: ``true``
 
-##### `purge_fail2ban_dot_d`
+##### <a name="purge_fail2ban_dot_d"></a>`purge_fail2ban_dot_d`
 
 Data type: `Boolean`
 
@@ -95,7 +145,7 @@ Remove all unmanaged files in /etc/fail2ban/fail2ban.d/
 
 Default value: ``true``
 
-##### `purge_jail_dot_d`
+##### <a name="purge_jail_dot_d"></a>`purge_jail_dot_d`
 
 Data type: `Boolean`
 
@@ -103,25 +153,31 @@ Remove all unmanaged files in /etc/fail2ban/jail.d/
 
 Default value: ``true``
 
-##### `persistent_bans`
+##### <a name="config_file_mode"></a>`config_file_mode`
 
-Data type: `Boolean`
-
-Write out banned IPs to a file on teardown and restore bans when starting
-fail2ban back up. This option is deprecated and is bound to be removed in
-puppet-fail2ban 4.0
-
-Default value: ``false``
-
-##### `config_file_mode`
-
-Data type: `String`
+Data type: `Stdlib::Filemode`
 
 File mode set on all fail2ban configuration files managed by this module.
 
 Default value: `'0644'`
 
-##### `loglvl`
+##### <a name="manage_service"></a>`manage_service`
+
+Data type: `Boolean`
+
+Manage the fail2ban service, true by default
+
+Default value: ``true``
+
+##### <a name="fail2ban_conf_template"></a>`fail2ban_conf_template`
+
+Data type: `String[1]`
+
+Alternative template to use for the `fail2ban.conf` file.
+
+Default value: `'fail2ban/fail2ban.conf.epp'`
+
+##### <a name="loglvl"></a>`loglvl`
 
 Data type: `Fail2ban::Loglevel`
 
@@ -129,49 +185,49 @@ Set fail2ban's loglevel.
 
 Default value: `'INFO'`
 
-##### `logtarget`
+##### <a name="logtarget"></a>`logtarget`
 
-Data type: `String`
+Data type: `Fail2ban::Logtarget`
 
 Define where fail2ban's logs are sent.
 
 Default value: `'/var/log/fail2ban.log'`
 
-##### `syslogsocket`
+##### <a name="syslogsocket"></a>`syslogsocket`
 
-Data type: `String`
+Data type: `Fail2ban::Syslogsocket`
 
 Path to syslog's socket file, or "auto" for automatically discovering it.
 
 Default value: `'auto'`
 
-##### `socket`
+##### <a name="socket"></a>`socket`
 
-Data type: `String`
+Data type: `Stdlib::Absolutepath`
 
 Path to fail2ban's own socket file. This file is used by fail2ban-client to
 communicate with the daemon.
 
 Default value: `'/var/run/fail2ban/fail2ban.sock'`
 
-##### `pidfile`
+##### <a name="pidfile"></a>`pidfile`
 
-Data type: `String`
+Data type: `Stdlib::Absolutepath`
 
 Path to fail2ban's pid file. This usually needs to be in a place where the
 init script or systemd unit file can find it.
 
 Default value: `'/var/run/fail2ban/fail2ban.pid'`
 
-##### `dbfile`
+##### <a name="dbfile"></a>`dbfile`
 
-Data type: `String`
+Data type: `Fail2ban::Dbfile`
 
 Path to fail2ban's database file.
 
 Default value: `'/var/lib/fail2ban/fail2ban.sqlite3'`
 
-##### `dbpurgeage`
+##### <a name="dbpurgeage"></a>`dbpurgeage`
 
 Data type: `Integer`
 
@@ -180,7 +236,33 @@ database purge operation.
 
 Default value: `86400`
 
-##### `enabled`
+##### <a name="dbmaxmatches"></a>`dbmaxmatches`
+
+Data type: `Integer`
+
+Number of matches stored in database per ticket.
+
+Default value: `10`
+
+##### <a name="stacksize"></a>`stacksize`
+
+Data type: `Variant[Integer[0,0], Integer[32]]`
+
+Specifies the stack size (in KiB) to be used for subsequently created threads,
+and must be 0 or a positive integer value of at least 32. 0 means that
+fail2ban will use platform or configured default.
+
+Default value: `0`
+
+##### <a name="jail_conf_template"></a>`jail_conf_template`
+
+Data type: `String[1]`
+
+Alternative template to use for the `jail.conf` file.
+
+Default value: `'fail2ban/debian/jail.conf.epp'`
+
+##### <a name="enabled"></a>`enabled`
 
 Data type: `Boolean`
 
@@ -193,15 +275,108 @@ dropped in jail.d.
 
 Default value: ``false``
 
-##### `filter`
+##### <a name="mode"></a>`mode`
+
+Data type: `String`
+
+Change the default behavior for filters. Watch out however, each
+individual filter can define its own value and so most values are not
+guaranteed to be available with all filters. The mode will generally
+determine which regular expressions the filter will include. To know
+exactly which values are available in filters, you need to read their
+configuration files.
+
+Default value: `'normal'`
+
+##### <a name="backend"></a>`backend`
+
+Data type: `Fail2ban::Backend`
+
+Default method used to get information from logs.
+
+Default value: `'auto'`
+
+##### <a name="usedns"></a>`usedns`
+
+Data type: `Fail2ban::Usedns`
+
+Default behaviour whether or not to resolve IPs when they are found in a
+log by a filter.
+
+Default value: `'warn'`
+
+##### <a name="filter"></a>`filter`
 
 Data type: `String`
 
 Default name of filter to use for jails.
 
-Default value: `'%(__name__)s'`
+Default value: `'%(__name__)s[mode=%(mode)s]'`
 
-##### `ignoreip`
+##### <a name="logpath"></a>`logpath`
+
+Data type: `Array[String]`
+
+Array of absolute paths specifying the default path(s) to log file(s) being
+used by jails. This value is usually not set and logpath is defined for
+each jail for more clarity.
+
+Default value: `[]`
+
+##### <a name="logencoding"></a>`logencoding`
+
+Data type: `String`
+
+Name of the encoding of log files. If set to "auto", fail2ban will use what
+is set in the system's locale setting.
+
+Default value: `'auto'`
+
+##### <a name="logtimezone"></a>`logtimezone`
+
+Data type: `Optional[String]`
+
+Force a timezone by default for logs that don't specify them on timestamps.
+
+Default value: ``undef``
+
+##### <a name="prefregex"></a>`prefregex`
+
+Data type: `Optional[String]`
+
+Regular expression to parse common part in every message.
+
+Default value: ``undef``
+
+##### <a name="failregex"></a>`failregex`
+
+Data type: `Optional[Variant[String, Array[String[1]]]]`
+
+Array of regular expressions to add to all filters' failregex. This is
+usually not used at the global level, but it can still be set.
+
+Default value: ``undef``
+
+##### <a name="ignoreregex"></a>`ignoreregex`
+
+Data type: `Optional[Variant[String, Array[String[1]]]]`
+
+Array of regular expressions to add to all filters' ignoreregex. This is
+usually not used at the global level, but could be useful to have something
+excluded from bans everywhere.
+
+Default value: ``undef``
+
+##### <a name="ignoreself"></a>`ignoreself`
+
+Data type: `Boolean`
+
+If set to false, fail2ban will not ignore IP addresses that are bound to
+interfaces on the host.
+
+Default value: ``true``
+
+##### <a name="ignoreip"></a>`ignoreip`
 
 Data type: `Array[String, 0]`
 
@@ -209,32 +384,7 @@ Default list of IPs or CIDR prefixes that should not get banned.
 
 Default value: `['127.0.0.1']`
 
-##### `bantime`
-
-Data type: `Integer`
-
-Default duration in number of seconds to ban an IP address for.
-
-Default value: `600`
-
-##### `findtime`
-
-Data type: `Integer`
-
-Default interval during which to count occurences of an IP.
-
-Default value: `600`
-
-##### `maxretry`
-
-Data type: `Integer`
-
-Default number of times an IP should be detectd by a filter during findtime
-for it to get banned.
-
-Default value: `3`
-
-##### `ignorecommand`
+##### <a name="ignorecommand"></a>`ignorecommand`
 
 Data type: `String`
 
@@ -243,39 +393,59 @@ banned.
 
 Default value: `''`
 
-##### `backend`
+##### <a name="ignorecache"></a>`ignorecache`
 
-Data type: `Fail2ban::Backend`
+Data type: `Optional[String]`
 
-Default method used to get information from logs.
+If set, caches the results from `ignoreip`, `ignoreself` and
+`ignorecommand` for a set amount of time to avoid calling `ignorecommand`
+repeatedly.
 
-Default value: `'auto'`
+Default value: ``undef``
 
-##### `destemail`
+##### <a name="maxretry"></a>`maxretry`
 
-Data type: `String`
+Data type: `Integer[1]`
 
-Default email address used as recipient by actions that send out emails.
+Default number of times an IP should be detectd by a filter during findtime
+for it to get banned.
 
-Default value: `'root@localhost'`
+Default value: `3`
 
-##### `sender`
+##### <a name="maxmatches"></a>`maxmatches`
 
-Data type: `String`
+Data type: `Variant[Integer[1], String]`
 
-Default email address set as sender by actions that send out emails.
+Number of matches stored in ticket.
 
-Default value: `'root@localhost'`
+Default value: `'%(maxretry)s'`
 
-##### `fail2ban_agent`
+##### <a name="findtime"></a>`findtime`
 
-Data type: `String`
+Data type: `Fail2ban::Time`
 
-User-agent sent on HTTP requests that are made by some actions.
+Default interval during which to count occurences of an IP.
 
-Default value: `'Fail2Ban/%(fail2ban_version)s'`
+Default value: `'10m'`
 
-##### `banaction`
+##### <a name="action"></a>`action`
+
+Data type: `Variant[String, Array[String, 1]]`
+
+List of default actions that get called when an IP triggers maxretry number
+of times a filter within findtime.
+
+Default value: `['%(action_)s']`
+
+##### <a name="bantime"></a>`bantime`
+
+Data type: `Fail2ban::Time`
+
+Default duration in number of seconds to ban an IP address for.
+
+Default value: `'10m'`
+
+##### <a name="banaction"></a>`banaction`
 
 Data type: `String`
 
@@ -283,7 +453,7 @@ Default action name extrapolated when defining some of the default actions.
 
 Default value: `'iptables-multiport'`
 
-##### `banaction_allports`
+##### <a name="banaction_allports"></a>`banaction_allports`
 
 Data type: `String`
 
@@ -293,7 +463,7 @@ specific ones.
 
 Default value: `'iptables-allports'`
 
-##### `chain`
+##### <a name="chain"></a>`chain`
 
 Data type: `String`
 
@@ -301,7 +471,7 @@ Default name of the iptables chain used by iptables-based actions.
 
 Default value: `'INPUT'`
 
-##### `port`
+##### <a name="port"></a>`port`
 
 Data type: `Fail2ban::Port`
 
@@ -310,15 +480,7 @@ actions when banning an IP.
 
 Default value: `'0:65535'`
 
-##### `mta`
-
-Data type: `String`
-
-Default program name used for sending out email by actions that do so.
-
-Default value: `'sendmail'`
-
-##### `protocol`
+##### <a name="protocol"></a>`protocol`
 
 Data type: `Fail2ban::Protocol`
 
@@ -326,91 +488,41 @@ Default protocol name used by actions.
 
 Default value: `'tcp'`
 
-##### `action`
+##### <a name="mta"></a>`mta`
 
 Data type: `String`
 
-Default action that gets called when an IP triggers maxretry number of
-times a filter within findtime.
+Default program name used for sending out email by actions that do so.
 
-Default value: `'%(action_)s'`
+Default value: `'sendmail'`
 
-##### `usedns`
-
-Data type: `Fail2ban::Usedns`
-
-Default behaviour whether or not to resolve IPs when they are found in a
-log by a filter.
-
-Default value: `'warn'`
-
-##### `logpath`
-
-Data type: `Optional[String]`
-
-Default path to log file being used by jails. This value is usually not set
-and logpath is defined for each jail for more clarity.
-
-Default value: ``undef``
-
-##### `logencoding`
+##### <a name="destemail"></a>`destemail`
 
 Data type: `String`
 
-Name of the encoding of log files. If set to "auto", fail2ban will use what
-is set in the system's locale setting.
+Default email address used as recipient by actions that send out emails.
 
-Default value: `'auto'`
+Default value: `'root@localhost'`
 
-##### `failregex`
+##### <a name="sender"></a>`sender`
 
-Data type: `Optional[String]`
+Data type: `String`
 
-Regular expressions to add to all filters' failregex. This is usually not
-used.
+Default email address set as sender by actions that send out emails.
 
-Default value: ``undef``
+Default value: `'root@localhost'`
 
-##### `ignoreregex`
+##### <a name="fail2ban_agent"></a>`fail2ban_agent`
 
-Data type: `Optional[String]`
+Data type: `String`
 
-Regular expressions to add to all filters' ignoreregex. This is usually not
-used but could be useful to have something excluded from bans everywhere.
+User-agent sent on HTTP requests that are made by some actions.
 
-Default value: ``undef``
-
-##### `manage_service`
-
-Data type: `Boolean`
-
-Manage the fail2ban service, true by default
-
-Default value: ``true``
-
-##### `fail2ban_conf_template`
-
-Data type: `String[1]`
-
-
-
-Default value: `'fail2ban/fail2ban.conf.erb'`
-
-##### `jail_conf_template`
-
-Data type: `String[1]`
-
-
-
-Default value: `$fail2ban::params::jail_conf_template`
-
-### `fail2ban::params`
-
-fail2ban::params
+Default value: `'Fail2Ban/%(fail2ban_version)s'`
 
 ## Defined types
 
-### `fail2ban::action`
+### <a name="fail2banaction"></a>`fail2ban::action`
 
 fail2ban/manifests/action.pp
 
@@ -439,22 +551,22 @@ fail2ban::action { 'rest_api':
 
 #### Parameters
 
-The following parameters are available in the `fail2ban::action` defined type.
+The following parameters are available in the `fail2ban::action` defined type:
 
-##### `actionban`
+* [`ensure`](#ensure)
+* [`config_file_mode`](#config_file_mode)
+* [`timeout`](#timeout)
+* [`init`](#init)
+* [`includes`](#includes)
+* [`includes_after`](#includes_after)
+* [`additional_defs`](#additional_defs)
+* [`actionban`](#actionban)
+* [`actionunban`](#actionunban)
+* [`actioncheck`](#actioncheck)
+* [`actionstart`](#actionstart)
+* [`actionstop`](#actionstop)
 
-Data type: `Array[String[1], 1]`
-
-List of commands that are executed when fail2ban has found too many
-matches for a given IP address.
-
-##### `actionunban`
-
-Data type: `Array[String[1], 1]`
-
-List of commands that are executed after `bantime` has elapsed.
-
-##### `ensure`
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -462,32 +574,7 @@ Whether the resources should be installed or removed.
 
 Default value: `'present'`
 
-##### `actioncheck`
-
-Data type: `Array[String[1]]`
-
-List of commands that are run by fail2ban before any other action to
-verify that the environment (or setup) is still in good shape.
-
-Default value: `[]`
-
-##### `actionstart`
-
-Data type: `Array[String[1]]`
-
-List of commands that are executed when the jail is started.
-
-Default value: `[]`
-
-##### `actionstop`
-
-Data type: `Array[String[1]]`
-
-List of commands that are executed when the jail is stopped.
-
-Default value: `[]`
-
-##### `config_file_mode`
+##### <a name="config_file_mode"></a>`config_file_mode`
 
 Data type: `String`
 
@@ -495,7 +582,27 @@ Permission mode given to the filter file created by this defined type.
 
 Default value: `'0644'`
 
-##### `includes`
+##### <a name="timeout"></a>`timeout`
+
+Data type: `Optional[Integer[1]]`
+
+Special tag in the Init section that, if present, defines the maximum
+period of time in seconds that an action command can be executed before
+being killed.
+
+Default value: ``undef``
+
+##### <a name="init"></a>`init`
+
+Data type: `Array[String]`
+
+List of arbitrary lines that will be a part of the [Init] section. All
+tags (variables) defined in this section can be overridden by any
+individual jail to change the action's behaviour.
+
+Default value: `[]`
+
+##### <a name="includes"></a>`includes`
 
 Data type: `Array[String]`
 
@@ -505,7 +612,7 @@ default or common behaviours.
 
 Default value: `[]`
 
-##### `includes_after`
+##### <a name="includes_after"></a>`includes_after`
 
 Data type: `Array[String]`
 
@@ -513,7 +620,7 @@ List of files to include after action definition.
 
 Default value: `[]`
 
-##### `additional_defs`
+##### <a name="additional_defs"></a>`additional_defs`
 
 Data type: `Array[String]`
 
@@ -524,17 +631,45 @@ checking is done.
 
 Default value: `[]`
 
-##### `init`
+##### <a name="actionban"></a>`actionban`
 
-Data type: `Array[String]`
+Data type: `Array[String[1], 1]`
 
-List of arbitrary lines that will be a part of the [Init] section. All
-tags (variables) defined in this section can be overridden by any
-individual jail to change the action's behaviour.
+List of commands that are executed when fail2ban has found too many
+matches for a given IP address.
+
+##### <a name="actionunban"></a>`actionunban`
+
+Data type: `Array[String[1], 1]`
+
+List of commands that are executed after `bantime` has elapsed.
+
+##### <a name="actioncheck"></a>`actioncheck`
+
+Data type: `Array[String[1]]`
+
+List of commands that are run by fail2ban before any other action to
+verify that the environment (or setup) is still in good shape.
 
 Default value: `[]`
 
-### `fail2ban::filter`
+##### <a name="actionstart"></a>`actionstart`
+
+Data type: `Array[String[1]]`
+
+List of commands that are executed when the jail is started.
+
+Default value: `[]`
+
+##### <a name="actionstop"></a>`actionstop`
+
+Data type: `Array[String[1]]`
+
+List of commands that are executed when the jail is stopped.
+
+Default value: `[]`
+
+### <a name="fail2banfilter"></a>`fail2ban::filter`
 
 fail2ban/manifests/filter.pp
 
@@ -546,6 +681,8 @@ this activity.
 
 * **See also**
   * https://fail2ban.readthedocs.io/en/latest/filters.html
+  * https://github.com/fail2ban/fail2ban/blob/0.11/man/jail.conf.5
+    * jail.conf(5)
 
 #### Examples
 
@@ -563,9 +700,22 @@ fail2ban::filter { 'jenkins':
 
 #### Parameters
 
-The following parameters are available in the `fail2ban::filter` defined type.
+The following parameters are available in the `fail2ban::filter` defined type:
 
-##### `failregexes`
+* [`failregexes`](#failregexes)
+* [`ensure`](#ensure)
+* [`config_file_mode`](#config_file_mode)
+* [`init`](#init)
+* [`includes`](#includes)
+* [`includes_after`](#includes_after)
+* [`additional_defs`](#additional_defs)
+* [`prefregex`](#prefregex)
+* [`ignoreregexes`](#ignoreregexes)
+* [`maxlines`](#maxlines)
+* [`datepattern`](#datepattern)
+* [`journalmatch`](#journalmatch)
+
+##### <a name="failregexes"></a>`failregexes`
 
 Data type: `Array[String, 1]`
 
@@ -577,7 +727,7 @@ is placed on its own line. Lines starting with the second one are prepended
 with spaces so that the regular expressions line up with the beginning of
 the first one.
 
-##### `ensure`
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -585,7 +735,7 @@ Whether the resources should be installed or removed.
 
 Default value: `'present'`
 
-##### `config_file_mode`
+##### <a name="config_file_mode"></a>`config_file_mode`
 
 Data type: `String`
 
@@ -593,7 +743,58 @@ Permission mode given to the filter file created by this defined type.
 
 Default value: `'0644'`
 
-##### `ignoreregexes`
+##### <a name="init"></a>`init`
+
+Data type: `Array[String]`
+
+List of arbitrary lines that should appear in the optional filter
+Init section. Variable definitions in the Init section can be overridden by
+users in *.local files. Each item in the list is output on its own line in
+the filter file. No syntax checking is done.
+
+Default value: `[]`
+
+##### <a name="includes"></a>`includes`
+
+Data type: `Array[String, 0]`
+
+List of files to include before considering the rest of the filter
+definition. These files can declare variables used by the filter to set
+default behaviours.
+
+Default value: `[]`
+
+##### <a name="includes_after"></a>`includes_after`
+
+Data type: `Array[String, 0]`
+
+List of files to include after filter definition.
+
+Default value: `[]`
+
+##### <a name="additional_defs"></a>`additional_defs`
+
+Data type: `Array[String, 0]`
+
+List of arbitrary lines that should appear at the begining of the filter's
+definition section, for anything that didn't fit in other parameters. Each
+item in the list is output on its own line in the filter file. No syntax
+checking is done.
+
+Default value: `[]`
+
+##### <a name="prefregex"></a>`prefregex`
+
+Data type: `Optional[String]`
+
+If this is set, it contains a regular expression that should be used to
+parse (after datepattern found a match) a common part to all messages that
+can then match a smaller failregex or ignoreregex. If this regex does not
+match, then failregex or ignoreregex are not even tried.
+
+Default value: ``undef``
+
+##### <a name="ignoreregexes"></a>`ignoreregexes`
 
 Data type: `Array[String, 0]`
 
@@ -606,36 +807,34 @@ expressions line up with the beginning of the first one.
 
 Default value: `[]`
 
-##### `includes`
+##### <a name="maxlines"></a>`maxlines`
 
-Data type: `Array[String, 0]`
+Data type: `Optional[Integer[1]]`
 
-List of files to include before considering the rest of the filter
-definition. These files can declare variables used by the filter to set
-default behaviours.
+Maximum number of lines that fail2ban should buffer for matching
+multi-line regexes.
 
-Default value: `[]`
+Default value: ``undef``
 
-##### `includes_after`
+##### <a name="datepattern"></a>`datepattern`
 
-Data type: `Array[String, 0]`
+Data type: `Optional[String]`
 
-List of files to include after filter definition.
+Custom date pattern/regex for the log file. This is useful if dates use a
+non-standard formatting.
 
-Default value: `[]`
+Default value: ``undef``
 
-##### `additional_defs`
+##### <a name="journalmatch"></a>`journalmatch`
 
-Data type: `Array[String, 0]`
+Data type: `Optional[String]`
 
-List of arbitrary lines that should appear at the begining of the filter's
-definition section, for anything that didn't fit in other parameters. Each
-item in the list is output on its own line in the filter file. No syntax
-checking is done.
+If the log backend is set to systemd, this specifies a matching pattern to
+filter journal entries.
 
-Default value: `[]`
+Default value: ``undef``
 
-### `fail2ban::jail`
+### <a name="fail2banjail"></a>`fail2ban::jail`
 
 fail2ban/manifests/jail.pp
 
@@ -663,7 +862,7 @@ fail2ban::jail { 'honeypot':
   findtime => 300,
   maxretry => 1,
   port     => 'all',
-  logpath  => '/var/log/honeypot.log',
+  logpath  => ['/var/log/honeypot.log'],
 }
 ```
 
@@ -692,9 +891,42 @@ fail2ban::jail { 'sshd':
 
 #### Parameters
 
-The following parameters are available in the `fail2ban::jail` defined type.
+The following parameters are available in the `fail2ban::jail` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`config_file_mode`](#config_file_mode)
+* [`enabled`](#enabled)
+* [`mode`](#mode)
+* [`backend`](#backend)
+* [`usedns`](#usedns)
+* [`filter`](#filter)
+* [`logpath`](#logpath)
+* [`logencoding`](#logencoding)
+* [`logtimezone`](#logtimezone)
+* [`prefregex`](#prefregex)
+* [`failregex`](#failregex)
+* [`ignoreregex`](#ignoreregex)
+* [`ignoreself`](#ignoreself)
+* [`ignoreip`](#ignoreip)
+* [`ignorecommand`](#ignorecommand)
+* [`ignorecache`](#ignorecache)
+* [`maxretry`](#maxretry)
+* [`maxmatches`](#maxmatches)
+* [`findtime`](#findtime)
+* [`action`](#action)
+* [`bantime`](#bantime)
+* [`banaction`](#banaction)
+* [`banaction_allports`](#banaction_allports)
+* [`chain`](#chain)
+* [`port`](#port)
+* [`protocol`](#protocol)
+* [`mta`](#mta)
+* [`destemail`](#destemail)
+* [`sender`](#sender)
+* [`fail2ban_agent`](#fail2ban_agent)
+* [`additional_options`](#additional_options)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present','absent']`
 
@@ -702,7 +934,15 @@ Whether resources for the defined jail should be installed or removed.
 
 Default value: `'present'`
 
-##### `enabled`
+##### <a name="config_file_mode"></a>`config_file_mode`
+
+Data type: `String`
+
+Permission mode given to the jail file created by this defined type.
+
+Default value: `'0644'`
+
+##### <a name="enabled"></a>`enabled`
 
 Data type: `Boolean`
 
@@ -711,24 +951,37 @@ to keep configuration around for a certain jail but temporarily disable it.
 
 Default value: ``true``
 
-##### `config_file_mode`
+##### <a name="mode"></a>`mode`
 
-Data type: `String`
+Data type: `Optional[String]`
 
-Permission mode given to the jail file created by this defined type.
-
-Default value: `'0644'`
-
-##### `port`
-
-Data type: `Optional[Fail2ban::Port]`
-
-Comma separated list of ports, port ranges or service names (as found in
-/etc/services) that should get blocked by the ban action.
+Change the behavior of the filter used by this jail. The mode will
+generally determine which regular expressions the filter will include. The
+values that this can take are determined by each individual filter. To know
+exactly which values are available in filters, you need to read their
+configuration files.
 
 Default value: ``undef``
 
-##### `filter`
+##### <a name="backend"></a>`backend`
+
+Data type: `Optional[Fail2ban::Backend]`
+
+Method used by fail2ban to obtain new log lines from the log file(s) in
+logpath.
+
+Default value: ``undef``
+
+##### <a name="usedns"></a>`usedns`
+
+Data type: `Optional[Fail2ban::Usedns]`
+
+Whether or not to resolve DNS hostname of IPs that have been found by a
+failregex.
+
+Default value: ``undef``
+
+##### <a name="filter"></a>`filter`
 
 Data type: `Optional[String]`
 
@@ -738,41 +991,80 @@ this could be changed by the filter parameter on the fail2ban class).
 
 Default value: ``undef``
 
-##### `logpath`
+##### <a name="logpath"></a>`logpath`
+
+Data type: `Array[String]`
+
+Array of absolute paths to the log files against which regular expressions
+should be verified to catch activity that you want to block. This
+parameter must be set to a non-empty array when not using the 'systemd'
+backend, however it must be empty if the 'systemd' backend is used.
+
+Default value: `[]`
+
+##### <a name="logencoding"></a>`logencoding`
 
 Data type: `Optional[String]`
 
-Absolute path to the log file against which regular expressions should be
-verified to catch activity that you want to block.
+Name of the encoding of log files. If set to "auto", fail2ban will use what
+is set in the system's locale setting.
 
 Default value: ``undef``
 
-##### `protocol`
+##### <a name="logtimezone"></a>`logtimezone`
 
-Data type: `Optional[Fail2ban::Protocol]`
+Data type: `Optional[String]`
 
-Name of the protocol to ban using the action.
-
-Default value: ``undef``
-
-##### `maxretry`
-
-Data type: `Optional[Integer]`
-
-Number of failregex matches during findtime after which an IP gets banned.
+Force a timezone if the logs don't specify them on timestamps.
 
 Default value: ``undef``
 
-##### `findtime`
+##### <a name="prefregex"></a>`prefregex`
 
-Data type: `Optional[Integer]`
+Data type: `Optional[String[1]]`
 
-Time period in seconds during which maxretry number of matches will get an
-IP banned.
+Regular expression to parse common part in every message for this jail.
 
 Default value: ``undef``
 
-##### `ignorecommand`
+##### <a name="failregex"></a>`failregex`
+
+Data type: `Optional[Array[String[1]]]`
+
+Regular expressions to add to the failregex of the filter used by this
+jail.
+
+Default value: ``undef``
+
+##### <a name="ignoreregex"></a>`ignoreregex`
+
+Data type: `Optional[Array[String[1]]]`
+
+Regular expressions to add to the ignoreregex of the filter used by this
+jail.
+
+Default value: ``undef``
+
+##### <a name="ignoreself"></a>`ignoreself`
+
+Data type: `Optional[Boolean]`
+
+If set to false, fail2ban will not ignore IP addresses, for this jail, that
+are bound to interfaces on the host.
+
+Default value: ``undef``
+
+##### <a name="ignoreip"></a>`ignoreip`
+
+Data type: `Optional[Array[String, 1]]`
+
+List of IPs or CIDR prefixes to ignore when identifying matches of
+failregex. The IPs that fit the descriptions in this parameter will never
+get banned by the jail.
+
+Default value: ``undef``
+
+##### <a name="ignorecommand"></a>`ignorecommand`
 
 Data type: `Optional[String]`
 
@@ -783,26 +1075,60 @@ ignoreip is present.
 
 Default value: ``undef``
 
-##### `action`
+##### <a name="ignorecache"></a>`ignorecache`
 
 Data type: `Optional[String]`
 
-Name of and parameters to the action that should be used to ban and unban
-IPs when maxretry matches of failregex has happened for an IP during
-findtime.
+If set, caches the results from `ignoreip`, `ignoreself` and
+`ignorecommand` for a set amount of time to avoid calling `ignorecommand`
+repeatedly.
 
 Default value: ``undef``
 
-##### `usedns`
+##### <a name="maxretry"></a>`maxretry`
 
-Data type: `Optional[Fail2ban::Usedns]`
+Data type: `Optional[Integer[1]]`
 
-Whether or not to resolve DNS hostname of IPs that have been found by a
-failregex.
+Number of failregex matches during findtime after which an IP gets banned.
 
 Default value: ``undef``
 
-##### `banaction`
+##### <a name="maxmatches"></a>`maxmatches`
+
+Data type: `Optional[Variant[Integer[1], String]]`
+
+Number of matches stored in ticket.
+
+Default value: ``undef``
+
+##### <a name="findtime"></a>`findtime`
+
+Data type: `Optional[Fail2ban::Time]`
+
+Time period in seconds during which maxretry number of matches will get an
+IP banned.
+
+Default value: ``undef``
+
+##### <a name="action"></a>`action`
+
+Data type: `Optional[Variant[String, Array[String, 1]]]`
+
+List of actions that should be used to ban and unban IPs when maxretry
+matches of failregex has happened for an IP during findtime.
+
+Default value: ``undef``
+
+##### <a name="bantime"></a>`bantime`
+
+Data type: `Optional[Fail2ban::Time]`
+
+Time period in seconds for which an IP is banned if maxretry matches of
+failregex happen for the same IP during findtime.
+
+Default value: ``undef``
+
+##### <a name="banaction"></a>`banaction`
 
 Data type: `Optional[String]`
 
@@ -812,61 +1138,137 @@ default parameters to the action.
 
 Default value: ``undef``
 
-##### `bantime`
+##### <a name="banaction_allports"></a>`banaction_allports`
 
-Data type: `Optional[Integer]`
+Data type: `Optional[String]`
 
-Time period in seconds for which an IP is banned if maxretry matches of
-failregex happen for the same IP during findtime.
-
-Default value: ``undef``
-
-##### `ignoreip`
-
-Data type: `Array[String, 0]`
-
-List of IPs or CIDR prefixes to ignore when identifying matches of
-failregex. The IPs that fit the descriptions in this parameter will never
-get banned by the jail.
-
-Default value: `[]`
-
-##### `backend`
-
-Data type: `Optional[Fail2ban::Backend]`
-
-Method used by fail2ban to obtain new log lines from the log file in
-logpath.
+Action name that can be extrapolated by some of the default actions. This
+one is meant to ban all ports at once instead of specific ones. Setting
+this will change the action for this jail.
 
 Default value: ``undef``
 
-##### `additional_options`
+##### <a name="chain"></a>`chain`
+
+Data type: `Optional[String]`
+
+Name of the iptables chain used by iptables-based actions.
+
+Default value: ``undef``
+
+##### <a name="port"></a>`port`
+
+Data type: `Optional[Fail2ban::Port]`
+
+Comma separated list of ports, port ranges or service names (as found in
+/etc/services) that should get blocked by the ban action.
+
+Default value: ``undef``
+
+##### <a name="protocol"></a>`protocol`
+
+Data type: `Optional[Fail2ban::Protocol]`
+
+Name of the protocol to ban using the action.
+
+Default value: ``undef``
+
+##### <a name="mta"></a>`mta`
+
+Data type: `Optional[String]`
+
+Program name used for sending out email by actions that do so.
+
+Default value: ``undef``
+
+##### <a name="destemail"></a>`destemail`
+
+Data type: `Optional[String]`
+
+Email address used as recipient by actions that send out emails. Setting
+this will override destemail for this jail only.
+
+Default value: ``undef``
+
+##### <a name="sender"></a>`sender`
+
+Data type: `Optional[String]`
+
+Email address set as sender by actions that send out emails.
+
+Default value: ``undef``
+
+##### <a name="fail2ban_agent"></a>`fail2ban_agent`
+
+Data type: `Optional[String]`
+
+User-agent sent on HTTP requests that are made by some actions.
+
+Default value: ``undef``
+
+##### <a name="additional_options"></a>`additional_options`
 
 Data type: `Hash[String, String]`
 
-Hash of additional values that should be declared of the jail. Keys are the
-value name and values are placed to the right of the "=". This can be used
-to declare arbitrary values for filters or actions to use. No syntax
-checking is done on the contents of this hash.
+Hash of additional values that should be declared for the jail. Keys
+represent the jail configuration value names and hash values are placed to
+the right of the "=". This can be used to declare arbitrary values for
+filters or actions to use. No syntax checking is done on the contents of
+this hash.
+Note that any keys in this hash that correspond to a parameter name for
+this defined type will get overridden by the value that the defined type's
+parameter was given (e.g. if there is mode => '0600' in additional_options,
+the value of mode in the file on disk will not take on the value '0600'
+since there is a resource parameter that already corresponds to this key
+name).
 
 Default value: `{}`
 
 ## Data types
 
-### `Fail2ban::Backend`
+### <a name="fail2banbackend"></a>`Fail2ban::Backend`
 
 Backend names that fail2ban understands
-Can be one of the pre-defined backend names or a python-style variable
+Can be one of the pre-defined backend names, "systemd" with optionally a list
+of parameters between square brackets or a python-style variable
 
-Alias of `Variant[Enum['auto','pyinotify','gamin','polling','systemd'], Pattern[/%\(\w+\)s/]]`
+Alias of
 
-### `Fail2ban::Loglevel`
+```puppet
+Variant[Enum['auto','pyinotify','gamin','polling'], Pattern[/^systemd(\[.*\]$)?/], Pattern[/%\(\w+\)s/]]
+```
+
+### <a name="fail2bandbfile"></a>`Fail2ban::Dbfile`
+
+Where fail2ban's database gets stored. None disables storage
+
+Alias of
+
+```puppet
+Variant[Stdlib::Absolutepath, Enum['None']]
+```
+
+### <a name="fail2banloglevel"></a>`Fail2ban::Loglevel`
 
 How much logging is needed from fail2ban
 
-Alias of `Enum['CRITICAL', 'ERROR', 'WARNING', 'NOTICE', 'INFO', 'DEBUG']`
+Alias of
 
-### `Fail2ban::Port`
+```puppet
+Enum['CRITICAL', 'ERROR', 'WARNING', 'NOTICE', 'INFO', 'DEBUG', 'TRACEDEBUG', 'HEAVYDEBUG']
+```
+
+### <a name="fail2banlogtarget"></a>`Fail2ban::Logtarget`
+
+Where logs are sent
+
+Alias of
+
+```puppet
+Variant[Stdlib::Absolutepath, Enum['SYSLOG', 'STDERR', 'STDOUT']]
+```
+
+### <a name="fail2banport"></a>`Fail2ban::Port`
 
 Possible values for the port parameter
 ports can be specified by number, but you can also pass in a comma-separated
@@ -875,19 +1277,61 @@ The values in the string can be port numbers (integers), a range of port
 numbers in the format 'number:number', service names (looked up in
 /etc/services) or 'all' which is translated to '0:65535'
 
-Alias of `Variant[Integer, String]`
+Alias of
 
-### `Fail2ban::Protocol`
+```puppet
+Variant[Integer, String]
+```
+
+### <a name="fail2banprotocol"></a>`Fail2ban::Protocol`
 
 Options for protocol type
 This is used by the default action iptables-multiport to defined what
 protocol to ban for the specified ports.
 
-Alias of `Enum['tcp', 'udp', 'icmp', 'all']`
+Alias of
 
-### `Fail2ban::Usedns`
+```puppet
+Enum['tcp', 'udp', 'icmp', 'all']
+```
+
+### <a name="fail2bansyslogsocket"></a>`Fail2ban::Syslogsocket`
+
+Path to a socket for communication with syslog, or 'auto' for letting
+fail2ban auto-discover the path.
+
+Alias of
+
+```puppet
+Variant[Stdlib::Absolutepath, Enum['auto']]
+```
+
+### <a name="fail2bantime"></a>`Fail2ban::Time`
+
+Time in seconds for some configuration options can be specified either in an
+integer number of seconds, or an abbreviation that can help specify some time
+periods more easily
+
+Time abbreviation can be combined to make a more precise amount. For example
+1d3h20m
+
+* **See also**
+  * https://github.com/fail2ban/fail2ban/blob/master/man/jail.conf.5
+  * jail.conf(5)
+
+Alias of
+
+```puppet
+Variant[Integer[1], Pattern[/^(\d+(ye(a(r(s)?)?)?|yy?|mo(n(th(s)?)?)?|we(e(k(s)?)?)?|ww?|da(y(s)?)?|dd?|ho(u(r(s)?)?)?|hh?|mi(n(ute(s)?)?)?|mm?|se(c(ond(s)?)?)?|ss?))+$/]]
+```
+
+### <a name="fail2banusedns"></a>`Fail2ban::Usedns`
 
 Possible values for usedns parameter
 
-Alias of `Enum['yes', 'no', 'warn', 'raw']`
+Alias of
+
+```puppet
+Enum['yes', 'no', 'warn', 'raw']
+```
 
