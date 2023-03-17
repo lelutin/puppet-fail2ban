@@ -8,6 +8,7 @@ gem 'puppet', puppetversion
 group :tests do
   gem 'facter', '>= 2.4.0'
   gem 'puppetlabs_spec_helper', '>= 0.10.0'
+  gem 'puppet-syntax', '~> 3.3'
   gem 'puppet-lint', '>= 2.3.0'
   gem 'rspec-puppet', '>= 2.4.0'
 end
