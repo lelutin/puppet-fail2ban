@@ -442,18 +442,35 @@ bundle exec rake strings:generate:reference
 This module has some tests that you can run to ensure that everything is
 working as expected.
 
-### Unit tests ###
+Before you can use the tests, make sure that you setup your local environment
+with `bundle install`.
 
-The unit tests are built with rspec-puppet. You can use the Gemfile with the
-`tests` group to install what's needed to run the unit test.
+### Smoke tests ###
 
-The usual rspec-puppet_helper rake tasks are available. You can also use a
-convenience task `tests` to run everything. The following two commands achieve
-the same result:
+You can run sanity check with the `validate` task from puppet-syntax:
 
 ~~~bash
-rake syntax lint spec
-rake tests
+bundle exec rake validate
+~~~
+
+This will check manifest syntax, template syntax, yaml syntax for hiera files
+and ensure that the REFERENCE.md file is up to date.
+
+Additionally to this, you can also use rubocop to run sanity checks on ruby
+files:
+
+~~~bash
+bundle exec rake rubocop
+~~~
+
+### Unit tests ###
+
+The unit tests are built with rspec-puppet.
+
+The usual rspec-puppet_helper rake tasks are available. So, to run spec tests:
+
+~~~bash
+bundle exec rake spec
 ~~~
 
 ### Funtionality tests ###
