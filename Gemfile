@@ -11,6 +11,8 @@ group :tests do
   gem 'puppet-syntax', '~> 3.3'
   gem 'puppet-lint', '>= 2.3.0'
   gem 'metadata-json-lint', '~> 3.0'
+  # This draws in rubocop and other useful gems for puppet tests
+  gem 'voxpupuli-test', '~> 5.6', :require => false
   gem 'rspec-puppet', '>= 2.4.0'
 end
 
