@@ -1,9 +1,12 @@
+.bundle
 .vagrant
 /pkg
 spec/fixtures
 /doc
+Gemfile.lock
 /.yardoc
 .librarian
 .tmp
 /tests/Puppetfile.lock
 /tests/modules/**
+/vendor
