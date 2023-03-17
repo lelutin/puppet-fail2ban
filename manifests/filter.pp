@@ -35,6 +35,11 @@
 #   Whether the resources should be installed or removed.
 # @param config_file_mode
 #   Permission mode given to the filter file created by this defined type.
+# @param init
+#   List of arbitrary lines that should appear in the optional filter
+#   Init section. Variable definitions in the Init section can be overridden by
+#   users in *.local files. Each item in the list is output on its own line in
+#   the filter file. No syntax checking is done.
 # @param includes
 #   List of files to include before considering the rest of the filter
 #   definition. These files can declare variables used by the filter to set
