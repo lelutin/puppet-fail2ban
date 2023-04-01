@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'].to_s : ['>= 4.0']
+puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'].to_s : ['>= 6.0']
 
 gem 'facter', '>= 2.4.0'
 gem 'puppet', puppetversion
