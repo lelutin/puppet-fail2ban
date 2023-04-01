@@ -2,11 +2,11 @@ source 'https://rubygems.org'
 
 puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'].to_s : ['>= 4.0']
 
+gem 'facter', '>= 2.4.0'
 gem 'puppet', puppetversion
 gem 'rake'
 
 group :tests do
-  gem 'facter', '>= 2.4.0'
   gem 'metadata-json-lint', '~> 3.0'
   # Use info from metadata.json for tests
   gem 'puppetlabs_spec_helper', '>= 0.10.0'
