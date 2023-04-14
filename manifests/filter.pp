@@ -77,8 +77,8 @@
 #   filter journal entries.
 #
 define fail2ban::filter (
-  String[1] $filter_template = 'fail2ban/filter.epp',
   Array[String, 1] $failregexes,
+  String[1] $filter_template = 'fail2ban/filter.epp',
   Enum['present', 'absent'] $ensure = 'present',
   String           $config_file_mode = '0644',
   # general configuration
