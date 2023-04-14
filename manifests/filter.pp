@@ -117,5 +117,4 @@ define fail2ban::filter (
     require => Class['fail2ban::config'],
     notify  => Class['fail2ban::service'],
   }
-
 }

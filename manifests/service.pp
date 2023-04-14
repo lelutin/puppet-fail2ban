@@ -8,7 +8,6 @@
 # @api private
 #
 class fail2ban::service {
-
   if $fail2ban::manage_service {
     service { 'fail2ban':
       ensure    => running,
@@ -16,5 +15,4 @@ class fail2ban::service {
       hasstatus => true,
     }
   }
-
 }

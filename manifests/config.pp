@@ -8,7 +8,6 @@
 # @api private
 #
 class fail2ban::config {
-
   $fail2ban_conf_options = {
     loglvl           => $fail2ban::loglvl,
     logtarget        => $fail2ban::logtarget,
@@ -22,7 +21,7 @@ class fail2ban::config {
   }
 
   file { '/etc/fail2ban/fail2ban.conf':
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => 0,
     mode    => $fail2ban::config_file_mode,
@@ -83,7 +82,7 @@ class fail2ban::config {
   }
 
   file { '/etc/fail2ban/jail.conf':
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => 0,
     mode    => $fail2ban::config_file_mode,
@@ -95,5 +94,4 @@ class fail2ban::config {
       ensure => absent,
     }
   }
-
 }

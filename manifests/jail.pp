@@ -190,8 +190,7 @@ define fail2ban::jail (
   include fail2ban::config
 
   if $action =~ String {
-    deprecation('fail2ban_action_param',
-      'The $action parameter will only take an array of strings in 5.x')
+    deprecation('fail2ban_action_param', 'The $action parameter will only take an array of strings in 5.x')
 
     $real_action = [$action]
   }
@@ -213,8 +212,7 @@ define fail2ban::jail (
   if $port == 'all' {
     $portrange = '1:65535'
   }
-  else
-  {
+  else {
     $portrange = $port
   }
 
@@ -260,7 +258,6 @@ define fail2ban::jail (
     owner   => 'root',
     group   => 0,
     mode    => $config_file_mode,
-    notify  => Class['fail2ban::service']
+    notify  => Class['fail2ban::service'],
   }
-
 }

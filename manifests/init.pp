@@ -188,7 +188,7 @@ class fail2ban (
   Optional[Variant[String, Array[String[1]]]] $ignoreregex = undef,
   Boolean                           $ignoreself = true,
   Array[String, 0]                  $ignoreip = ['127.0.0.1'],
-  String                            $ignorecommand = '',
+  Optional[String]                  $ignorecommand = undef,
   Optional[String]                  $ignorecache = undef,
   Integer[1]                        $maxretry = 3,
   Variant[Integer[1], String]       $maxmatches = '%(maxretry)s',
@@ -207,22 +207,18 @@ class fail2ban (
   #  option for http-based actions
   String                            $fail2ban_agent = 'Fail2Ban/%(fail2ban_version)s',
 ) {
-
   if ! $facts['os']['family'] in ['Debian', 'RedHat'] {
     fail("Unsupported Operating System family: ${facts['os']['family']}")
   }
 
   if $action =~ String {
-    deprecation('fail2ban_action_param',
-      'The $action parameter will only take an array of strings in 5.x')
+    deprecation('fail2ban_action_param', 'The $action parameter will only take an array of strings in 5.x')
   }
   if $failregex =~ String {
-    deprecation('fail2ban_failregex_param',
-      'The $failregex parameter will only take an array of strings in 5.x')
+    deprecation('fail2ban_failregex_param', 'The $failregex parameter will only take an array of strings in 5.x')
   }
   if $ignoreregex =~ String {
-    deprecation('fail2ban_ignoreregex_param',
-      'The $ignoreregex parameter will only take an array of strings in 5.x')
+    deprecation('fail2ban_ignoreregex_param', 'The $ignoreregex parameter will only take an array of strings in 5.x')
   }
 
   contain fail2ban::install
@@ -232,5 +228,4 @@ class fail2ban (
   Class['fail2ban::install']
   -> Class['fail2ban::config']
   ~> Class['fail2ban::service']
-
 }
