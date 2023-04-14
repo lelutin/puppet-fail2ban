@@ -386,12 +386,12 @@ Default value: `['127.0.0.1']`
 
 ##### <a name="-fail2ban--ignorecommand"></a>`ignorecommand`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 Default command used to determine if an IP should be exempted from being
 banned.
 
-Default value: `''`
+Default value: `undef`
 
 ##### <a name="-fail2ban--ignorecache"></a>`ignorecache`
 
