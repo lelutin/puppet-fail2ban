@@ -98,6 +98,8 @@ logtimezone = <%= $logtimezone %>
 # false: jail is not enabled
 enabled = <%= $enabled %>
 
+# Define a default mode.
+mode = <%= $mode %>
 
 # "filter" defines the filter to use by the jail.
 # By default jails have names matching their filter name
