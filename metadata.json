@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/lelutin/puppet-fail2ban/issues",
   "dependencies": [
     {
-      "name":"puppetlabs/stdlib","version_requirement":">= 4.6.0 < 9.0.0"
+      "name":"puppetlabs/stdlib","version_requirement":">= 4.6.0 < 10.0.0"
     }
   ],
   "requirements": [
