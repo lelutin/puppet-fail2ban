@@ -25,6 +25,7 @@ services running on a computer.
 
 ### Data types
 
+* [`Fail2ban::AutoOrFlag`](#Fail2ban--AutoOrFlag): A boolean flag that can also be set to the string 'auto'.
 * [`Fail2ban::Backend`](#Fail2ban--Backend): Backend names that fail2ban understands Can be one of the pre-defined backend names, "systemd" with optionally a list of parameters between s
 * [`Fail2ban::Dbfile`](#Fail2ban--Dbfile): Where fail2ban's database gets stored. None disables storage
 * [`Fail2ban::Loglevel`](#Fail2ban--Loglevel): How much logging is needed from fail2ban
@@ -86,6 +87,7 @@ The following parameters are available in the `fail2ban` class:
 * [`syslogsocket`](#-fail2ban--syslogsocket)
 * [`socket`](#-fail2ban--socket)
 * [`pidfile`](#-fail2ban--pidfile)
+* [`allowipv6`](#-fail2ban--allowipv6)
 * [`dbfile`](#-fail2ban--dbfile)
 * [`dbpurgeage`](#-fail2ban--dbpurgeage)
 * [`dbmaxmatches`](#-fail2ban--dbmaxmatches)
@@ -218,6 +220,16 @@ Path to fail2ban's pid file. This usually needs to be in a place where the
 init script or systemd unit file can find it.
 
 Default value: `'/var/run/fail2ban/fail2ban.pid'`
+
+##### <a name="-fail2ban--allowipv6"></a>`allowipv6`
+
+Data type: `Fail2ban::AutoOrFlag`
+
+Whether or not fail2ban interfaces with IPv6 stack on the system. Defaults
+to `auto`. Set to boolean true or false to force allowing or disallowing,
+respectively.
+
+Default value: `'auto'`
 
 ##### <a name="-fail2ban--dbfile"></a>`dbfile`
 
@@ -1236,6 +1248,12 @@ Default value: `{}`
 
 ## Data types
 
+### <a name="Fail2ban--AutoOrFlag"></a>`Fail2ban::AutoOrFlag`
+
+A boolean flag that can also be set to the string 'auto'.
+
+Alias of `Variant[Boolean, Enum['auto']]`
+
 ### <a name="Fail2ban--Backend"></a>`Fail2ban::Backend`
 
 Backend names that fail2ban understands
@@ -1260,7 +1278,7 @@ Alias of `Enum['CRITICAL', 'ERROR', 'WARNING', 'NOTICE', 'INFO', 'DEBUG', 'TRACE
 
 Where logs are sent
 
-Alias of `Variant[Stdlib::Absolutepath, Enum['SYSLOG', 'STDERR', 'STDOUT']]`
+Alias of `Variant[Stdlib::Absolutepath, Enum['STDOUT', 'STDERR', 'SYSLOG', 'SYSOUT', 'SYSTEMD-JOURNAL']]`
 
 ### <a name="Fail2ban--Port"></a>`Fail2ban::Port`
 
