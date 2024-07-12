@@ -9,15 +9,18 @@
 #
 class fail2ban::config {
   $fail2ban_conf_options = {
-    loglvl           => $fail2ban::loglvl,
-    logtarget        => $fail2ban::logtarget,
-    syslogsocket     => $fail2ban::syslogsocket,
-    socket           => $fail2ban::socket,
-    pidfile          => $fail2ban::pidfile,
-    dbfile           => $fail2ban::dbfile,
-    dbpurgeage       => $fail2ban::dbpurgeage,
-    dbmaxmatches     => $fail2ban::dbmaxmatches,
-    stacksize        => $fail2ban::stacksize,
+    loglvl       => $fail2ban::loglvl,
+    logtarget    => $fail2ban::logtarget,
+    syslogsocket => $fail2ban::syslogsocket,
+    socket       => $fail2ban::socket,
+    pidfile      => $fail2ban::pidfile,
+    # boolean values get transliterated to a string of true/false which is
+    # accepted by the option in the config, so no need for extra formatting
+    allowipv6    => $fail2ban::allowipv6,
+    dbfile       => $fail2ban::dbfile,
+    dbpurgeage   => $fail2ban::dbpurgeage,
+    dbmaxmatches => $fail2ban::dbmaxmatches,
+    stacksize    => $fail2ban::stacksize,
   }
 
   file { '/etc/fail2ban/fail2ban.conf':

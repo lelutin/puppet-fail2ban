@@ -55,6 +55,12 @@ socket = <%= $socket %>
 #
 pidfile = <%= $pidfile %>
 
+# Option: allowipv6
+# Notes.: Allows IPv6 interface:
+#         Default: auto
+# Values: [ auto yes (on, true, 1) no (off, false, 0) ] Default: auto
+allowipv6 = <%= $allowipv6 %>
+
 # Options: dbfile
 # Notes.: Set the file for the fail2ban persistent data to be stored.
 #         A value of ":memory:" means database is only stored in memory 

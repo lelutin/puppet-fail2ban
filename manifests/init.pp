@@ -54,6 +54,10 @@
 # @param pidfile
 #   Path to fail2ban's pid file. This usually needs to be in a place where the
 #   init script or systemd unit file can find it.
+# @param allowipv6
+#   Whether or not fail2ban interfaces with IPv6 stack on the system. Defaults
+#   to `auto`. Set to boolean true or false to force allowing or disallowing,
+#   respectively.
 # @param dbfile
 #   Path to fail2ban's database file.
 # @param dbpurgeage
@@ -169,6 +173,7 @@ class fail2ban (
   Fail2ban::Syslogsocket             $syslogsocket = 'auto',
   Stdlib::Absolutepath               $socket = '/var/run/fail2ban/fail2ban.sock',
   Stdlib::Absolutepath               $pidfile = '/var/run/fail2ban/fail2ban.pid',
+  Fail2ban::AutoOrFlag               $allowipv6 = 'auto',
   Fail2ban::Dbfile                   $dbfile = '/var/lib/fail2ban/fail2ban.sqlite3',
   Integer                            $dbpurgeage = 86400,
   Integer                            $dbmaxmatches = 10,
