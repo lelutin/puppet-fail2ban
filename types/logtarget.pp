@@ -1,5 +1,5 @@
 # Where logs are sent
 type Fail2ban::Logtarget = Variant[
   Stdlib::Absolutepath,
-  Enum['SYSLOG', 'STDERR', 'STDOUT']
+  Enum['STDOUT', 'STDERR', 'SYSLOG', 'SYSOUT', 'SYSTEMD-JOURNAL']
 ]
