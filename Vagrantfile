@@ -18,11 +18,7 @@ Vagrant.configure('2') do |config|
     puppet.module_path = 'tests/modules'
   end
 
-  config.vm.define :stretch do |stretch|
-    stretch.vm.box = 'debian-9-amd64'
-  end
-
-  config.vm.define :buster do |buster|
-    buster.vm.box = 'debian-10-amd64'
+  config.vm.define :bookworm do |bookworm|
+    bookworm.vm.box = 'debian/bookworm64'
   end
 end
