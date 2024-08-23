@@ -103,6 +103,11 @@
 #   is set in the system's locale setting.
 # @param logtimezone
 #   Force a timezone by default for logs that don't specify them on timestamps.
+# @param datepattern
+#   Change the default format of recognized dates. Warning: it is generally
+#   not recommended to change the global value, if at all. If you need to
+#   change the datepattern for some reason, it is usually recommended to set
+#   this paramter at filter level.
 # @param prefregex
 #   Regular expression to parse common part in every message.
 # @param failregex
@@ -127,6 +132,10 @@
 # @param maxretry
 #   Default number of times an IP should be detectd by a filter during findtime
 #   for it to get banned.
+# @param maxlines
+#   Default number of lines to buffer for regex search. Used for multi-line
+#   regexes. Note that it is rather unsual to set a default global value for
+#   this, and it is usually rather set on a filter itself.
 # @param maxmatches
 #   Number of matches stored in ticket.
 # @param findtime
@@ -136,6 +145,30 @@
 #   of times a filter within findtime.
 # @param bantime
 #   Default duration in number of seconds to ban an IP address for.
+# @param bantime_extra
+#   Set of additional optional settings relating to bantime. The keys in this
+#   structure are set in the configuration file as `bantime.$key`. The
+#   different possible keys are:
+#     * increment: boolean. set to true to make IP search happen across all
+#       jails instead of only the one being processed.
+#     * maxtime: string. maximum number of seconds that the formula (see below)
+#       can reach.
+#     * rndtime: string. upper bounds in seconds for ban time randomization (to
+#       prevent bots from guessing the exact ban time)
+#     * formula: string. python mathematical expression used for calculating
+#       next value of ban time. The values provided by the formula are
+#       multiplied by `bantime` and by the factor exponent coefficient to give
+#       the actual amount of time that an IP gets banned.
+#     * factor: sting. coefficient to calculate exponent growing of the
+#       ban times. The default value is 1, thus the bantime grows by 1, 2, 4,
+#       8, 16...
+#     * multipliers: string. if set, used to calculate the next ban times
+#       instead of the formula. numbers are used sequentially until the last
+#       one is reached, at which point the same value will be used for all
+#       subsequent bantimes.
+#     * overalljails: boolean. if set to true, search for IP in the database
+#       will be done across all jails instead of only the currently processed
+#       jail.
 # @param banaction
 #   Default action name extrapolated when defining some of the default actions.
 # @param banaction_allports
@@ -188,6 +221,7 @@ class fail2ban (
   Array[String]                     $logpath = [],
   String                            $logencoding = 'auto',
   Optional[String]                  $logtimezone = undef,
+  Optional[String]                  $datepattern = undef,
   Optional[String]                  $prefregex = undef,
   Optional[Variant[String, Array[String[1]]]] $failregex = undef,
   Optional[Variant[String, Array[String[1]]]] $ignoreregex = undef,
@@ -196,10 +230,12 @@ class fail2ban (
   Optional[String]                  $ignorecommand = undef,
   Optional[String]                  $ignorecache = undef,
   Integer[1]                        $maxretry = 3,
+  Optional[Integer[1]]              $maxlines = undef,
   Variant[Integer[1], String]       $maxmatches = '%(maxretry)s',
   Fail2ban::Time                    $findtime = '10m',
   Variant[String, Array[String, 1]] $action = ['%(action_)s'],
   Fail2ban::Time                    $bantime = '10m',
+  Optional[Fail2ban::Bantime_extra] $bantime_extra = undef,
   String                            $banaction = 'iptables-multiport',
   String                            $banaction_allports = 'iptables-allports',
   String                            $chain = 'INPUT',

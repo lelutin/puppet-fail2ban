@@ -78,6 +78,8 @@
 #   is set in the system's locale setting.
 # @param logtimezone
 #   Force a timezone if the logs don't specify them on timestamps.
+# @param datepattern
+#   Change the format of dates recognized by the filter this jail uses.
 # @param prefregex
 #   Regular expression to parse common part in every message for this jail.
 # @param failregex
@@ -104,6 +106,9 @@
 #   repeatedly.
 # @param maxretry
 #   Number of failregex matches during findtime after which an IP gets banned.
+# @param maxlines
+#   Number of lines to buffer for filter's regex search when looking for
+#   multi-line regex matches.
 # @param maxmatches
 #   Number of matches stored in ticket.
 # @param findtime
@@ -115,6 +120,10 @@
 # @param bantime
 #   Time period in seconds for which an IP is banned if maxretry matches of
 #   failregex happen for the same IP during findtime.
+# @param bantime_extra
+#   Set of additional optional settings relating to bantime. The keys in this
+#   structure are set in the configuration file as `bantime.$key`. See the
+#   same parameter in class fail2ban for more details on the possible values.
 # @param banaction
 #   Name of the action that is extrapolated in default action definitions, or
 #   in the action param. This can let you override the action name but keep the
@@ -164,6 +173,7 @@ define fail2ban::jail (
   Array[String]                $logpath            = [],
   Optional[String]             $logencoding        = undef,
   Optional[String]             $logtimezone        = undef,
+  Optional[String]             $datepattern        = undef,
   Optional[String[1]]          $prefregex          = undef,
   Optional[Array[String[1]]]   $failregex          = undef,
   Optional[Array[String[1]]]   $ignoreregex        = undef,
@@ -172,10 +182,12 @@ define fail2ban::jail (
   Optional[String]             $ignorecommand      = undef,
   Optional[String]             $ignorecache        = undef,
   Optional[Integer[1]]         $maxretry           = undef,
+  Optional[Integer[1]]         $maxlines           = undef,
   Optional[Variant[Integer[1], String]] $maxmatches = undef,
   Optional[Fail2ban::Time]     $findtime           = undef,
   Optional[Variant[String, Array[String, 1]]] $action = undef,
   Optional[Fail2ban::Time]     $bantime            = undef,
+  Optional[Fail2ban::Bantime_extra] $bantime_extra = undef,
   Optional[String]             $banaction          = undef,
   Optional[String]             $banaction_allports = undef,
   Optional[String]             $chain              = undef,
@@ -233,10 +245,12 @@ define fail2ban::jail (
     ignorecommand      => $ignorecommand,
     ignorecache        => $ignorecache,
     maxretry           => $maxretry,
+    maxlines           => $maxlines,
     maxmatches         => $maxmatches,
     findtime           => $findtime,
     action             => $real_action,
     bantime            => $bantime,
+    bantime_extra      => $bantime_extra,
     banaction          => $banaction,
     banaction_allports => $banaction_allports,
     chain              => $chain,

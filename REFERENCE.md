@@ -27,6 +27,7 @@ services running on a computer.
 
 * [`Fail2ban::AutoOrFlag`](#Fail2ban--AutoOrFlag): A boolean flag that can also be set to the string 'auto'.
 * [`Fail2ban::Backend`](#Fail2ban--Backend): Backend names that fail2ban understands Can be one of the pre-defined backend names, "systemd" with optionally a list of parameters between s
+* [`Fail2ban::Bantime_extra`](#Fail2ban--Bantime_extra): Optional additional bantime.* options. See manifests/init.pp for details about what each option means.
 * [`Fail2ban::Dbfile`](#Fail2ban--Dbfile): Where fail2ban's database gets stored. None disables storage
 * [`Fail2ban::Loglevel`](#Fail2ban--Loglevel): How much logging is needed from fail2ban
 * [`Fail2ban::Logtarget`](#Fail2ban--Logtarget): Where logs are sent
@@ -101,6 +102,7 @@ The following parameters are available in the `fail2ban` class:
 * [`logpath`](#-fail2ban--logpath)
 * [`logencoding`](#-fail2ban--logencoding)
 * [`logtimezone`](#-fail2ban--logtimezone)
+* [`datepattern`](#-fail2ban--datepattern)
 * [`prefregex`](#-fail2ban--prefregex)
 * [`failregex`](#-fail2ban--failregex)
 * [`ignoreregex`](#-fail2ban--ignoreregex)
@@ -109,10 +111,12 @@ The following parameters are available in the `fail2ban` class:
 * [`ignorecommand`](#-fail2ban--ignorecommand)
 * [`ignorecache`](#-fail2ban--ignorecache)
 * [`maxretry`](#-fail2ban--maxretry)
+* [`maxlines`](#-fail2ban--maxlines)
 * [`maxmatches`](#-fail2ban--maxmatches)
 * [`findtime`](#-fail2ban--findtime)
 * [`action`](#-fail2ban--action)
 * [`bantime`](#-fail2ban--bantime)
+* [`bantime_extra`](#-fail2ban--bantime_extra)
 * [`banaction`](#-fail2ban--banaction)
 * [`banaction_allports`](#-fail2ban--banaction_allports)
 * [`chain`](#-fail2ban--chain)
@@ -352,6 +356,17 @@ Force a timezone by default for logs that don't specify them on timestamps.
 
 Default value: `undef`
 
+##### <a name="-fail2ban--datepattern"></a>`datepattern`
+
+Data type: `Optional[String]`
+
+Change the default format of recognized dates. Warning: it is generally
+not recommended to change the global value, if at all. If you need to
+change the datepattern for some reason, it is usually recommended to set
+this paramter at filter level.
+
+Default value: `undef`
+
 ##### <a name="-fail2ban--prefregex"></a>`prefregex`
 
 Data type: `Optional[String]`
@@ -424,6 +439,16 @@ for it to get banned.
 
 Default value: `3`
 
+##### <a name="-fail2ban--maxlines"></a>`maxlines`
+
+Data type: `Optional[Integer[1]]`
+
+Default number of lines to buffer for regex search. Used for multi-line
+regexes. Note that it is rather unsual to set a default global value for
+this, and it is usually rather set on a filter itself.
+
+Default value: `undef`
+
 ##### <a name="-fail2ban--maxmatches"></a>`maxmatches`
 
 Data type: `Variant[Integer[1], String]`
@@ -456,6 +481,36 @@ Data type: `Fail2ban::Time`
 Default duration in number of seconds to ban an IP address for.
 
 Default value: `'10m'`
+
+##### <a name="-fail2ban--bantime_extra"></a>`bantime_extra`
+
+Data type: `Optional[Fail2ban::Bantime_extra]`
+
+Set of additional optional settings relating to bantime. The keys in this
+structure are set in the configuration file as `bantime.$key`. The
+different possible keys are:
+  * increment: boolean. set to true to make IP search happen across all
+    jails instead of only the one being processed.
+  * maxtime: string. maximum number of seconds that the formula (see below)
+    can reach.
+  * rndtime: string. upper bounds in seconds for ban time randomization (to
+    prevent bots from guessing the exact ban time)
+  * formula: string. python mathematical expression used for calculating
+    next value of ban time. The values provided by the formula are
+    multiplied by `bantime` and by the factor exponent coefficient to give
+    the actual amount of time that an IP gets banned.
+  * factor: sting. coefficient to calculate exponent growing of the
+    ban times. The default value is 1, thus the bantime grows by 1, 2, 4,
+    8, 16...
+  * multipliers: string. if set, used to calculate the next ban times
+    instead of the formula. numbers are used sequentially until the last
+    one is reached, at which point the same value will be used for all
+    subsequent bantimes.
+  * overalljails: boolean. if set to true, search for IP in the database
+    will be done across all jails instead of only the currently processed
+    jail.
+
+Default value: `undef`
 
 ##### <a name="-fail2ban--banaction"></a>`banaction`
 
@@ -925,6 +980,7 @@ The following parameters are available in the `fail2ban::jail` defined type:
 * [`logpath`](#-fail2ban--jail--logpath)
 * [`logencoding`](#-fail2ban--jail--logencoding)
 * [`logtimezone`](#-fail2ban--jail--logtimezone)
+* [`datepattern`](#-fail2ban--jail--datepattern)
 * [`prefregex`](#-fail2ban--jail--prefregex)
 * [`failregex`](#-fail2ban--jail--failregex)
 * [`ignoreregex`](#-fail2ban--jail--ignoreregex)
@@ -933,10 +989,12 @@ The following parameters are available in the `fail2ban::jail` defined type:
 * [`ignorecommand`](#-fail2ban--jail--ignorecommand)
 * [`ignorecache`](#-fail2ban--jail--ignorecache)
 * [`maxretry`](#-fail2ban--jail--maxretry)
+* [`maxlines`](#-fail2ban--jail--maxlines)
 * [`maxmatches`](#-fail2ban--jail--maxmatches)
 * [`findtime`](#-fail2ban--jail--findtime)
 * [`action`](#-fail2ban--jail--action)
 * [`bantime`](#-fail2ban--jail--bantime)
+* [`bantime_extra`](#-fail2ban--jail--bantime_extra)
 * [`banaction`](#-fail2ban--jail--banaction)
 * [`banaction_allports`](#-fail2ban--jail--banaction_allports)
 * [`chain`](#-fail2ban--jail--chain)
@@ -1041,6 +1099,14 @@ Force a timezone if the logs don't specify them on timestamps.
 
 Default value: `undef`
 
+##### <a name="-fail2ban--jail--datepattern"></a>`datepattern`
+
+Data type: `Optional[String]`
+
+Change the format of dates recognized by the filter this jail uses.
+
+Default value: `undef`
+
 ##### <a name="-fail2ban--jail--prefregex"></a>`prefregex`
 
 Data type: `Optional[String[1]]`
@@ -1115,6 +1181,15 @@ Number of failregex matches during findtime after which an IP gets banned.
 
 Default value: `undef`
 
+##### <a name="-fail2ban--jail--maxlines"></a>`maxlines`
+
+Data type: `Optional[Integer[1]]`
+
+Number of lines to buffer for filter's regex search when looking for
+multi-line regex matches.
+
+Default value: `undef`
+
 ##### <a name="-fail2ban--jail--maxmatches"></a>`maxmatches`
 
 Data type: `Optional[Variant[Integer[1], String]]`
@@ -1147,6 +1222,16 @@ Data type: `Optional[Fail2ban::Time]`
 
 Time period in seconds for which an IP is banned if maxretry matches of
 failregex happen for the same IP during findtime.
+
+Default value: `undef`
+
+##### <a name="-fail2ban--jail--bantime_extra"></a>`bantime_extra`
+
+Data type: `Optional[Fail2ban::Bantime_extra]`
+
+Set of additional optional settings relating to bantime. The keys in this
+structure are set in the configuration file as `bantime.$key`. See the
+same parameter in class fail2ban for more details on the possible values.
 
 Default value: `undef`
 
@@ -1261,6 +1346,25 @@ Can be one of the pre-defined backend names, "systemd" with optionally a list
 of parameters between square brackets or a python-style variable
 
 Alias of `Variant[Enum['auto','pyinotify','gamin','polling'], Pattern[/^systemd(\[.*\]$)?/], Pattern[/%\(\w+\)s/]]`
+
+### <a name="Fail2ban--Bantime_extra"></a>`Fail2ban::Bantime_extra`
+
+Optional additional bantime.* options. See manifests/init.pp for details
+about what each option means.
+
+Alias of
+
+```puppet
+Struct[{
+  Optional[increment] => Boolean,
+  Optional[factor] => String[1],
+  Optional[formula] => String[1],
+  Optional[multipliers] => String[1],
+  Optional[maxtime] => String[1],
+  Optional[rndtime] => String[1],
+  Optional[overalljails] => Boolean,
+}]
+```
 
 ### <a name="Fail2ban--Dbfile"></a>`Fail2ban::Dbfile`
 

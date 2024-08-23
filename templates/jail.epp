@@ -1,7 +1,14 @@
 [<%= $jail_name %>]
 <%
 $options.each |String $opt, Any $value| {
-  if $value !~ Undef {
+  if $opt.stdlib::start_with('bantime_extra') {
+    $value.each |String $bt_opt, Any $bt_value| {
+-%>
+bantime.<%= $bt_opt %> = <%= $bt_value %>
+<%
+    }
+  }
+  elsif $value !~ Undef {
     if $value =~ Array {
       # This looks horrible but the Puppet DSL doesn't seem to offer a better
       #   way to generate a string of x repetitions of a substring more easily
