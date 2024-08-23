@@ -10,9 +10,11 @@ Vagrant.configure('2') do |config|
     config.librarian_puppet.destructive = false
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    rsync__exclude: ".git/",
-    rsync__args: ["--delete"]
+  config.vm.synced_folder '.',
+                          '/vagrant',
+                          type: 'rsync',
+                          rsync__exclude: '.git/',
+                          rsync__args: ['--delete']
 
   # All boxes should update, then run tests
   config.vm.provision 'shell', inline: 'apt-get update; apt-get install -y puppet-agent'
