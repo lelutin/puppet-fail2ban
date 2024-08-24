@@ -1,7 +1,7 @@
 [<%= $jail_name %>]
 <%
 $options.each |String $opt, Any $value| {
-  if $opt.stdlib::start_with('bantime_extra') {
+  if $opt.stdlib::start_with('bantime_extra') and $value !~ Undef {
     $value.each |String $bt_opt, Any $bt_value| {
 -%>
 bantime.<%= $bt_opt %> = <%= $bt_value %>
