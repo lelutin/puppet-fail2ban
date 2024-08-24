@@ -9,4 +9,9 @@
 # Learn more about module testing here:
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
-include fail2ban
+class { 'fail2ban':
+}
+$ssh_params = lookup('fail2ban::jail::sshd')
+fail2ban::jail { 'sshd':
+  * => $ssh_params,
+}
