@@ -264,7 +264,7 @@ define fail2ban::jail (
 
   $jail_template_values = {
     jail_name => $name,
-    options   => merge($additional_options, $jail_options),
+    options   => stdlib::merge($additional_options, $jail_options),
   }
   file { "/etc/fail2ban/jail.d/${name}.conf":
     ensure  => $ensure,
