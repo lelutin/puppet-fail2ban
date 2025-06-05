@@ -1356,14 +1356,14 @@ Alias of
 
 ```puppet
 Struct[{
-  Optional[increment] => Boolean,
-  Optional[factor] => String[1],
-  Optional[formula] => String[1],
-  Optional[multipliers] => String[1],
-  Optional[maxtime] => String[1],
-  Optional[rndtime] => String[1],
-  Optional[overalljails] => Boolean,
-}]
+    Optional[increment] => Boolean,
+    Optional[factor] => String[1],
+    Optional[formula] => String[1],
+    Optional[multipliers] => String[1],
+    Optional[maxtime] => String[1],
+    Optional[rndtime] => String[1],
+    Optional[overalljails] => Boolean,
+  }]
 ```
 
 ### <a name="Fail2ban--Dbfile"></a>`Fail2ban::Dbfile`
