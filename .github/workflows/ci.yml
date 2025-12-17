@@ -16,7 +16,7 @@ jobs:
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '3.4.8'
           bundler-cache: true
       - name: Validate syntax of all puppet files
         run: bundle exec rake validate
