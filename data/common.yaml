@@ -314,6 +314,7 @@ fail2ban::jail::postfix-rbl:
   maxretry: 1
 fail2ban::jail::postfix-sasl:
   filter: "postfix[mode=auth]"
+  port: "smtp,465,submission"
   logpath:
     - "%(postfix_log)s"
   backend: "%(postfix_backend)s"
