@@ -76,6 +76,7 @@ class { 'fail2ban':
 
 The following parameters are available in the `fail2ban` class:
 
+* [`package_ensure`](#-fail2ban--package_ensure)
 * [`rm_fail2ban_local`](#-fail2ban--rm_fail2ban_local)
 * [`rm_jail_local`](#-fail2ban--rm_jail_local)
 * [`purge_fail2ban_dot_d`](#-fail2ban--purge_fail2ban_dot_d)
@@ -126,6 +127,15 @@ The following parameters are available in the `fail2ban` class:
 * [`destemail`](#-fail2ban--destemail)
 * [`sender`](#-fail2ban--sender)
 * [`fail2ban_agent`](#-fail2ban--fail2ban_agent)
+
+
+##### <a name="-fail2ban--package_ensure"></a>`package_ensure`
+
+Data type: `Enum['absent', 'latest', 'present', 'purged']`
+
+Determines if the package should be installed.
+
+Default value: `'present'`
 
 ##### <a name="-fail2ban--rm_fail2ban_local"></a>`rm_fail2ban_local`
 

@@ -26,6 +26,8 @@
 #     ignoreip => ['127.0.0.1', '10.0.0.1'],
 #   }
 #
+# @param package_ensure
+#   Determines if the package should be installed.
 #
 # @param rm_fail2ban_local
 #   Force removal of file /etc/fail2ban/fail2ban.local if present.
@@ -192,6 +194,8 @@
 #   User-agent sent on HTTP requests that are made by some actions.
 #
 class fail2ban (
+  # Options for fail2ban package
+  Enum['absent', 'latest', 'present', 'purged']              $package_ensure = 'present',
   # Options that change how the module behaves
   Boolean           $rm_fail2ban_local = true,
   Boolean           $rm_jail_local = true,
