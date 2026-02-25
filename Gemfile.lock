@@ -242,7 +242,6 @@ PLATFORMS
   x86_64-linux-gnu
 
 DEPENDENCIES
-  facter (>= 2.4.0)
   puppet (>= 6.0)
   puppet-strings (< 6.0.0)
   puppet_metadata (< 7.0)
