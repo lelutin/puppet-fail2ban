@@ -7,17 +7,13 @@ gem 'puppet', puppetversion
 gem 'rake'
 
 group :tests do
-  gem 'metadata-json-lint'
-  # Use info from metadata.json for tests
   gem 'puppetlabs_spec_helper'
-  gem 'puppet-lint', '>= 2.3.0'
-  gem 'puppet_metadata'
-  gem 'puppet-syntax'
-  gem 'rspec-puppet', '>= 2.4.0'
+  # Brings metadata2gha for our CI
+  gem 'puppet_metadata', '~> 6.0'
   # This draws in rubocop and other useful gems for puppet tests
-  gem 'voxpupuli-test'
+  gem 'voxpupuli-test', '~> 13.2.0'
 end
 
 group :docs do
-  gem 'puppet-strings'
+  gem 'puppet-strings', '~> 5.0.0'
 end
