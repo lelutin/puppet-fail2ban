@@ -15,5 +15,5 @@ group :tests do
 end
 
 group :docs do
-  gem 'puppet-strings', '~> 5.0.0'
+  gem 'puppet-strings', '< 6.0.0'
 end
