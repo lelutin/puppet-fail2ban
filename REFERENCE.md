@@ -128,7 +128,6 @@ The following parameters are available in the `fail2ban` class:
 * [`sender`](#-fail2ban--sender)
 * [`fail2ban_agent`](#-fail2ban--fail2ban_agent)
 
-
 ##### <a name="-fail2ban--package_ensure"></a>`package_ensure`
 
 Data type: `Enum['absent', 'latest', 'present', 'purged']`
