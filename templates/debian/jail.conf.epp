@@ -106,7 +106,7 @@ ignoreself = <%= $ignoreself %>
 # "ignoreip" can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
 # will not ban a host which matches an address in this list. Several addresses
 # can be defined using space (and/or comma) separator.
-ignoreip = <%= $ignoreip.join(" ") %>
+ignoreip = <%= $ignoreip.join("\n           ") %>
 
 # External command that will take an tagged arguments to ignore, e.g. <ip>,
 # and return true if the IP is to be ignored. False otherwise.
@@ -123,7 +123,7 @@ bantime = <%= $bantime %>
 
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
-findtime  = <%= $findtime %>
+findtime = <%= $findtime %>
 
 # "maxretry" is the number of failures before a host get banned.
 maxretry = <%= $maxretry %>

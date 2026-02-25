@@ -15,13 +15,74 @@
 before = paths-fedora.conf
 
 [DEFAULT]
+
 #
 # MISCELLANEOUS OPTIONS
 #
+
+<% if $bantime_extra !~ Undef { -%>
+<% if $bantime_extra['increment'] !~ Undef { -%>
+# "bantime.increment" allows to use database for searching of previously banned ip's to increase a 
+# default ban time using special formula, default it is banTime * 1, 2, 4, 8, 16, 32...
+bantime.increment = <%= $bantime_extra['increment'] %>
+
+<% } -%>
+<% if $bantime_extra['rndtime'] !~ Undef { -%>
+# "bantime.rndtime" is the max number of seconds using for mixing with random time 
+# to prevent "clever" botnets calculate exact time IP can be unbanned again:
+bantime.rndtime = <%= $bantime_extra['rndtime'] %>
+
+<% } -%>
+<% if $bantime_extra['maxtime'] !~ Undef { -%>
+# "bantime.maxtime" is the max number of seconds using the ban time can reach (doesn't grow further)
+bantime.maxtime = <%= $bantime_extra['maxtime'] %>
+
+<% } -%>
+<% if $bantime_extra['factor'] !~ Undef { -%>
+# "bantime.factor" is a coefficient to calculate exponent growing of the formula or common multiplier,
+# default value of factor is 1 and with default value of formula, the ban time 
+# grows by 1, 2, 4, 8, 16 ...
+bantime.factor = <%= $bantime_extra['factor'] %>
+
+<% } -%>
+<% if $bantime_extra['formula'] !~ Undef { -%>
+# "bantime.formula" used by default to calculate next value of ban time, default value below,
+# the same ban time growing will be reached by multipliers 1, 2, 4, 8, 16, 32...
+#bantime.formula = ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor
+#
+# more aggressive example of formula has the same values only for factor "2.0 / 2.885385" :
+#bantime.formula = ban.Time * math.exp(float(ban.Count+1)*banFactor)/math.exp(1*banFactor)
+bantime.formula = <%= $bantime_extra['formula'] %>
+
+<% } -%>
+<% if $bantime_extra['multipliers'] !~ Undef { -%>
+# "bantime.multipliers" used to calculate next value of ban time instead of formula, coresponding 
+# previously ban count and given "bantime.factor" (for multipliers default is 1);
+# following example grows ban time by 1, 2, 4, 8, 16 ... and if last ban count greater as multipliers count, 
+# always used last multiplier (64 in example), for factor '1' and original ban time 600 - 10.6 hours
+#bantime.multipliers = 1 2 4 8 16 32 64
+# following example can be used for small initial ban time (bantime=60) - it grows more aggressive at begin,
+# for bantime=60 the multipliers are minutes and equal: 1 min, 5 min, 30 min, 1 hour, 5 hour, 12 hour, 1 day, 2 day
+bantime.multipliers = <%= $bantime_extra['multipliers'] %>
+
+<% } -%>
+<% if $bantime_extra['multipliers'] !~ Undef { -%>
+# "bantime.overalljails" (if true) specifies the search of IP in the database will be executed 
+# cross over all jails, if false (dafault), only current jail of the ban IP will be searched
+bantime.overalljails = <%= $bantime_extra['multipliers'] %>
+
+<% } -%>
+<% } -%>
+# --------------------
+#
+# "ignoreself" specifies whether the local resp. own IP addresses should be ignored
+# (default is true). Fail2ban will not ban a host which matches such addresses.
+ignoreself = <%= $ignoreself %>
+
 # "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
 # ban a host which matches an address in this list. Several addresses can be
 # defined using space separator.
-ignoreip = <%= $ignoreip.join(" ") %>
+ignoreip = <%= $ignoreip.join("\n           ") %>
 
 
 # External command that will take an tagged arguments to ignore, e.g. <ip>,
@@ -39,10 +100,18 @@ bantime = <%= $bantime %>
 
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
-findtime  = <%= $findtime %>
+findtime = <%= $findtime %>
+<% if $maxlines !~ Undef { -%>
+
+# "maxlines" sets the number of lines to buffer for regex search
+maxlines = <%= $maxlines %>
+<% } -%>
 
 # "maxretry" is the number of failures before a host get banned.
 maxretry = <%= $maxretry %>
+
+# "maxmatches" is the number of matches stored in ticket (resolvable via tag <matches> in actions).
+maxmatches = <%= $maxmatches %>
 
 #"backend" specifies the backend used to get files modification.
 # Available options are "pyinotify", "gamin", "polling", "systemd" and "auto".
