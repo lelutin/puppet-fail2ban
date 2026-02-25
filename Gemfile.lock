@@ -33,8 +33,6 @@ GEM
       json-schema (>= 2.8, < 7.0)
       semantic_puppet (~> 1.0)
       spdx-licenses (~> 1.0)
-    mocha (3.0.2)
-      ruby2_keywords (>= 0.0.5)
     multi_json (1.19.1)
     openfact (5.5.0)
       base64 (>= 0.1, < 0.4)
@@ -142,12 +140,6 @@ GEM
     puppet_metadata (6.0.0)
       metadata-json-lint (>= 2.0, < 6)
       semantic_puppet (~> 1.0)
-    puppetlabs_spec_helper (1.1.1)
-      mocha
-      puppet-lint
-      puppet-syntax
-      rake
-      rspec-puppet
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.3.1)
@@ -196,7 +188,6 @@ GEM
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
     ruby-progressbar (1.13.0)
-    ruby2_keywords (0.0.5)
     scanf (1.0.0)
     semantic_puppet (1.1.1)
     singleton (0.3.0)
@@ -254,8 +245,7 @@ DEPENDENCIES
   facter (>= 2.4.0)
   puppet (>= 6.0)
   puppet-strings (< 6.0.0)
-  puppet_metadata (~> 6.0)
-  puppetlabs_spec_helper
+  puppet_metadata (< 7.0)
   rake
   voxpupuli-test (~> 13.2.0)
 
