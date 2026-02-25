@@ -1,7 +1,5 @@
 ---
 fixtures:
-  symlinks:
-    "fail2ban": "#{source_dir}"
   forge_modules:
     "stdlib":
       repo: "puppetlabs/stdlib"
