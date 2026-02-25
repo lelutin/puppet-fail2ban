@@ -9,7 +9,7 @@ gem 'rake'
 group :tests do
   gem 'puppetlabs_spec_helper'
   # Brings metadata2gha for our CI
-  gem 'puppet_metadata', '~> 6.0'
+  gem 'puppet_metadata', '< 7.0'
   # This draws in rubocop and other useful gems for puppet tests
   gem 'voxpupuli-test', '~> 13.2.0'
 end
