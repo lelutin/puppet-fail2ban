@@ -109,7 +109,7 @@
 #   Change the default format of recognized dates. Warning: it is generally
 #   not recommended to change the global value, if at all. If you need to
 #   change the datepattern for some reason, it is usually recommended to set
-#   this paramter at filter level.
+#   this parameter at filter level.
 # @param prefregex
 #   Regular expression to parse common part in every message.
 # @param failregex
