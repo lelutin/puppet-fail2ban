@@ -237,6 +237,7 @@ define fail2ban::jail (
     logpath            => $logpath,
     logencoding        => $logencoding,
     logtimezone        => $logtimezone,
+    datepattern        => $datepattern,
     prefregex          => $prefregex,
     failregex          => $failregex,
     ignoreregex        => $ignoreregex,
