@@ -296,7 +296,7 @@ describe 'fail2ban' do
         end
       end
 
-      # # Options that don't trivially ouptut in the config file:
+      # Options that don't trivially ouptut in the config file:
       context 'with bantime_extra set' do
         formula = 'ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor'
         let(:params) { { 'bantime_extra' => { 'increment' => true, 'formula' => formula } } }
