@@ -7,6 +7,4 @@ Gemfile.lock
 /.yardoc
 .librarian
 .tmp
-/tests/Puppetfile.lock
-/tests/modules/**
 /vendor
