@@ -10,7 +10,7 @@ describe 'fail2ban::filter' do
     context "on #{os}" do
       let(:facts) { facts }
       # Mandatory param
-      let(:params) { { 'failregexes' => ['Failed login from <HOST>'], } }
+      let(:params) { { 'failregexes' => ['Failed login from <HOST>'] } }
 
       # ------------------------------------------------------------------
       # Minimal required parameters
@@ -19,14 +19,14 @@ describe 'fail2ban::filter' do
         it { is_expected.to compile.with_all_deps }
 
         it 'creates a filter config file in filter.d' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_ensure('present').
-            with_owner('root').
-            with_group(0).
-            with_mode('0644').
-            that_notifies('Class[fail2ban::service]').
-            with_content(%r{^\[Definition\]$}).
-            with_content(%r{^failregex = Failed login from <HOST>$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_ensure('present')
+            .with_owner('root')
+            .with_group(0)
+            .with_mode('0644')
+            .that_notifies('Class[fail2ban::service]')
+            .with_content(%r{^\[Definition\]$})
+            .with_content(%r{^failregex = Failed login from <HOST>$})
         end
       end
 
@@ -39,8 +39,8 @@ describe 'fail2ban::filter' do
         end
 
         it 'removes the filter config file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_ensure('absent')
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_ensure('absent')
         end
       end
 
@@ -56,8 +56,8 @@ describe 'fail2ban::filter' do
         end
 
         it 'writes all failregexes into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^failregex = Failed login from <HOST>\n            Invalid user .* from <HOST>$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^failregex = Failed login from <HOST>\n            Invalid user .* from <HOST>$})
         end
       end
 
@@ -67,8 +67,8 @@ describe 'fail2ban::filter' do
         end
 
         it 'sets permissions on the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_mode('0754')
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_mode('0754')
         end
       end
 
@@ -81,34 +81,34 @@ describe 'fail2ban::filter' do
           super().merge({ 'init' => [
                           'table = moo',
                           'timeout = 7d',
-                        ], })
+                        ] })
         end
 
         it 'writes init section name and lines into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^\[Init\]\ntable = moo\ntimeout = 7d$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^\[Init\]\ntable = moo\ntimeout = 7d$})
         end
       end
 
       context 'with includes set' do
         let(:params) do
-          super().merge({ 'includes' => %w[library1 lib2], })
+          super().merge({ 'includes' => %w[library1 lib2] })
         end
 
         it 'writes includes section name and before lines into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^\[INCLUDES\]\nbefore = library1\n         lib2$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^\[INCLUDES\]\nbefore = library1\n         lib2$})
         end
       end
 
       context 'with includes_after set' do
         let(:params) do
-          super().merge({ 'includes_after' => %w[library98 lib99], })
+          super().merge({ 'includes_after' => %w[library98 lib99] })
         end
 
         it 'writes includes section name and before lines into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^\[INCLUDES\]\nafter = library98\n        lib99$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^\[INCLUDES\]\nafter = library98\n        lib99$})
         end
       end
 
@@ -125,8 +125,8 @@ describe 'fail2ban::filter' do
         end
 
         it 'writes ignoreregex into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^ignoreregex = success from <HOST>\n              localhost$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^ignoreregex = success from <HOST>\n              localhost$})
         end
       end
 
@@ -142,8 +142,8 @@ describe 'fail2ban::filter' do
         end
 
         it 'writes additional lines into the filter file' do
-          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-            with_content(%r{^prefregex = \^%\(__prefix_line\)sfoo\nlocalvariable = somethingorother$})
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{^prefregex = \^%\(__prefix_line\)sfoo\nlocalvariable = somethingorother$})
         end
       end
 
@@ -159,15 +159,17 @@ describe 'fail2ban::filter' do
             super().merge({ key => value })
           end
 
-          test_pattern = if value.is_a?(Array)
-                           value.map { |v| Regexp.escape(v) }.join(%r{\n#{" " * (key.length + 3)}}.to_s)
-                         else
-                           Regexp.escape(value.to_s)
-                         end
+          let(:test_pattern) do
+            if value.is_a?(Array)
+              value.map { |v| Regexp.escape(v) }.join(%r{\n#{' ' * (key.length + 3)}}.to_s)
+            else
+              Regexp.escape(value.to_s)
+            end
+          end
 
           it "writes #{key} into jail.conf" do
-            is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf').
-              with_content(%r{^#{key} = #{test_pattern}$})
+            is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+              .with_content(%r{^#{key} = #{test_pattern}$})
           end
         end
       end

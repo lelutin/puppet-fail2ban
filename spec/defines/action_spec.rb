@@ -23,36 +23,36 @@ describe 'fail2ban::action' do
         it { is_expected.to compile.with_all_deps }
 
         it 'creates an action config file in action.d' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_ensure('present').
-            with_owner('root').
-            with_group('0').
-            with_mode('0644')
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_ensure('present')
+            .with_owner('root')
+            .with_group('0')
+            .with_mode('0644')
         end
 
         it 'does not have an [INCLUDES] section' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^(?!.*\[INCLUDES\].*)$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^(?!.*\[INCLUDES\].*)$})
         end
 
         it 'includes a [Definition] section' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^\[Definition\]$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^\[Definition\]$})
         end
 
         it 'notifies the fail2ban service' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            that_notifies('Class[fail2ban::service]')
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .that_notifies('Class[fail2ban::service]')
         end
 
         it 'includes actionban with curl command' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{curl -s -X PUT})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{curl -s -X PUT})
         end
 
         it 'includes actionunban with curl command' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{curl -s -X DELETE})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{curl -s -X DELETE})
         end
       end
 
@@ -65,8 +65,8 @@ describe 'fail2ban::action' do
         end
 
         it 'removes the action config file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_ensure('absent')
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_ensure('absent')
         end
       end
 
@@ -76,8 +76,8 @@ describe 'fail2ban::action' do
         end
 
         it 'sets the permissions of action file as specified' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_mode('0640')
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_mode('0640')
         end
       end
 
@@ -87,8 +87,8 @@ describe 'fail2ban::action' do
         end
 
         it 'writes timeout into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^timeout = 2600$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^timeout = 2600$})
         end
       end
 
@@ -98,9 +98,9 @@ describe 'fail2ban::action' do
         end
 
         it 'writes init lines into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^var1 = /etc/something$}).
-            with_content(%r{^protocol = tcp$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^var1 = /etc/something$})
+            .with_content(%r{^protocol = tcp$})
         end
       end
 
@@ -110,9 +110,9 @@ describe 'fail2ban::action' do
         end
 
         it 'has [INCLUDES] section and writes includes "before" into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^\[INCLUDES\]$}).
-            with_content(%r{^before = banana\n         chestnuts$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^\[INCLUDES\]$})
+            .with_content(%r{^before = banana\n         chestnuts$})
         end
       end
 
@@ -122,9 +122,9 @@ describe 'fail2ban::action' do
         end
 
         it 'has [INCLUDES] section and writes includes "after" into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^\[INCLUDES\]$}).
-            with_content(%r{^after = tea\n        exercise$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^\[INCLUDES\]$})
+            .with_content(%r{^after = tea\n        exercise$})
         end
       end
 
@@ -137,8 +137,8 @@ describe 'fail2ban::action' do
         end
 
         it 'writes actioncheck into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^actioncheck = iptables -n -L INPUT | grep -q f2b-<name>$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^actioncheck = iptables -n -L INPUT | grep -q f2b-<name>$})
         end
       end
 
@@ -148,8 +148,8 @@ describe 'fail2ban::action' do
         end
 
         it 'writes actionstart into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^actionstart = iptables -N f2b-<name>$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^actionstart = iptables -N f2b-<name>$})
         end
       end
 
@@ -159,8 +159,8 @@ describe 'fail2ban::action' do
         end
 
         it 'writes actionstop into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^actionstop = iptables -F f2b-<name>$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^actionstop = iptables -F f2b-<name>$})
         end
       end
 
@@ -173,9 +173,9 @@ describe 'fail2ban::action' do
         end
 
         it 'writes additional_defs into the action file' do
-          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf').
-            with_content(%r{^name = default$}).
-            with_content(%r{^port = 22$})
+          is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
+            .with_content(%r{^name = default$})
+            .with_content(%r{^port = 22$})
         end
       end
     end

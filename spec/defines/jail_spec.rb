@@ -21,14 +21,14 @@ describe 'fail2ban::jail' do
         it { is_expected.to compile.with_all_deps }
 
         it 'creates a jail config file in jail.d' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_ensure('present').
-            with_owner('root').
-            with_group(0).
-            with_mode('0644').
-            with_content(%r{^\[test_jail\]$}).
-            with_content(%r{^logpath\s*=.*/var/log/test\.log$}).
-            that_notifies('Class[fail2ban::service]')
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_ensure('present')
+            .with_owner('root')
+            .with_group(0)
+            .with_mode('0644')
+            .with_content(%r{^\[test_jail\]$})
+            .with_content(%r{^logpath\s*=.*/var/log/test\.log$})
+            .that_notifies('Class[fail2ban::service]')
         end
       end
 
@@ -41,8 +41,8 @@ describe 'fail2ban::jail' do
         end
 
         it 'removes the jail config file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_ensure('absent')
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_ensure('absent')
         end
       end
 
@@ -52,8 +52,8 @@ describe 'fail2ban::jail' do
         end
 
         it 'sets the permissions for jail config file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_mode('0660')
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_mode('0660')
         end
       end
 
@@ -82,8 +82,8 @@ describe 'fail2ban::jail' do
         end
 
         it 'writes port = 1:65535 into the jail file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_content(%r{port\s*=\s*1:65535})
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_content(%r{port\s*=\s*1:65535})
         end
       end
 
@@ -92,14 +92,11 @@ describe 'fail2ban::jail' do
         let(:params) do
           { 'logpath' => ['/var/log/app1.log', '/var/log/app2.log'] }
         end
-
-        key = 'logpath'
-        value = ['/var/log/app1.log', '/var/log/app2.log']
-        test_pattern = value.map { |v| Regexp.escape(v) }.join(%r{\n#{" " * (key.length + 3)}}.to_s)
+        let(:test_pattern) { ['/var/log/app1.log', '/var/log/app2.log'].map { |v| Regexp.escape(v) }.join(%r{\n#{' ' * ('logpath'.length + 3)}}.to_s) }
 
         it 'writes both log paths into the jail file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_content(%r{^#{key} = #{test_pattern}$})
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_content(%r{^logpath = #{test_pattern}$})
         end
       end
 
@@ -141,16 +138,17 @@ describe 'fail2ban::jail' do
           let(:params) do
             super().merge({ key => value })
           end
-
-          test_pattern = if value.is_a?(Array)
-                           value.map { |v| Regexp.escape(v) }.join(%r{\n#{" " * (key.length + 3)}}.to_s)
-                         else
-                           Regexp.escape(value.to_s)
-                         end
+          let(:test_pattern) do
+            if value.is_a?(Array)
+              value.map { |v| Regexp.escape(v) }.join(%r{\n#{' ' * (key.length + 3)}}.to_s)
+            else
+              Regexp.escape(value.to_s)
+            end
+          end
 
           it "writes #{key} into jail.conf" do
-            is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-              with_content(%r{^#{key} = #{test_pattern}$})
+            is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+              .with_content(%r{^#{key} = #{test_pattern}$})
           end
         end
       end
@@ -170,22 +168,22 @@ describe 'fail2ban::jail' do
 
       # Options that don't trivially ouptut in the config file:
       context 'with bantime_extra set' do
-        formula = 'ban.Time * (1<<(ban.Count if ban.Count<10 else 30)) * banFactor'
+        let(:formula) { 'ban.Time * (1<<(ban.Count if ban.Count<10 else 30)) * banFactor' }
         let(:params) do
           super().merge({
                           'bantime_extra' => {
                             'increment' => false,
                             'formula' => formula,
                             'factor' => '2',
-                          }
+                          },
                         })
         end
 
         it 'writes individual suboptions to the jail config file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_content(%r{^bantime.increment = false$}).
-            with_content(%r{^bantime.formula = #{Regexp.escape(formula)}$}).
-            with_content(%r{^bantime.factor = 2})
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_content(%r{^bantime.increment = false$})
+            .with_content(%r{^bantime.formula = #{Regexp.escape(formula)}$})
+            .with_content(%r{^bantime.factor = 2})
         end
       end
 
@@ -195,14 +193,14 @@ describe 'fail2ban::jail' do
                           'additional_options' => {
                             'variable1' => 'value1',
                             'train_of_thoughts' => 'derailed',
-                          }
+                          },
                         })
         end
 
         it 'writes additional lines in to the jail config file' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-            with_content(%r{^variable1 = value1$}).
-            with_content(%r{^train_of_thoughts = derailed$})
+          is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf')
+            .with_content(%r{^variable1 = value1$})
+            .with_content(%r{^train_of_thoughts = derailed$})
         end
       end
     end

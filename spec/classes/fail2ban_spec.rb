@@ -8,13 +8,13 @@ describe 'fail2ban' do
       let(:facts) { facts }
 
       it 'installs before configuring' do
-        is_expected.to contain_class('fail2ban::install').
-          that_comes_before('Class[fail2ban::config]')
+        is_expected.to contain_class('fail2ban::install')
+          .that_comes_before('Class[fail2ban::config]')
       end
 
       it 'configures before managing the service' do
-        is_expected.to contain_class('fail2ban::config').
-          that_notifies('Class[fail2ban::service]')
+        is_expected.to contain_class('fail2ban::config')
+          .that_notifies('Class[fail2ban::service]')
       end
 
       # ------------------------------------------------------------------
@@ -33,44 +33,44 @@ describe 'fail2ban' do
         end
 
         it 'enables and starts the fail2ban service' do
-          is_expected.to contain_service('fail2ban').
-            with_ensure('running').
-            with_enable(true)
+          is_expected.to contain_service('fail2ban')
+            .with_ensure('running')
+            .with_enable(true)
         end
 
         it 'manages jail.conf' do
-          is_expected.to contain_file('/etc/fail2ban/jail.conf').
-            with_ensure('file').
-            with_owner('root').
-            with_group('0')
+          is_expected.to contain_file('/etc/fail2ban/jail.conf')
+            .with_ensure('file')
+            .with_owner('root')
+            .with_group('0')
         end
 
         it 'manages fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_ensure('file').
-            with_owner('root').
-            with_group('0')
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_ensure('file')
+            .with_owner('root')
+            .with_group('0')
         end
 
         it 'removes .local files by default' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.local').
-            with_ensure('absent')
-          is_expected.to contain_file('/etc/fail2ban/jail.local').
-            with_ensure('absent')
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.local')
+            .with_ensure('absent')
+          is_expected.to contain_file('/etc/fail2ban/jail.local')
+            .with_ensure('absent')
         end
 
         it 'purges fail2ban.d directory by default' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.d').
-            with_ensure('directory').
-            with_purge(true).
-            with_recurse(true)
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.d')
+            .with_ensure('directory')
+            .with_purge(true)
+            .with_recurse(true)
         end
 
         it 'purges jail.d directory by default' do
-          is_expected.to contain_file('/etc/fail2ban/jail.d').
-            with_ensure('directory').
-            with_purge(true).
-            with_recurse(true)
+          is_expected.to contain_file('/etc/fail2ban/jail.d')
+            .with_ensure('directory')
+            .with_purge(true)
+            .with_recurse(true)
         end
       end
 
@@ -113,10 +113,10 @@ describe 'fail2ban' do
         let(:params) { { config_file_mode: '0640' } }
 
         it 'sets mode on config files' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_mode('0640')
-          is_expected.to contain_file('/etc/fail2ban/jail.conf').
-            with_mode('0640')
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_mode('0640')
+          is_expected.to contain_file('/etc/fail2ban/jail.conf')
+            .with_mode('0640')
         end
       end
 
@@ -152,8 +152,8 @@ describe 'fail2ban' do
         let(:params) { { loglvl: 'DEBUG' } }
 
         it 'writes loglevel into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{loglevel\s*=\s*DEBUG})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{loglevel\s*=\s*DEBUG})
         end
       end
 
@@ -161,8 +161,8 @@ describe 'fail2ban' do
         let(:params) { { logtarget: '/var/log/fail2ban.log' } }
 
         it 'writes logtarget into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{logtarget\s*=\s*/var/log/fail2ban\.log})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{logtarget\s*=\s*/var/log/fail2ban\.log})
         end
       end
 
@@ -170,8 +170,8 @@ describe 'fail2ban' do
         let(:params) { { syslogsocket: '/var/run/syslog.custom.socket' } }
 
         it 'writes syslogsocket into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{syslogsocket\s*=\s*/var/run/syslog\.custom\.socket})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{syslogsocket\s*=\s*/var/run/syslog\.custom\.socket})
         end
       end
 
@@ -179,8 +179,8 @@ describe 'fail2ban' do
         let(:params) { { socket: '/var/run/fail2ban.custom.socket' } }
 
         it 'writes socket into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{socket\s*=\s*/var/run/fail2ban\.custom\.socket})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{socket\s*=\s*/var/run/fail2ban\.custom\.socket})
         end
       end
 
@@ -188,8 +188,8 @@ describe 'fail2ban' do
         let(:params) { { pidfile: '/var/run/fail2ban.custom.pidfile' } }
 
         it 'writes pidfile into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{pidfile\s*=\s*/var/run/fail2ban\.custom\.pidfile})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{pidfile\s*=\s*/var/run/fail2ban\.custom\.pidfile})
         end
       end
 
@@ -197,8 +197,8 @@ describe 'fail2ban' do
         let(:params) { { allowipv6: false } }
 
         it 'writes allowipv6 into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{allowipv6\s*=\s*false})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{allowipv6\s*=\s*false})
         end
       end
 
@@ -206,8 +206,8 @@ describe 'fail2ban' do
         let(:params) { { dbfile: '/var/lib/fail2ban/custom.sqlite3' } }
 
         it 'writes dbfile into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{dbfile\s*=\s*/var/lib/fail2ban/custom\.sqlite3})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{dbfile\s*=\s*/var/lib/fail2ban/custom\.sqlite3})
         end
       end
 
@@ -215,8 +215,8 @@ describe 'fail2ban' do
         let(:params) { { dbpurgeage: 172_800 } }
 
         it 'writes dbpurgeage into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{dbpurgeage\s*=\s*172800})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{dbpurgeage\s*=\s*172800})
         end
       end
 
@@ -224,8 +224,8 @@ describe 'fail2ban' do
         let(:params) { { dbmaxmatches: 25 } }
 
         it 'writes dbmaxmatches into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{dbmaxmatches\s*=\s*25})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{dbmaxmatches\s*=\s*25})
         end
       end
 
@@ -233,8 +233,8 @@ describe 'fail2ban' do
         let(:params) { { stacksize: 64 } }
 
         it 'writes stacksize into fail2ban.conf' do
-          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-            with_content(%r{stacksize\s*=\s*64})
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{stacksize\s*=\s*64})
         end
       end
 
@@ -282,29 +282,30 @@ describe 'fail2ban' do
       option_fixtures.each do |key, value|
         context "with #{key} set to #{value}" do
           let(:params) { { key => value } }
-
-          test_pattern = if value.is_a?(Array)
-                           value.map { |v| Regexp.escape(v) }.join(%r{\n#{" " * (key.length + 3)}}.to_s)
-                         else
-                           Regexp.escape(value.to_s)
-                         end
+          let(:test_pattern) do
+            if value.is_a?(Array)
+              value.map { |v| Regexp.escape(v) }.join(%r{\n#{' ' * (key.length + 3)}}.to_s)
+            else
+              Regexp.escape(value.to_s)
+            end
+          end
 
           it "writes #{key} into jail.conf" do
-            is_expected.to contain_file('/etc/fail2ban/jail.conf').
-              with_content(%r{^#{key} = #{test_pattern}$})
+            is_expected.to contain_file('/etc/fail2ban/jail.conf')
+              .with_content(%r{^#{key} = #{test_pattern}$})
           end
         end
       end
 
       # Options that don't trivially ouptut in the config file:
       context 'with bantime_extra set' do
-        formula = 'ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor'
+        let(:formula) { 'ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor' }
         let(:params) { { 'bantime_extra' => { 'increment' => true, 'formula' => formula } } }
 
         it 'writes individual suboptions to jail.conf' do
-          is_expected.to contain_file('/etc/fail2ban/jail.conf').
-            with_content(%r{^bantime.increment = true$}).
-            with_content(%r{^bantime.formula = #{Regexp.escape(formula)}$})
+          is_expected.to contain_file('/etc/fail2ban/jail.conf')
+            .with_content(%r{^bantime.increment = true$})
+            .with_content(%r{^bantime.formula = #{Regexp.escape(formula)}$})
         end
       end
     end
