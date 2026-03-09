@@ -63,16 +63,25 @@ describe 'fail2ban::jail' do
 
       # Take this out once the deprecated type is removed
       context 'with action as a String (deprecated type)' do
-        let(:params) { { 'action' => 'email_santa' } }
+        let(:params) do
+          super().merge({ 'action' => 'email_santa' })
+        end
 
-        it { is_expected.not_to compile }
+        before { Puppet.settings[:strict] = :warning }
+        after  { Puppet.settings[:strict] = :error }
 
-        # Hmm... in the eyes of spec tests, the catalogue fails to compile so we
-        # can't test that the content is still output to the file.
-        # it "writes the one action to configuration file" do
-        #  is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
-        #    with_content(%r{^action = email_santa$})
-        # end
+        it 'expects a deprecation notice' do
+          logs = []
+          Puppet::Util::Log.newdestination(Puppet::Test::LogCollector.new(logs))
+          catalogue
+          Puppet::Util::Log.close_all
+          expect(logs).to include(an_object_having_attributes(level: :warning, message: include('will only take an array of strings')))
+        end
+
+        it "writes the one action to configuration file" do
+         is_expected.to contain_file('/etc/fail2ban/jail.d/test_jail.conf').
+           with_content(%r{^action = email_santa$})
+        end
       end
 
       # Value 'all' gets transformed to something else
