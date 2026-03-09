@@ -138,7 +138,7 @@ describe 'fail2ban::action' do
 
         it 'writes actioncheck into the action file' do
           is_expected.to contain_file('/etc/fail2ban/action.d/test_action.conf')
-            .with_content(%r{^actioncheck = iptables -n -L INPUT | grep -q f2b-<name>$})
+            .with_content(%r{^actioncheck = iptables -n -L INPUT \| grep -q f2b-<name>$})
         end
       end
 
