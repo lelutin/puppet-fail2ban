@@ -1,0 +1,9 @@
+{
+  "name": "module for unit tests",
+  "version": "0.1.0",
+  "author": "test",
+  "license": "GPL-3.0+",
+  "summary": "Test fixture module",
+  "source": "",
+  "dependencies": []
+}

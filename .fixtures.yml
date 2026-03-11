@@ -3,3 +3,5 @@ fixtures:
   forge_modules:
     "stdlib":
       repo: "puppetlabs/stdlib"
+  symlinks:
+    mymodule: "spec/fixtures/modules/testmodule"

@@ -30,8 +30,23 @@ describe 'fail2ban::filter' do
         end
       end
 
-      # TODO: how can we test filter_template? we'll need some way to mock out
-      # the call to epp()
+      context 'with filter_template set to a custom template path' do
+        let(:params) do
+          super().merge({ 'filter_template' => 'testmodule/custom_filter.epp' })
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it 'uses the custom template to render the filter file' do
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .with_content(%r{# custom template sentinel})
+        end
+
+        it 'does not use output unique to the default template' do
+          is_expected.to contain_file('/etc/fail2ban/filter.d/test_filter.conf')
+            .without_content(%r{# Fail2Ban configuration file})
+        end
+      end
 
       context 'with ensure => absent' do
         let(:params) do
