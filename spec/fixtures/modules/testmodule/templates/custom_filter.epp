@@ -1,2 +1,1 @@
 # custom template sentinel
-failregex = <%= $failregexes[0] %>

@@ -132,21 +132,21 @@ describe 'fail2ban' do
       # fail2ban.conf settings
       # ------------------------------------------------------------------
 
-      # TODO: how can we test the behavior of fail2ban_conf_template? : possibly
-      # with a fixture file! err hmm but how do I mock out the call to `epp()` ?
-      #
-      # context 'with fail2ban_conf_template set to a template path' do
-      #   let (:params) {{
-      #     fail2ban_conf_template: "spec/fixtures/files/fail2ban_conf_template.epp",
-      #     bantime: 12345
-      #   }}
+      context 'with fail2ban_conf_template set to a custom template path' do
+        let(:params) { { 'fail2ban_conf_template' => 'testmodule/custom_filter.epp' } }
 
-      #   it "writes fail2ban.conf using the given template" do
-      #     allow(Puppet::Parser::Functions::epp).to receive(:epp).with("spec/fixtures/files/fail2ban_conf_template.epp").and_return("# test template\nbantime=<%= $bantime %>")
-      #     is_expected.to contain_file('/etc/fail2ban/fail2ban.conf').
-      #       with_content("# test template\nbantime=12345")
-      #   end
-      # end
+        it { is_expected.to compile.with_all_deps }
+
+        it 'uses the custom template to render the main configuration file' do
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .with_content(%r{# custom template sentinel})
+        end
+
+        it 'does not use output unique to the default template' do
+          is_expected.to contain_file('/etc/fail2ban/fail2ban.conf')
+            .without_content(%r{# Fail2Ban main configuration file})
+        end
+      end
 
       context 'with loglvl set to DEBUG' do
         let(:params) { { loglvl: 'DEBUG' } }
